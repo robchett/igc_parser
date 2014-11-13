@@ -1,0 +1,328 @@
+==44207== Memcheck, a memory error detector
+==44207== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==44207== Using Valgrind-3.9.0 and LibVEX; rerun with -h for copyright info
+==44207== Command: /usr/bin/php test.php
+==44207== Parent PID: 6638
+==44207== 
+--44207-- 
+--44207-- Valgrind options:
+--44207--    --tool=memcheck
+--44207--    --num-callers=30
+--44207--    --log-file=php.log
+--44207--    --leak-check=full
+--44207--    --track-origins=yes
+--44207--    -v
+--44207-- Contents of /proc/version:
+--44207--   Linux version 3.10.0-123.8.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Mon Sep 22 19:06:58 UTC 2014
+--44207-- Arch and hwcaps: AMD64, amd64-cx16-rdtscp-sse3-avx
+--44207-- Page sizes: currently 4096, max supported 4096
+--44207-- Valgrind library directory: /usr/lib64/valgrind
+--44207-- Reading syms from /usr/bin/php
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/ld-2.17.so
+--44207-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
+--44207--    object doesn't have a symbol table
+--44207--    object doesn't have a dynamic symbol table
+--44207-- Scheduler: using generic scheduler lock implementation.
+--44207-- Reading suppressions file: /usr/lib64/valgrind/default.supp
+==44207== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-44207-by-root-on-localhost.localdomain
+==44207== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-44207-by-root-on-localhost.localdomain
+==44207== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-44207-by-root-on-localhost.localdomain
+==44207== 
+==44207== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==44207== don't want to do, unless you know exactly what you're doing,
+==44207== or are doing some strange experiment):
+==44207==   /usr/lib64/valgrind/../../bin/vgdb --pid=44207 ...command...
+==44207== 
+==44207== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==44207==   /path/to/gdb /usr/bin/php
+==44207== and then give GDB the following command
+==44207==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=44207
+==44207== --pid is optional if only one valgrind process is running
+==44207== 
+--44207-- REDIR: 0x40185b0 (strlen) redirected to 0x380673f1 (???)
+--44207-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
+--44207--    object doesn't have a symbol table
+--44207-- REDIR: 0x4018500 (index) redirected to 0x4c2af60 (index)
+--44207-- REDIR: 0x4018580 (strcmp) redirected to 0x4c2c040 (strcmp)
+--44207-- Reading syms from /usr/lib64/libcrypt-2.17.so
+--44207-- Reading syms from /usr/lib64/libresolv-2.17.so
+--44207-- Reading syms from /usr/lib64/libedit.so.0.0.42
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libncurses.so.5.9
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libtinfo.so.5.9
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libstdc++.so.6.0.19
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libz.so.1.2.7
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libpcre.so.1.2.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/librt-2.17.so
+--44207-- Reading syms from /usr/lib64/libm-2.17.so
+--44207-- Reading syms from /usr/lib64/libdl-2.17.so
+--44207-- Reading syms from /usr/lib64/libnsl-2.17.so
+--44207-- Reading syms from /usr/lib64/libxml2.so.2.9.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libgssapi_krb5.so.2.2
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libkrb5.so.3.3
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libk5crypto.so.3.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libcom_err.so.2.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libssl.so.1.0.1e
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libcrypto.so.1.0.1e
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libc-2.17.so
+--44207-- Reading syms from /usr/lib64/libfreebl3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libgcc_s-4.8.2-20140120.so.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libpthread-2.17.so
+--44207-- Reading syms from /usr/lib64/liblzma.so.5.0.99
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libkrb5support.so.0.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libkeyutils.so.1.5
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libselinux.so.1
+--44207--    object doesn't have a symbol table
+--44207-- REDIR: 0x7d5d500 (strcasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d598b0 (strnlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5f7d0 (strncasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5c310 (memset) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5c2c0 (memcpy@GLIBC_2.2.5) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d57d30 (strcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d71880 (strstr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d57c70 (index) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5b6d0 (strspn) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d59780 (strlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5bcf0 (bcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d59990 (strncmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5b220 (strncpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d59950 (strncat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d61ea0 (memcpy@@GLIBC_2.14) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d591c0 (strcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5d360 (stpcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5b260 (rindex) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7ddd640 (__memcpy_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d5b340 (strpbrk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d57a70 (strcat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d597d0 (__GI_strlen) redirected to 0x4c2b310 (__GI_strlen)
+--44207-- REDIR: 0x7d5b2a0 (__GI_strrchr) redirected to 0x4c2ad80 (__GI_strrchr)
+--44207-- REDIR: 0x7d530d0 (malloc) redirected to 0x4c283d6 (malloc)
+--44207-- REDIR: 0x7e356d0 (__strlen_sse2_pminub) redirected to 0x4c2b2f0 (strlen)
+--44207-- REDIR: 0x7e1aa90 (__memcpy_ssse3_back) redirected to 0x4c2c390 (memcpy@@GLIBC_2.14)
+--44207-- REDIR: 0x7d599d0 (__GI_strncmp) redirected to 0x4c2b800 (__GI_strncmp)
+--44207-- REDIR: 0x7d5c350 (__GI_memset) redirected to 0x4c2d730 (memset)
+--44207-- REDIR: 0x7d535d0 (realloc) redirected to 0x4c2a2e0 (realloc)
+--44207-- REDIR: 0x7e06b70 (__strrchr_sse42) redirected to 0x4c2ad50 (rindex)
+--44207-- REDIR: 0x7d57d70 (__GI_strcmp) redirected to 0x4c2bff0 (__GI_strcmp)
+--44207-- REDIR: 0x7d5b9a0 (memchr) redirected to 0x4c2c0e0 (memchr)
+--44207-- REDIR: 0x7d57cb0 (__GI_strchr) redirected to 0x4c2ae60 (__GI_strchr)
+--44207-- REDIR: 0x7d63780 (strchrnul) redirected to 0x4c2dd30 (strchrnul)
+--44207-- REDIR: 0x7d534f0 (free) redirected to 0x4c294f0 (free)
+--44207-- REDIR: 0x7d5d3a0 (__GI_stpcpy) redirected to 0x4c2d340 (__GI_stpcpy)
+--44207-- REDIR: 0x7d59200 (__GI_strcpy) redirected to 0x4c2b410 (__GI_strcpy)
+--44207-- REDIR: 0x7e30000 (__memcmp_sse4_1) redirected to 0x4c2d1e0 (bcmp)
+--44207-- REDIR: 0x7e04d30 (__strchr_sse42) redirected to 0x4c2ae20 (index)
+--44207-- REDIR: 0x7e1aa80 (__memcpy_chk_ssse3_back) redirected to 0x4c2e030 (__memcpy_chk)
+--44207-- REDIR: 0x7e0e7f0 (__strncasecmp_avx) redirected to 0x4c2b950 (strncasecmp)
+--44207-- REDIR: 0x7e0d180 (__strcasecmp_avx) redirected to 0x4c2b870 (strcasecmp)
+--44207-- REDIR: 0x7d5c130 (__GI_memmove) redirected to 0x4c2da10 (__GI_memmove)
+--44207-- REDIR: 0x7d53aa0 (calloc) redirected to 0x4c2a13e (calloc)
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/opcache.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/bz2.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libbz2.so.1.0.6
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/calendar.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ctype.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/curl.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libcurl.so.4.3.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libidn.so.11.6.11
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libssh2.so.1.0.1
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libssl3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libsmime3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libnss3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libnssutil3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libplds4.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libplc4.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libnspr4.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/liblber-2.4.so.2.10.2
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libldap-2.4.so.2.10.2
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libsasl2.so.3.0.0
+--44207--    object doesn't have a symbol table
+--44207-- REDIR: 0x7ddd830 (__memmove_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- REDIR: 0x7d63530 (rawmemchr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/dom.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/exif.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/fileinfo.so
+--44207--    object doesn't have a symbol table
+--44207-- REDIR: 0x7d72380 (strcasestr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ftp.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/gettext.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/iconv.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mbstring.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mcrypt.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libmcrypt.so.4.4.8
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libltdl.so.7.3.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqlnd.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/phar.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/posix.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/shmop.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/simplexml.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sockets.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sqlite3.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libsqlite3.so.0.8.6
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvmsg.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvsem.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvshm.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/tokenizer.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xml.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlwriter.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xsl.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libexslt.so.0.8.17
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libxslt.so.1.1.28
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libgcrypt.so.11.8.2
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libgpg-error.so.0.10.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysql.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqli.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_mysql.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_sqlite.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/wddx.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlreader.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/apcu.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/igbinary.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/json.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/msgpack.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/zip.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/memcached.so
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libmemcachedprotocol.so.0.0.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libmemcached.so.11.0.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libmemcachedutil.so.2.0.0
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /usr/lib64/libevent-2.0.so.5.1.9
+--44207--    object doesn't have a symbol table
+--44207-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/geometry.so
+--44207-- REDIR: 0xffffffffff600400 (???) redirected to 0x380673dd (???)
+--44207-- REDIR: 0x7e04de0 (__strcmp_sse42) redirected to 0x4c2bfa0 (strcmp)
+--44207-- REDIR: 0x7d683c0 (__strncpy_sse2_unaligned) redirected to 0x4c2b4f0 (strncpy)
+==44207== 
+==44207== Process terminating with default action of signal 2 (SIGINT)
+==44207==    at 0x4C2C518: memcpy@@GLIBC_2.14 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==44207==    by 0x3567EC: _zend_hash_quick_add_or_update (in /usr/bin/php)
+==44207==    by 0x336CA0: zend_register_constant (in /usr/bin/php)
+==44207==    by 0x336F04: zend_register_long_constant (in /usr/bin/php)
+==44207==    by 0x1054F09B: ??? (in /opt/remi/php56/root/usr/lib64/php/modules/curl.so)
+==44207==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==44207==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==44207==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==44207==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==44207==    by 0x3F07FC: ??? (in /usr/bin/php)
+==44207==    by 0x1C5222: ??? (in /usr/bin/php)
+==44207==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==44207== 
+==44207== HEAP SUMMARY:
+==44207==     in use at exit: 3,122,546 bytes in 14,237 blocks
+==44207==   total heap usage: 15,690 allocs, 1,453 frees, 3,302,700 bytes allocated
+==44207== 
+==44207== Searching for pointers to 14,237 not-freed blocks
+==44207== Checked 2,284,920 bytes
+==44207== 
+==44207== 100 bytes in 1 blocks are definitely lost in loss record 4,284 of 4,934
+==44207==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==44207==    by 0x35690C: _zend_hash_quick_add_or_update (in /usr/bin/php)
+==44207==    by 0x336CA0: zend_register_constant (in /usr/bin/php)
+==44207==    by 0x336F04: zend_register_long_constant (in /usr/bin/php)
+==44207==    by 0x1054F09B: ??? (in /opt/remi/php56/root/usr/lib64/php/modules/curl.so)
+==44207==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==44207==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==44207==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==44207==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==44207==    by 0x3F07FC: ??? (in /usr/bin/php)
+==44207==    by 0x1C5222: ??? (in /usr/bin/php)
+==44207==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==44207== 
+==44207== LEAK SUMMARY:
+==44207==    definitely lost: 100 bytes in 1 blocks
+==44207==    indirectly lost: 0 bytes in 0 blocks
+==44207==      possibly lost: 0 bytes in 0 blocks
+==44207==    still reachable: 3,122,446 bytes in 14,236 blocks
+==44207==         suppressed: 0 bytes in 0 blocks
+==44207== Reachable blocks (those to which a pointer was found) are not shown.
+==44207== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==44207== 
+==44207== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)
+--44207-- 
+--44207-- used_suppression:      3 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a /usr/lib64/valgrind/default.supp:1286
+==44207== 
+==44207== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)
