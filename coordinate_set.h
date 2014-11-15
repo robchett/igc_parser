@@ -60,14 +60,14 @@ void free_coordinate_set_object(coordinate_set_object *intern TSRMLS_DC);
 static zend_object_value coordinate_set_object_clone(zval *object TSRMLS_DC);
 
 coordinate_object *match_b_record(char *line);
-void set_graph_values(coordinate_set_object *intern);
+int set_graph_values(coordinate_set_object *intern);
 int parse_igc(coordinate_set_object *intern, char *string);
 coordinate_object *parse_igc_coordiante(char *string);
 int is_b_record(char *line);
 int is_h_record(char *line);
 int is_valid_subset(coordinate_subset *start);
 void push_coordinate(coordinate_set_object *set, coordinate_object *coordinate);
-int match_h_record(coordinate_set_object *coordinate_set, char *line);
+int parse_h_record(coordinate_set_object *coordinate_set, char *line);
 int has_height_data(coordinate_set_object *coordinate_set);
 void clone_coordinate_object(coordinate_object *source, coordinate_object *dest);
 void coordinate_object_trim(coordinate_set_object *source);

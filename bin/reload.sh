@@ -1,1 +1,1 @@
-phpize --clean && phpize && ./configure --with-php-config=/usr/local/bin/php-config && make && make install && yes | cp modules/geometry.so /lib64/php/modules/ && php test.php && service php-fpm reload
+phpize --clean && phpize && ./configure --with-php-config=/usr/local/bin/php-config && make && make install && yes | cp modules/geometry.so /lib64/php/modules/ && php ./test/test.php && service php-fpm reload

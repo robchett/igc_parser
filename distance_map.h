@@ -14,7 +14,7 @@ typedef struct distance_map_object {
     zend_object std;
     coordinate_set_object *coordinate_set;
     unsigned long **distances;
-    long size;
+    unsigned long size;
     unsigned long maximum_distance;
 } distance_map_object;
 
@@ -26,13 +26,11 @@ zend_object_value create_distance_map_object(zend_class_entry *class_type TSRMLS
 void free_distance_map_object(distance_map_object *intern TSRMLS_DC);
 static zend_object_value clone_distance_map_object(zval *object TSRMLS_DC);
 
-// zval* _distance_map_offset_get(distance_map_object *intern, size_t offset);
-// void _distance_map_offset_set(distance_map_object *intern, long offset, zval *value);
-unsigned long map_read(distance_map_object *map, long i, long j);
-unsigned long maximum_bound_index_back(distance_map_object *map, long point, long *index);
-unsigned long maximum_bound_index_fwrd(distance_map_object *map, long point, long *index);
-unsigned long furthest_between(distance_map_object *map, long from, long to);
-//#define SKIP(distance, target, maximum_distance, index) 
-#define MAP(map, from, to)  map->distances[to - from][from]
-coordinate_object *get_coordinate(distance_map_object *map, long index);
+unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index);
+unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);
+unsigned long furthest_between(distance_map_object *map, unsigned long from, unsigned long to);
+#define MAP(map, from, to) (from >= to ? 0 : map->distances[from][to - from - 1])
+#define SKIP(map, diff) (floor(diff / map->maximum_distance))
+coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
+int create_distance_map(distance_map_object *map, coordinate_set_object *set);
 #endif

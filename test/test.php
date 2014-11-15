@@ -27,6 +27,8 @@ $classes = [
         'simplify',
         'part_length',
         'part_duration',
+	'date',
+	'part_count'
     ],
     'distance_map'   => [
         '__construct',
@@ -109,16 +111,16 @@ echo pass("Looping successful");
 
 echo PHP_EOL;
 
-score_track('test0.igc', [
-    'OD: 014.50 -> 140,346,642,771,813,',
-    'OR: 007.88 -> 352,642,771,',
-    'TR: 009.23 -> 191,257,345,446,755,'
-]);
-// score_track('test1.igc', [
-//     'OD: 014.50 -> 140,346,642,771,813,',
-//     'OR: 007.88 -> 352,642,771,',
-//     'TR: 009.23 -> 191,257,345,446,755,'
-// ]);
+//score_track('test0.igc', [
+//    'OD: 014.50 -> 140,346,642,771,813,',
+//    'OR: 007.88 -> 352,642,771,',
+//    'TR: 009.23 -> 191,257,345,446,755,'
+//]);
+ score_track('test1.igc', [
+     'OD: 014.50 -> 140,346,642,771,813,',
+     'OR: 007.88 -> 352,642,771,',
+     'TR: 009.23 -> 191,257,345,446,755,'
+ ]);
 // score_track('test2.igc', [
 //     'OD: 028.92 -> 3,126,975,1014,1597,',
 //     'OR: 002.68 -> 892,975,1013,',
@@ -156,51 +158,35 @@ function score_track($file, $answers = []) {
 
     $time = microtime(true);
     echo "------------------------" . PHP_EOL;
-    echo "Memory: " . memory_get_usage(true) . PHP_EOL;
-    echo "Track: " . $file . PHP_EOL;
+    _log("Memory", memory_get_usage(true));
+    _log("Track", $file);
 
-    echo 'Creating set:';
+    _log('Creating set:');
     $set_2 = new coordinate_set();
-    echo get_time($time) . PHP_EOL;
 
-    echo 'Parsing file:';
-    $records = $set_2->parse_igc(file_get_contents($file));
-    echo get_time($time) . PHP_EOL;
-    echo "Date: " . $set_2->date() . PHP_EOL;
+    action('Parsing file', $set_2->parse_igc(file_get_contents('./test/' . $file)));
+    _log("Date", $set_2->date());
 
     $intial = $set_2->count();
 
-    echo 'Trimming file:';
-    $set_2->trim();
-    echo get_time($time) . PHP_EOL;
+    action('Trimming file', $set_2->trim());
 
-    // echo 'Simplifing file:';
-    // $set_2->simplify();
-    // echo get_time($time) . PHP_EOL;
+    action('Simplifing file', $set_2->simplify());
 
-    echo 'Points:' . $set_2->count() . " (" . $intial . ")" . PHP_EOL;
-    echo 'Parts:' . $set_2->part_count() . PHP_EOL;
+    _log('Points', $set_2->count() . " (" . $intial . ")");
+    _log('Parts',  $set_2->part_count());
 
-    echo 'Repairing track';
-    $set_2->repair();
-    echo get_time($time) . PHP_EOL;
+    action('Repairing track', $set_2->repair());
+    action('Graphing track',$set_2->set_graph_values());
+    action('Ranging track', $set_2->set_ranges());
+    if($set_2->part_count() > 1) {
+        action('Setting section', $set_2->set_section(1));
+    }
 
-    echo 'Graphing track';
-    $set_2->set_graph_values();
-    echo get_time($time) . PHP_EOL;
+    _log('Points', $set_2->count() . " (" . $intial . ")");
+    _log('Parts',  $set_2->part_count());
 
-    echo 'Ranging track';
-    $set_2->set_ranges();
-    echo get_time($time) . PHP_EOL;
-
-    $set_2->set_section(1);
-
-    echo 'Points:' . $set_2->count() . " (" . $intial . ")" . PHP_EOL;
-    echo 'Parts:' . $set_2->part_count() . PHP_EOL;
-
-    echo 'Building map';
-    $map_2 = new distance_map($set_2);
-    echo get_time($time) . PHP_EOL;
+    action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
 
     $od = $map_2->score_open_distance_3tp();
     echo get_score($map_2, $od, $answers[0], 'OD') . get_time($time) . PHP_EOL;
@@ -208,42 +194,42 @@ function score_track($file, $answers = []) {
     echo get_score($map_2, $or, $answers[1], 'OR') . get_time($time) . PHP_EOL;
     $tr = $map_2->score_triangle();
     echo get_score($map_2, $tr, $answers[2], 'TR') . get_time($time) . PHP_EOL;
-    echo 'Coordinates: ' . $od->get_gridref() . PHP_EOL;
-    echo 'Duration: ' . ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's' . PHP_EOL;
+
+    _log('Coordinates', $od->get_gridref());
+    _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
 
 
     $task = new task($coordinate_1, $coordinate_2, $coordinate_3);
-    echo 'Checking task:' . PHP_EOL;
+    _log('Checking task:');
     echo pass_fail('Valid task is found' . PHP_EOL, $od->completes_task($set_2) == true);
     echo pass_fail('Invalid task not found' . PHP_EOL, $task->completes_task($set_2) == false);
 
-    echo 'Outputting kml:';
+    _log('Outputting kml');
     $formatter = new formatter_kml($set_2, $file, $od, $or, $tr, $od);
     file_put_contents(str_replace('.igc', '.kml', $file), $formatter->output());
-    echo get_time($time) . PHP_EOL;
 
-    echo 'Outputting js:';
+
+    _log('Outputting js');
     $formatter = new formatter_js($set_2, 10);
     $formatter->output();
-    echo get_time($time) . PHP_EOL;
 
-    echo 'Outputting kml (Split):';
+    _log('Outputting kml (Split)');
     $formatter = new formatter_kml_split($set_2);
     $formatter->output();
-    echo get_time($time) . PHP_EOL;
 
-    echo 'Outputting KML (Earth):';
+    _log('Outputting KML (Earth)');
     $formatter = new formatter_kml_earth($set_2, $file, $od, $or, $tr);
     $formatter->output();
-    echo get_time($time) . PHP_EOL;
 
     unset($set_2);
     unset($formatter);
 
-    echo "Memory: " . memory_get_usage(true) . PHP_EOL;
+    _log("Memory", memory_get_usage(true));
 }
 
-function get_time(&$time) {
+function get_time() {
+    static $time;
+    if(!$time) $time = microtime(true);
     $new_time = microtime(true);
     $delta = $new_time - $time;
     $time = $new_time;
@@ -269,4 +255,13 @@ function fail($string) {
 
 function pass($string) {
     return "\033[0;32m[PASS] " . $string . "\033[0m";
+}
+
+function _log($action, $result = '') {
+    echo sprintf("%-20s: %-15s\n", $action, $result);
+}
+
+
+function action($action, $result) {
+    echo sprintf("%-20s: %-15s @ %s\n", $action, $result, get_time());
 }

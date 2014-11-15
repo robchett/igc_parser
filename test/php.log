@@ -1,358 +1,165 @@
-==44239== Memcheck, a memory error detector
-==44239== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==44239== Using Valgrind-3.9.0 and LibVEX; rerun with -h for copyright info
-==44239== Command: /usr/bin/php ./test/test.php
-==44239== Parent PID: 6638
-==44239== 
---44239-- 
---44239-- Valgrind options:
---44239--    --tool=memcheck
---44239--    --num-callers=30
---44239--    --log-file=./test/php.log
---44239--    --leak-check=full
---44239--    --track-origins=yes
---44239--    -v
---44239-- Contents of /proc/version:
---44239--   Linux version 3.10.0-123.8.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Mon Sep 22 19:06:58 UTC 2014
---44239-- Arch and hwcaps: AMD64, amd64-cx16-rdtscp-sse3-avx
---44239-- Page sizes: currently 4096, max supported 4096
---44239-- Valgrind library directory: /usr/lib64/valgrind
---44239-- Reading syms from /usr/bin/php
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/ld-2.17.so
---44239-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
---44239--    object doesn't have a symbol table
---44239--    object doesn't have a dynamic symbol table
---44239-- Scheduler: using generic scheduler lock implementation.
---44239-- Reading suppressions file: /usr/lib64/valgrind/default.supp
-==44239== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-44239-by-root-on-localhost.localdomain
-==44239== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-44239-by-root-on-localhost.localdomain
-==44239== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-44239-by-root-on-localhost.localdomain
-==44239== 
-==44239== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==44239== don't want to do, unless you know exactly what you're doing,
-==44239== or are doing some strange experiment):
-==44239==   /usr/lib64/valgrind/../../bin/vgdb --pid=44239 ...command...
-==44239== 
-==44239== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==44239==   /path/to/gdb /usr/bin/php
-==44239== and then give GDB the following command
-==44239==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=44239
-==44239== --pid is optional if only one valgrind process is running
-==44239== 
---44239-- REDIR: 0x40185b0 (strlen) redirected to 0x380673f1 (???)
---44239-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
---44239--    object doesn't have a symbol table
---44239-- REDIR: 0x4018500 (index) redirected to 0x4c2af60 (index)
---44239-- REDIR: 0x4018580 (strcmp) redirected to 0x4c2c040 (strcmp)
---44239-- Reading syms from /usr/lib64/libcrypt-2.17.so
---44239-- Reading syms from /usr/lib64/libresolv-2.17.so
---44239-- Reading syms from /usr/lib64/libedit.so.0.0.42
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libncurses.so.5.9
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libtinfo.so.5.9
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libstdc++.so.6.0.19
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libz.so.1.2.7
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libpcre.so.1.2.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/librt-2.17.so
---44239-- Reading syms from /usr/lib64/libm-2.17.so
---44239-- Reading syms from /usr/lib64/libdl-2.17.so
---44239-- Reading syms from /usr/lib64/libnsl-2.17.so
---44239-- Reading syms from /usr/lib64/libxml2.so.2.9.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libgssapi_krb5.so.2.2
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libkrb5.so.3.3
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libk5crypto.so.3.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libcom_err.so.2.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libssl.so.1.0.1e
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libcrypto.so.1.0.1e
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libc-2.17.so
---44239-- Reading syms from /usr/lib64/libfreebl3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libgcc_s-4.8.2-20140120.so.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libpthread-2.17.so
---44239-- Reading syms from /usr/lib64/liblzma.so.5.0.99
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libkrb5support.so.0.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libkeyutils.so.1.5
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libselinux.so.1
---44239--    object doesn't have a symbol table
---44239-- REDIR: 0x7d5d500 (strcasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d598b0 (strnlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5f7d0 (strncasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5c310 (memset) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5c2c0 (memcpy@GLIBC_2.2.5) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d57d30 (strcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d71880 (strstr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d57c70 (index) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5b6d0 (strspn) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d59780 (strlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5bcf0 (bcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d59990 (strncmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5b220 (strncpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d59950 (strncat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d61ea0 (memcpy@@GLIBC_2.14) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d591c0 (strcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5d360 (stpcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5b260 (rindex) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7ddd640 (__memcpy_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d5b340 (strpbrk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d57a70 (strcat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d597d0 (__GI_strlen) redirected to 0x4c2b310 (__GI_strlen)
---44239-- REDIR: 0x7d5b2a0 (__GI_strrchr) redirected to 0x4c2ad80 (__GI_strrchr)
---44239-- REDIR: 0x7d530d0 (malloc) redirected to 0x4c283d6 (malloc)
---44239-- REDIR: 0x7e356d0 (__strlen_sse2_pminub) redirected to 0x4c2b2f0 (strlen)
---44239-- REDIR: 0x7e1aa90 (__memcpy_ssse3_back) redirected to 0x4c2c390 (memcpy@@GLIBC_2.14)
---44239-- REDIR: 0x7d599d0 (__GI_strncmp) redirected to 0x4c2b800 (__GI_strncmp)
---44239-- REDIR: 0x7d5c350 (__GI_memset) redirected to 0x4c2d730 (memset)
---44239-- REDIR: 0x7d535d0 (realloc) redirected to 0x4c2a2e0 (realloc)
---44239-- REDIR: 0x7e06b70 (__strrchr_sse42) redirected to 0x4c2ad50 (rindex)
---44239-- REDIR: 0x7d57d70 (__GI_strcmp) redirected to 0x4c2bff0 (__GI_strcmp)
---44239-- REDIR: 0x7d5b9a0 (memchr) redirected to 0x4c2c0e0 (memchr)
---44239-- REDIR: 0x7d57cb0 (__GI_strchr) redirected to 0x4c2ae60 (__GI_strchr)
---44239-- REDIR: 0x7d63780 (strchrnul) redirected to 0x4c2dd30 (strchrnul)
---44239-- REDIR: 0x7d534f0 (free) redirected to 0x4c294f0 (free)
---44239-- REDIR: 0x7d5d3a0 (__GI_stpcpy) redirected to 0x4c2d340 (__GI_stpcpy)
---44239-- REDIR: 0x7d59200 (__GI_strcpy) redirected to 0x4c2b410 (__GI_strcpy)
---44239-- REDIR: 0x7e30000 (__memcmp_sse4_1) redirected to 0x4c2d1e0 (bcmp)
---44239-- REDIR: 0x7e04d30 (__strchr_sse42) redirected to 0x4c2ae20 (index)
---44239-- REDIR: 0x7e1aa80 (__memcpy_chk_ssse3_back) redirected to 0x4c2e030 (__memcpy_chk)
---44239-- REDIR: 0x7e0e7f0 (__strncasecmp_avx) redirected to 0x4c2b950 (strncasecmp)
---44239-- REDIR: 0x7e0d180 (__strcasecmp_avx) redirected to 0x4c2b870 (strcasecmp)
---44239-- REDIR: 0x7d5c130 (__GI_memmove) redirected to 0x4c2da10 (__GI_memmove)
---44239-- REDIR: 0x7d53aa0 (calloc) redirected to 0x4c2a13e (calloc)
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/opcache.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/bz2.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libbz2.so.1.0.6
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/calendar.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ctype.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/curl.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libcurl.so.4.3.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libidn.so.11.6.11
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libssh2.so.1.0.1
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libssl3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libsmime3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libnss3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libnssutil3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libplds4.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libplc4.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libnspr4.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/liblber-2.4.so.2.10.2
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libldap-2.4.so.2.10.2
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libsasl2.so.3.0.0
---44239--    object doesn't have a symbol table
---44239-- REDIR: 0x7ddd830 (__memmove_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- REDIR: 0x7d63530 (rawmemchr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/dom.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/exif.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/fileinfo.so
---44239--    object doesn't have a symbol table
---44239-- REDIR: 0x7d72380 (strcasestr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ftp.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/gettext.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/iconv.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mbstring.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mcrypt.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libmcrypt.so.4.4.8
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libltdl.so.7.3.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqlnd.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/phar.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/posix.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/shmop.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/simplexml.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sockets.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sqlite3.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libsqlite3.so.0.8.6
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvmsg.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvsem.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvshm.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/tokenizer.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xml.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlwriter.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xsl.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libexslt.so.0.8.17
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libxslt.so.1.1.28
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libgcrypt.so.11.8.2
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libgpg-error.so.0.10.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysql.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqli.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_mysql.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_sqlite.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/wddx.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlreader.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/apcu.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/igbinary.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/json.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/msgpack.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/zip.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/memcached.so
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libmemcachedprotocol.so.0.0.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libmemcached.so.11.0.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libmemcachedutil.so.2.0.0
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /usr/lib64/libevent-2.0.so.5.1.9
---44239--    object doesn't have a symbol table
---44239-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/geometry.so
---44239-- REDIR: 0xffffffffff600400 (???) redirected to 0x380673dd (???)
---44239-- REDIR: 0x7e04de0 (__strcmp_sse42) redirected to 0x4c2bfa0 (strcmp)
---44239-- REDIR: 0x7d683c0 (__strncpy_sse2_unaligned) redirected to 0x4c2b4f0 (strncpy)
---44239-- REDIR: 0x40197b0 (stpcpy) redirected to 0x4c2d500 (stpcpy)
---44239-- REDIR: 0x7d67d90 (__strcpy_sse2_unaligned) redirected to 0x4c2b330 (strcpy)
---44239-- REDIR: 0x7d6b4a0 (__strncat_sse2_unaligned) redirected to 0x4c2b180 (strncat)
---44239-- REDIR: 0xffffffffff600000 (???) redirected to 0x380673d3 (???)
---44239-- REDIR: 0x7e06d10 (__strstr_sse42) redirected to 0x4c2e140 (strstr)
---44239-- REDIR: 0x7e20030 (__memmove_ssse3_back) redirected to 0x4c2c160 (memcpy@GLIBC_2.2.5)
-==44239== Invalid write of size 8
-==44239==    at 0x18961C3F: zim_coordinate_set_set (coordinate_set.c:95)
-==44239==    by 0x33759A: dtrace_execute_internal (in /usr/bin/php)
-==44239==    by 0xF8D3BB8: xdebug_execute_internal (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x3EFB17: ??? (in /usr/bin/php)
-==44239==    by 0x385717: execute_ex (in /usr/bin/php)
-==44239==    by 0x337478: dtrace_execute_ex (in /usr/bin/php)
-==44239==    by 0xF8D310B: xdebug_execute_ex (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x34A4EA: zend_execute_scripts (in /usr/bin/php)
-==44239==    by 0x2E53F4: php_execute_script (in /usr/bin/php)
-==44239==    by 0x3F1A07: ??? (in /usr/bin/php)
-==44239==    by 0x1C55A9: ??? (in /usr/bin/php)
-==44239==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
-==44239==  Address 0x70 is not stack'd, malloc'd or (recently) free'd
-==44239== 
-==44239== 
-==44239== Process terminating with default action of signal 11 (SIGSEGV)
-==44239==  Access not within mapped region at address 0x70
-==44239==    at 0x18961C3F: zim_coordinate_set_set (coordinate_set.c:95)
-==44239==    by 0x33759A: dtrace_execute_internal (in /usr/bin/php)
-==44239==    by 0xF8D3BB8: xdebug_execute_internal (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x3EFB17: ??? (in /usr/bin/php)
-==44239==    by 0x385717: execute_ex (in /usr/bin/php)
-==44239==    by 0x337478: dtrace_execute_ex (in /usr/bin/php)
-==44239==    by 0xF8D310B: xdebug_execute_ex (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x34A4EA: zend_execute_scripts (in /usr/bin/php)
-==44239==    by 0x2E53F4: php_execute_script (in /usr/bin/php)
-==44239==    by 0x3F1A07: ??? (in /usr/bin/php)
-==44239==    by 0x1C55A9: ??? (in /usr/bin/php)
-==44239==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
-==44239==  If you believe this happened as a result of a stack
-==44239==  overflow in your program's main thread (unlikely but
-==44239==  possible), you can try to increase the size of the
-==44239==  main thread stack using the --main-stacksize= flag.
-==44239==  The main thread stack size used in this run was 8388608.
-==44239== 
-==44239== HEAP SUMMARY:
-==44239==     in use at exit: 4,680,233 bytes in 24,982 blocks
-==44239==   total heap usage: 27,399 allocs, 2,417 frees, 4,956,960 bytes allocated
-==44239== 
-==44239== Searching for pointers to 24,982 not-freed blocks
-==44239== Checked 137,625,968 bytes
-==44239== 
-==44239== LEAK SUMMARY:
-==44239==    definitely lost: 0 bytes in 0 blocks
-==44239==    indirectly lost: 0 bytes in 0 blocks
-==44239==      possibly lost: 0 bytes in 0 blocks
-==44239==    still reachable: 4,680,233 bytes in 24,982 blocks
-==44239==         suppressed: 0 bytes in 0 blocks
-==44239== Reachable blocks (those to which a pointer was found) are not shown.
-==44239== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==44239== 
-==44239== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)
-==44239== 
-==44239== 1 errors in context 1 of 1:
-==44239== Invalid write of size 8
-==44239==    at 0x18961C3F: zim_coordinate_set_set (coordinate_set.c:95)
-==44239==    by 0x33759A: dtrace_execute_internal (in /usr/bin/php)
-==44239==    by 0xF8D3BB8: xdebug_execute_internal (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x3EFB17: ??? (in /usr/bin/php)
-==44239==    by 0x385717: execute_ex (in /usr/bin/php)
-==44239==    by 0x337478: dtrace_execute_ex (in /usr/bin/php)
-==44239==    by 0xF8D310B: xdebug_execute_ex (in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so)
-==44239==    by 0x34A4EA: zend_execute_scripts (in /usr/bin/php)
-==44239==    by 0x2E53F4: php_execute_script (in /usr/bin/php)
-==44239==    by 0x3F1A07: ??? (in /usr/bin/php)
-==44239==    by 0x1C55A9: ??? (in /usr/bin/php)
-==44239==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
-==44239==  Address 0x70 is not stack'd, malloc'd or (recently) free'd
-==44239== 
---44239-- 
---44239-- used_suppression:      3 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a /usr/lib64/valgrind/default.supp:1286
-==44239== 
-==44239== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 3 from 3)
+==3578== Memcheck, a memory error detector
+==3578== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==3578== Using Valgrind-3.9.0 and LibVEX; rerun with -h for copyright info
+==3578== Command: /usr/bin/php test.php
+==3578== Parent PID: 3577
+==3578== 
+--3578-- 
+--3578-- Valgrind options:
+--3578--    --tool=memcheck
+--3578--    --num-callers=30
+--3578--    --log-file=php.log
+--3578--    --leak-check=full
+--3578--    --track-origins=yes
+--3578--    -v
+--3578-- Contents of /proc/version:
+--3578--   Linux version 3.10.0-123.8.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Mon Sep 22 19:06:58 UTC 2014
+--3578-- Arch and hwcaps: AMD64, amd64-cx16-rdtscp-sse3-avx
+--3578-- Page sizes: currently 4096, max supported 4096
+--3578-- Valgrind library directory: /usr/lib64/valgrind
+--3578-- Reading syms from /usr/bin/php
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/ld-2.17.so
+--3578-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
+--3578--    object doesn't have a symbol table
+--3578--    object doesn't have a dynamic symbol table
+--3578-- Scheduler: using generic scheduler lock implementation.
+--3578-- Reading suppressions file: /usr/lib64/valgrind/default.supp
+==3578== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3578-by-root-on-localhost.localdomain
+==3578== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3578-by-root-on-localhost.localdomain
+==3578== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3578-by-root-on-localhost.localdomain
+==3578== 
+==3578== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3578== don't want to do, unless you know exactly what you're doing,
+==3578== or are doing some strange experiment):
+==3578==   /usr/lib64/valgrind/../../bin/vgdb --pid=3578 ...command...
+==3578== 
+==3578== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3578==   /path/to/gdb /usr/bin/php
+==3578== and then give GDB the following command
+==3578==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=3578
+==3578== --pid is optional if only one valgrind process is running
+==3578== 
+--3578-- REDIR: 0x40185b0 (strlen) redirected to 0x380673f1 (???)
+--3578-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
+--3578--    object doesn't have a symbol table
+--3578-- REDIR: 0x4018500 (index) redirected to 0x4c2af60 (index)
+--3578-- REDIR: 0x4018580 (strcmp) redirected to 0x4c2c040 (strcmp)
+--3578-- Reading syms from /usr/lib64/libcrypt-2.17.so
+--3578-- Reading syms from /usr/lib64/libresolv-2.17.so
+--3578-- Reading syms from /usr/lib64/libedit.so.0.0.42
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libncurses.so.5.9
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libtinfo.so.5.9
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libstdc++.so.6.0.19
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libz.so.1.2.7
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libpcre.so.1.2.0
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/librt-2.17.so
+--3578-- Reading syms from /usr/lib64/libm-2.17.so
+--3578-- Reading syms from /usr/lib64/libdl-2.17.so
+--3578-- Reading syms from /usr/lib64/libnsl-2.17.so
+--3578-- Reading syms from /usr/lib64/libxml2.so.2.9.1
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libgssapi_krb5.so.2.2
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libkrb5.so.3.3
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libk5crypto.so.3.1
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libcom_err.so.2.1
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libssl.so.1.0.1e
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libcrypto.so.1.0.1e
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libc-2.17.so
+--3578-- Reading syms from /usr/lib64/libfreebl3.so
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libgcc_s-4.8.2-20140120.so.1
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libpthread-2.17.so
+--3578-- Reading syms from /usr/lib64/liblzma.so.5.0.99
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libkrb5support.so.0.1
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libkeyutils.so.1.5
+--3578--    object doesn't have a symbol table
+--3578-- Reading syms from /usr/lib64/libselinux.so.1
+--3578--    object doesn't have a symbol table
+--3578-- REDIR: 0x7d5d500 (strcasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d598b0 (strnlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5f7d0 (strncasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5c310 (memset) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5c2c0 (memcpy@GLIBC_2.2.5) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d57d30 (strcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d71880 (strstr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d57c70 (index) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5b6d0 (strspn) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d59780 (strlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5bcf0 (bcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d59990 (strncmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5b220 (strncpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d59950 (strncat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d61ea0 (memcpy@@GLIBC_2.14) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d591c0 (strcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5d360 (stpcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5b260 (rindex) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7ddd640 (__memcpy_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d5b340 (strpbrk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d57a70 (strcat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--3578-- REDIR: 0x7d597d0 (__GI_strlen) redirected to 0x4c2b310 (__GI_strlen)
+--3578-- REDIR: 0x7d5b2a0 (__GI_strrchr) redirected to 0x4c2ad80 (__GI_strrchr)
+--3578-- REDIR: 0x7d530d0 (malloc) redirected to 0x4c283d6 (malloc)
+--3578-- REDIR: 0x7e356d0 (__strlen_sse2_pminub) redirected to 0x4c2b2f0 (strlen)
+--3578-- REDIR: 0x7e1aa90 (__memcpy_ssse3_back) redirected to 0x4c2c390 (memcpy@@GLIBC_2.14)
+--3578-- REDIR: 0x7d599d0 (__GI_strncmp) redirected to 0x4c2b800 (__GI_strncmp)
+--3578-- REDIR: 0x7d5c350 (__GI_memset) redirected to 0x4c2d730 (memset)
+--3578-- REDIR: 0x7d535d0 (realloc) redirected to 0x4c2a2e0 (realloc)
+--3578-- REDIR: 0x7e06b70 (__strrchr_sse42) redirected to 0x4c2ad50 (rindex)
+--3578-- REDIR: 0x7d57d70 (__GI_strcmp) redirected to 0x4c2bff0 (__GI_strcmp)
+--3578-- REDIR: 0x7d5b9a0 (memchr) redirected to 0x4c2c0e0 (memchr)
+--3578-- REDIR: 0x7d57cb0 (__GI_strchr) redirected to 0x4c2ae60 (__GI_strchr)
+--3578-- REDIR: 0x7d63780 (strchrnul) redirected to 0x4c2dd30 (strchrnul)
+--3578-- REDIR: 0x7d534f0 (free) redirected to 0x4c294f0 (free)
+--3578-- REDIR: 0x7d5d3a0 (__GI_stpcpy) redirected to 0x4c2d340 (__GI_stpcpy)
+==3578== 
+==3578== Process terminating with default action of signal 2 (SIGINT)
+==3578==    at 0x7DBA65E: __open_nocancel (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x7D4B193: _IO_file_fopen@@GLIBC_2.2.5 (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x7D3F553: __fopen_internal (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x7D8261C: __tzfile_read (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x7D81963: tzset_internal (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x7D8225F: tzset (in /usr/lib64/libc-2.17.so)
+==3578==    by 0x2E4522: php_module_startup (in /usr/bin/php)
+==3578==    by 0x3F07FC: ??? (in /usr/bin/php)
+==3578==    by 0x1C5222: ??? (in /usr/bin/php)
+==3578==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==3578== 
+==3578== HEAP SUMMARY:
+==3578==     in use at exit: 1,340,104 bytes in 233 blocks
+==3578==   total heap usage: 254 allocs, 21 frees, 1,344,231 bytes allocated
+==3578== 
+==3578== Searching for pointers to 233 not-freed blocks
+==3578== Checked 844,872 bytes
+==3578== 
+==3578== LEAK SUMMARY:
+==3578==    definitely lost: 0 bytes in 0 blocks
+==3578==    indirectly lost: 0 bytes in 0 blocks
+==3578==      possibly lost: 0 bytes in 0 blocks
+==3578==    still reachable: 1,340,104 bytes in 233 blocks
+==3578==         suppressed: 0 bytes in 0 blocks
+==3578== Reachable blocks (those to which a pointer was found) are not shown.
+==3578== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==3578== 
+==3578== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 3 from 3)
+--3578-- 
+--3578-- used_suppression:      3 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a /usr/lib64/valgrind/default.supp:1286
+==3578== 
+==3578== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 3 from 3)
