@@ -1,7 +1,10 @@
 <?php
 
 echo 'Testing......' . PHP_EOL . PHP_EOL;
-
+$cwd = getcwd();
+if(!strstr($cwd, '/test')) {
+    $cwd .= '/test';
+}
 $functions = [
 
     //'get_distance'
@@ -154,8 +157,8 @@ echo PHP_EOL;
 
 ini_set('memory_limit', '512M');
 function score_track($file, $answers = []) {
-    global $coordinate_1, $coordinate_2, $coordinate_3;
-
+    global $coordinate_1, $coordinate_2, $coordinate_3, $cwd;
+    $file = $cwd . '/' . $file;
     $time = microtime(true);
     echo "------------------------" . PHP_EOL;
     _log("Memory", memory_get_usage(true));
@@ -164,14 +167,15 @@ function score_track($file, $answers = []) {
     _log('Creating set:');
     $set_2 = new coordinate_set();
 
-    action('Parsing file', $set_2->parse_igc(file_get_contents('./test/' . $file)));
+    action('Parsing file', $set_2->parse_igc(file_get_contents($file)));
     _log("Date", $set_2->date());
 
+    _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
     $intial = $set_2->count();
-
+    //action('Simplifing file', $set_2->simplify());
     action('Trimming file', $set_2->trim());
 
-    action('Simplifing file', $set_2->simplify());
+
 
     _log('Points', $set_2->count() . " (" . $intial . ")");
     _log('Parts',  $set_2->part_count());
@@ -208,18 +212,17 @@ function score_track($file, $answers = []) {
     $formatter = new formatter_kml($set_2, $file, $od, $or, $tr, $od);
     file_put_contents(str_replace('.igc', '.kml', $file), $formatter->output());
 
-
     _log('Outputting js');
     $formatter = new formatter_js($set_2, 10);
-    $formatter->output();
+    file_put_contents(str_replace('.igc', '.js', $file), $formatter->output());
 
     _log('Outputting kml (Split)');
     $formatter = new formatter_kml_split($set_2);
-    $formatter->output();
+    file_put_contents(str_replace('.igc', '_split.kml', $file), $formatter->output());
 
     _log('Outputting KML (Earth)');
     $formatter = new formatter_kml_earth($set_2, $file, $od, $or, $tr);
-    $formatter->output();
+    file_put_contents(str_replace('.igc', '_earth.kml', $file), $formatter->output());
 
     unset($set_2);
     unset($formatter);

@@ -55,25 +55,25 @@ static zend_object_value coordinate_set_object_clone(zval *object TSRMLS_DC) {
 }
 
 static zend_function_entry coordinate_set_methods[] = {
-        PHP_ME(coordinate_set, __construct, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, set, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, get, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, first, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, last, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, count, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, parse_igc, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, date, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, trim, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, simplify, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, repair, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, set_graph_values, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, set_ranges, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, set_section, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, has_height_data, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, part_length, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, part_duration, NULL, ZEND_ACC_PUBLIC)
-        PHP_ME(coordinate_set, part_count, NULL, ZEND_ACC_PUBLIC)
-        PHP_FE_END
+    PHP_ME(coordinate_set, __construct, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, set, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, get, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, first, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, last, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, count, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, parse_igc, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, date, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, trim, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, simplify, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, repair, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, set_graph_values, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, set_ranges, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, set_section, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, has_height_data, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, part_length, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, part_duration, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(coordinate_set, part_count, NULL, ZEND_ACC_PUBLIC)
+    PHP_FE_END
 };
 
 PHP_METHOD (coordinate_set, __construct) {
@@ -190,7 +190,7 @@ PHP_METHOD (coordinate_set, parse_igc) {
     RETURN_LONG(parse_igc(intern, string));
 }
 
-void free_subset(coordinate_subset *set) {
+void free_subset(coordinate_set_object *parser, coordinate_subset *set) {
     coordinate_object *tmp, *current = set->first;
     while (current != set->last) {
         tmp = current->next;
@@ -203,6 +203,13 @@ void free_subset(coordinate_subset *set) {
     if(set->next) {
         set->next->prev = set->prev;
     }
+    if(set == parser->first_subset) {
+        parser->first_subset = set->next;
+    }
+    if(set == parser->last_subset) {
+        parser->last_subset = set->prev;
+    }
+    parser->length -= set->length;
     efree(set);
 }
 
@@ -345,8 +352,7 @@ void coordinate_object_set_section(coordinate_set_object *intern, long index) {
     int i = 0;
     while(++i < index && current) {
         tmp = current->next;
-        intern->length -= current->length;
-        free_subset(current);
+        free_subset(intern, current);
         current = tmp;
     }
     if(current != NULL) {
@@ -357,8 +363,7 @@ void coordinate_object_set_section(coordinate_set_object *intern, long index) {
         current = current->next;
         while (current) {
             tmp = current->next;
-            intern->length -= current->length;
-            free_subset(current);
+            free_subset(intern, current);
             current = tmp;
         }
     }
@@ -371,7 +376,7 @@ int set_graph_values(coordinate_set_object *intern) {
             double distance = get_distance(current->next, current->prev);
             if (current->next->timestamp != current->prev->timestamp) {
                 current->climb_rate = current->next->ele - current->prev->ele / (current->next->timestamp - current->prev->timestamp);
-                current->speed = distance / (current->next->timestamp - current->prev->timestamp);
+                current->speed = distance * 1000/ (current->next->timestamp - current->prev->timestamp);
             } else {
                 current->climb_rate = 0;
                 current->speed = 0;
@@ -385,21 +390,25 @@ int set_graph_values(coordinate_set_object *intern) {
 }
 
 long coordinate_set_simplify(coordinate_set_object *set) {
-    coordinate_object *tmp, *current = set->first->next;
-    long i = 0;
-    while(current) {
-        double distance = get_distance_precise(current, current->prev);
-        if(distance < 0.0001) {
-            tmp = current->next;
-            _free_coordinate_object(current);
-            i++;
-            current = tmp;
-        } else {
-            current = current->next;
+    coordinate_object *tmp, *current;
+    if(set->first) {
+        current = set->first->next;
+        long i = 0;
+        while(current) {
+            double distance = get_distance_precise(current, current->prev);
+            if(distance < 0.0001) {
+                tmp = current->next;
+                _free_coordinate_object(current);
+                i++;
+                current = tmp;
+            } else {
+                current = current->next;
+            }
         }
+        set->length -= i;
+        return i;
     }
-    set->length -= i;
-    return i;
+    return 0;
 }
 
 PHP_METHOD (coordinate_set, simplify) {
@@ -407,9 +416,33 @@ PHP_METHOD (coordinate_set, simplify) {
     RETURN_LONG(coordinate_set_simplify(intern));
 }
 
+int is_valid_subset(coordinate_subset *set) {
+    return set->length > 20;
+}
+
 PHP_METHOD (coordinate_set, trim) {
     coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
-
+    coordinate_subset *tmp, *set;
+    set = intern->first_subset;
+    while(set) {
+        if(!is_valid_subset(set)) {
+            tmp = set->next;
+            free_subset(intern, set);
+            set = tmp;
+        } else {
+            break;
+        }
+    }
+    set = intern->last_subset;
+    while(set) {
+        if(!is_valid_subset(set)) {
+            tmp = set->prev;
+            free_subset(intern, set);
+            set = tmp;
+        } else {
+            break;
+        }
+    }
 
 }
 

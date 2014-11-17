@@ -17,11 +17,11 @@
 		</LineStyle>
 	</Style>
 	<Folder>
-		<name>test1.igc</name>
+		<name>/samba/www/vhosts/extensions/coordinate/test/test1.igc</name>
 		<visibility>1</visibility>
 		<description><![CDATA[<pre>
 			Flight statistics
-			Flight #             test1.igc
+			Flight #             /samba/www/vhosts/extensions/coordinate/test/test1.igc
 			Pilot                
 			Club                 
 			Glider               
@@ -29,14 +29,14 @@
 			Start/finish         
 			Duration             
 			Max./min. height     443 / 0 m
-OD Score / Time      9.33 / 3365s
+OD Score / Time      14.50 / 3365s
 OR Score / Time      7.88 / 2095s
 TR Score / Time      9.24 / 2820s
 
 		</pre>]]>
 		</description>
 		<Folder>
-			<name>test1.igc</name>
+			<name>/samba/www/vhosts/extensions/coordinate/test/test1.igc</name>
 			<visibility>1</visibility>
 			<open>1</open>
 			<Placemark>

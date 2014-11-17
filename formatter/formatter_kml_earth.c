@@ -113,6 +113,32 @@ char *get_linestring_earth(formatter_object *intern) {
     return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
 }
 
+char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_object *last, char* style) {
+    char *buffer = create_buffer("");
+    buffer = vstrcat(buffer, "\
+<Placemark>\n\
+    <styleUrl>#S", style ,"</styleUrl>\n\
+    <LineString>\n\
+        <extrude>0</extrude>\n\
+        <altitudeMode>absolute</altitudeMode>\n\
+        <coordinates>\n", NULL);
+    int i = 0;
+    while (coordinate != last) {
+        char *kml_coordinate = coordinate_to_kml(coordinate);
+        buffer = vstrcat(buffer, kml_coordinate, NULL);
+        efree(kml_coordinate);
+        if (i++ == 5) {
+            i = 0;
+            buffer = vstrcat(buffer, "\n", NULL);
+        }
+        coordinate = coordinate->next;
+    }
+    return vstrcat(buffer, "\n\
+        </coordinates>\n\
+    </LineString>\n\
+</Placemark>\n", NULL);
+}
+
 char *format_task_point_earth(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {
     double distance = 0;
     if (prev) {
@@ -322,63 +348,61 @@ char *formatter_kml_earth_output(formatter_object *intern) {
         efree(task);
     }
 
+    char *styles = get_kml_styles_earth();
     char *metadata = get_meta_data_earth(intern);
     char *linestring = get_linestring_earth(intern);
-
+    char *height = get_colour_by_height(intern->set);
+    char *speed = get_colour_by_speed(intern->set);
+    char *climb_rate = get_colour_by_climb_rate(intern->set);
+    char *timestamp = get_colour_by_time(intern->set);
 
     char *output = create_buffer("");
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
-	<open>1</open>\n\
-	<Style id=\"shadow\">\n\
-		<LineStyle>\n\
-			<color>AA000000</color>\n\
-			<width>1</width>\n\
-		</LineStyle>\n\
-		<PolyStyle>\n\
-			<color>55AAAAAA</color>\n\
-		</PolyStyle>\n\
-	</Style>\n\
-	<Style id=\"S1\">\n\
-		<LineStyle>\n\
-			<color>FF0000</color>\n\
-			<width>2</width>\n\
-		</LineStyle>\n\
-	</Style>\n\
-	<Folder>\n\
-		<name>", intern->name, "</name>\n\
+	<open>1</open>\n",
+    styles,"\n\
+    <Folder>\n\
+        <name>", intern->name, "</name>\n\
 		<visibility>1</visibility>\n\
-		<description><![CDATA[<pre>\n\
-			Flight statistics\n\
-			Flight #             ", intern->name, "\n\
-			Pilot                \n\
-			Club                 \n\
-			Glider               \n\
-			Date                 ", year, "-", month, "-", day, "\n\
-			Start/finish         \n\
-			Duration             \n\
-			Max./min. height     ", max_ele , " / ", min_ele, " m\n",
-                     tasks_info, "\n\
-		</pre>]]>\n\
-		</description>\n\
+        <open>1</open>\n\
+        <Folder>\n\
+            <name>Main Track</name>\n\
+            <visibility>1</visibility>\n\
+            <open>1</open>\n\
+            <styleUrl>radioFolder</styleUrl>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Colour by height</name>\n\
+                <visibility>1</visibility>\n",
+                height,  "\
+                <open>0</open>\n\
+            </Folder>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Colour by ground speed</name>\n\
+                <visibility>0</visibility>\n",
+                speed,  "\
+                <open>0</open>\n\
+            </Folder>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Colour By Climb</name>\n\
+                <visibility>0</visibility>\n\
+                <open>0</open>\n",
+                climb_rate,  "\
+            </Folder>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Colour by time</name>\n\
+                <visibility>0</visibility>\n\
+                <open>0</open>\n",
+                timestamp,  "\
+            </Folder>\n\
+        </Folder>\n\
 		<Folder>\n\
-			<name>", intern->name, "</name>\n\
-			<visibility>1</visibility>\n\
-			<open>1</open>\n\
-			<Placemark>\n\
-				<Style>\n\
-					<LineStyle>\n\
-						<color>ffff0000</color>\n\
-						<width>2</width>\n\
-					</LineStyle>\n\
-				</Style>\n\
-				", metadata, linestring, "\n\
-			</Placemark>\n\
-		</Folder>\n\
-		<Folder>\n\
-		<name>Task</name>\n\
-		<visibility>1</visibility>\n\
-		", tasks, "\n\
+		  <name>Task</name>\n\
+		  <visibility>1</visibility>\n\
+		  ", tasks, "\n\
 		</Folder>\n\
 	</Folder>\n\
 </Document>", NULL);
@@ -392,6 +416,182 @@ char *formatter_kml_earth_output(formatter_object *intern) {
     efree(linestring);
     efree(tasks);
     efree(tasks_info);
+    efree(styles);
+    efree(height);
+    efree(climb_rate);
+    efree(timestamp);
+    efree(speed);
     return output;
+}
+
+char *colour_grad_16[] = {
+        "ff0000",
+        "ff3f00",
+        "ff7f00",
+        "ffbf00",
+        "ffff00",
+        "bfff00",
+        "7fff00",
+        "3fff00",
+        "00ff00",
+        "00ff3f",
+        "00ff7f",
+        "00ffbf",
+        "00ffff",
+        "00bfff",
+        "007fff",
+        "003fff",
+};
+
+char *get_kml_styles_earth() {
+    char *buffer = create_buffer("\
+    <Style id='hideChildren'>\n\
+        <ListStyle>\n\
+            <listItemType>checkHideChildren</listItemType>\n\
+        </ListStyle>\n\
+    </Style>\n\
+    <Style id='radioFolder'>\n\
+        <ListStyle>\n\
+            <listItemType>radioFolder</listItemType>\n\
+        </ListStyle>\n\
+    </Style>\n\
+    <Style id=\"shadow\">\n\
+        <LineStyle>\n\
+            <color>AA000000</color>\n\
+            <width>1</width>\n\
+        </LineStyle>\n\
+        <PolyStyle>\n\
+            <color>55AAAAAA</color>\n\
+        </PolyStyle>\n\
+    </Style>\n");
+
+    int i;
+    for (i = 0; i < 16; i++) {
+        buffer = vstrcat(buffer, "\n\
+    <Style id=\"S", itos(i), "\">\n\
+        <LineStyle>\n\
+            <width>2</width>\n\
+            <color>FF", colour_grad_16[i], "</color>\n\
+        </LineStyle>\n\
+    </Style>", NULL);
+    }
+    //$kml->set_animation_styles(1);
+    //public function set_animation_styles() {
+    //    for ($i = 0; $i < 10; $i++) {
+    //        for ($j = 0; $j < 360; $j += 5) {
+    //            $this->styles .= '<Style id="A' . $i . $j . '"><IconStyle><heading>' . $j . '</heading><Icon><href>http://' . host . '/img/Markers/' . _get::kml_colour($i) . '.gif' . '</href></Icon></IconStyle></Style>';
+    //        }
+    //    }
+    //}
+    return buffer;
+}
+
+char *get_colour_by_height(coordinate_set_object *set) {
+    char *buffer = create_buffer("");
+    long min = set->min_ele;
+    long delta = set->max_ele - set->min_ele ? : 1;
+    coordinate_object *last, *first, *current;
+    first = current = set->first;
+    int last_level, current_level;
+    last_level = floor((current->ele - min) * 16 / delta);
+    while(current) {
+        current_level = floor((current->ele - min) * 16 / delta);
+        if (current_level != last_level && current_level != 16) {
+            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            buffer = vstrcat(buffer, linestring, NULL);
+            efree(linestring);
+            last_level = current_level;
+            first = current;
+        }
+        current = current->next;
+    };
+    if (first) {
+        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        buffer = vstrcat(buffer, linestring, NULL);
+        efree(linestring);
+    }
+    return buffer;        
+}
+
+char *get_colour_by_climb_rate(coordinate_set_object *set) { 
+    char *buffer = create_buffer("");
+    long min = set->min_climb_rate;
+    long delta = set->max_climb_rate - set->min_climb_rate ? : 1;
+    coordinate_object *last, *first, *current;
+    first = current = set->first;
+    int last_level, current_level;
+    last_level = floor((current->climb_rate - min) * 16 / delta);
+    while(current) {
+        current_level = floor((current->climb_rate - min) * 16 / delta);
+        if (current_level != last_level && current_level != 16) {
+            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            buffer = vstrcat(buffer, linestring, NULL);
+            efree(linestring);
+            last_level = current_level;
+            first = current;
+        }
+        current = current->next;
+    };
+    if (first) {
+        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        buffer = vstrcat(buffer, linestring, NULL);
+        efree(linestring);
+    }
+    return buffer;  
+}
+
+
+char *get_colour_by_speed(coordinate_set_object *set) {
+    char *buffer = create_buffer("");
+    long min = 0;
+    long delta = set->max_speed ? : 1;
+    coordinate_object *last, *first, *current;
+    first = current = set->first;
+    int last_level, current_level;
+    last_level = floor((current->speed - min) * 16 / delta);
+    while(current) {
+        current_level = floor((current->speed - min) * 16 / delta);
+        if (current_level != last_level && current_level != 16) {
+            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            buffer = vstrcat(buffer, linestring, NULL);
+            efree(linestring);
+            last_level = current_level;
+            first = current;
+        }
+        current = current->next;
+    };
+    if (first) {
+        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        buffer = vstrcat(buffer, linestring, NULL);
+        efree(linestring);
+    }
+    return buffer;  
+}
+
+
+char *get_colour_by_time(coordinate_set_object *set) {
+ char *buffer = create_buffer("");
+    long delta = set->last->timestamp ?: 1;
+    coordinate_object *last, *first, *current;
+    first = current = set->first;
+    int last_level, current_level;
+    last_level = floor((current->timestamp) * 16 / delta);
+    while(current) {
+        current_level = floor((current->timestamp) * 16 / delta);
+        if (current_level != last_level && current_level != 16) {
+            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            buffer = vstrcat(buffer, linestring, NULL);
+            efree(linestring);
+            last_level = current_level;
+            first = current;
+        }
+        current = current->next;
+    };
+    if (first) {
+        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        buffer = vstrcat(buffer, linestring, NULL);
+        efree(linestring);
+    }
+    return buffer;  
 }
 

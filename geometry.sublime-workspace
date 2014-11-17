@@ -4,6 +4,62 @@
 		"selected_items":
 		[
 			[
+				"la",
+				"last_subset"
+			],
+			[
+				"subset",
+				"free_subset"
+			],
+			[
+				"coor",
+				"coordinate_subset"
+			],
+			[
+				"t",
+				"timestamp"
+			],
+			[
+				"de",
+				"delta"
+			],
+			[
+				"min",
+				"min_climb_rate"
+			],
+			[
+				"climb",
+				"climb_rate"
+			],
+			[
+				"c",
+				"current"
+			],
+			[
+				"coo",
+				"coordinate_object"
+			],
+			[
+				"co",
+				"coordinate"
+			],
+			[
+				"coord",
+				"coordinate"
+			],
+			[
+				"style",
+				"styleUrl"
+			],
+			[
+				"fi",
+				"first"
+			],
+			[
+				"in",
+				"intern"
+			],
+			[
 				"track",
 				"track_point"
 			],
@@ -12,20 +68,8 @@
 				"points"
 			],
 			[
-				"co",
-				"coordinate_1"
-			],
-			[
 				"si",
 				"size"
-			],
-			[
-				"c",
-				"coordinate_3"
-			],
-			[
-				"coo",
-				"coordinate_2"
 			],
 			[
 				"an",
@@ -52,14 +96,6 @@
 				"coordinate"
 			],
 			[
-				"coord",
-				"coordinates"
-			],
-			[
-				"in",
-				"index"
-			],
-			[
 				"part",
 				"part_count"
 			],
@@ -72,20 +108,12 @@
 				"tasks_info"
 			],
 			[
-				"t",
-				"tasks"
-			],
-			[
 				"tasks",
 				"tasks_info"
 			],
 			[
 				"tr",
 				"triangle"
-			],
-			[
-				"fi",
-				"final"
 			],
 			[
 				"f",
@@ -188,10 +216,6 @@
 				"coordinate_subset"
 			],
 			[
-				"coor",
-				"coordinate_subset"
-			],
-			[
 				"firs",
 				"first_subset"
 			],
@@ -202,10 +226,6 @@
 			[
 				"bu",
 				"buffer_size"
-			],
-			[
-				"de",
-				"delta_rad"
 			],
 			[
 				"o",
@@ -230,10 +250,6 @@
 			[
 				"dist",
 				"distance_s"
-			],
-			[
-				"min",
-				"min_ele"
 			],
 			[
 				"str",
@@ -498,65 +514,126 @@
 			[
 				"cor",
 				"coordinate_object"
-			],
-			[
-				"zv",
-				"zv_dest"
-			],
-			[
-				"ha",
-				"hashTable"
-			],
-			[
-				"disnt",
-				"distance_map_object"
-			],
-			[
-				"distacn",
-				"distance_map_object"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "coordinate.h",
+			"file": "/A/uknxcl/web/.core/classes/kml.php",
 			"settings":
 			{
-				"buffer_size": 1460,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/rob/PhpstormProjects/extensions/.idea/workspace.xml",
-			"settings":
-			{
-				"buffer_size": 26314,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/rob/.WebIde80/system/LocalHistory/changes.storageData",
-			"settings":
-			{
-				"buffer_size": 163807,
+				"buffer_size": 6162,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "formatter/formatter_kml_earth.c",
+			"settings":
+			{
+				"buffer_size": 20742,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/test1.igc",
+			"settings":
+			{
+				"buffer_size": 43846,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bin/rebuild.sh",
+			"settings":
+			{
+				"buffer_size": 126,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/test.php",
+			"settings":
+			{
+				"buffer_size": 8156,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/test1_earth.kml",
+			"settings":
+			{
+				"buffer_size": 242817,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/rob/Desktop/track_earth.kml",
+			"settings":
+			{
+				"buffer_size": 606021,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/php.log",
+			"settings":
+			{
+				"buffer_size": 49530,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "coordinate_set.c",
+			"settings":
+			{
+				"buffer_size": 18461,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "coordinate.c",
+			"settings":
+			{
+				"buffer_size": 9023,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "coordinate_set.h",
+			"settings":
+			{
+				"buffer_size": 2717,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "formatter/formatter_kml_earth.h",
+			"settings":
+			{
+				"buffer_size": 970,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/A/uknxcl/web/inc/track/track.php",
+			"settings":
+			{
+				"buffer_size": 21112,
+				"line_ending": "Windows"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 360.0,
+		"height": 173.0,
 		"selected_items":
 		[
+			[
+				"forma",
+				"CodeFormatter: Format as HTML Syntax"
+			],
 			[
 				"format",
 				"CodeFormatter: Format as PHP Syntax"
@@ -600,18 +677,35 @@
 	"expanded_folders":
 	[
 		"/A/extensions/coordinate",
-		"/A/uknxcl/web"
+		"/A/extensions/coordinate/test",
+		"/A/uknxcl/web",
+		"/A/uknxcl/web/.core",
+		"/A/uknxcl/web/.core/classes",
+		"/A/uknxcl/web/inc",
+		"/A/uknxcl/web/inc/track"
 	],
 	"file_history":
 	[
+		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/A/extensions/coordinate/test1_earth.kml",
+		"/C/Users/rob/Desktop/track_earth.kml",
+		"/A/extensions/coordinate/test/php.log",
+		"/A/extensions/coordinate/formatter/formatter_kml_earth.c",
+		"/C/Users/rob/PhpstormProjects/extensions/.idea/workspace.xml",
+		"/A/extensions/coordinate/test/test.php",
+		"/C/Users/rob/.WebIde80/system/LocalHistory/changes.storageData",
+		"/A/extensions/coordinate/coordinate_set.c",
+		"/A/extensions/coordinate/php.log",
+		"/A/uknxcl/web/.git/config",
+		"/A/extensions/coordinate/.git/config",
 		"/A/extensions/coordinate/geometry.sublime-project",
 		"/A/extensions/coordinate/formatter_kml_split.c",
 		"/A/extensions/coordinate/formatter_kml.c",
 		"/A/extensions/coordinate/formatter_js.c",
-		"/A/extensions/coordinate/php.log",
 		"/A/extensions/coordinate/coordinate.c",
 		"/A/extensions/coordinate/coordinate.h",
-		"/A/extensions/coordinate/coordinate_set.c",
 		"/A/extensions/coordinate/distance_map.c",
 		"/A/extensions/coordinate/coordinate_set.h",
 		"/A/uknxcl/web/.core/classes/interfaces/geometry.php",
@@ -664,7 +758,6 @@
 		"/C/Users/rob/Downloads/9838-Brown_Malcolm-2014-09-07.kml",
 		"/A/uknxcl/web/uploads/flight/temp/1411909744/track.kmz",
 		"/A/extensions/coordinate/libtool",
-		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/A/extensions/coordinate/distance_map.h",
 		"/A/extensions/coordinate/rebuild.sh",
 		"/A/extensions/coordinate/helmert.c",
@@ -686,11 +779,9 @@
 		"/A/extensions/coordinate/zend.h",
 		"/A/extensions/coordinate/parser.c",
 		"/A/extensions/coordinate/parser.h",
-		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/A/extensions/coordinate/zend_API.h",
 		"/A/extensions/coordinate/php.h",
 		"/A/extensions/coordinate/aclocal.m4",
-		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/A/extensions/coordinate/_latlng.h",
 		"/A/extensions/coordinate/_latlng.c",
 		"/A/extensions/coordinate/geometry_latlng.c",
@@ -704,13 +795,14 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
 		"height": 90.0,
 		"where_history":
 		[
+			"",
 			"A:\\uknxcl\\web\\inc",
 			""
 		]
@@ -720,6 +812,29 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"_free_coordinate_object",
+			"simp",
+			"Duration",
+			"free_subset",
+			" print",
+			"->timestamp",
+			"graph",
+			"timestamp =",
+			"get_kml_styles_earth",
+			"><",
+			"simpl",
+			"get_partial_linestring_earth",
+			"simpl",
+			"</",
+			", set",
+			"parse_igc",
+			"get_task_ft",
+			"get_task_tr",
+			"sk_tr_earth",
+			"get_task_or",
+			"get_task_od",
+			"get_task_generic",
+			"define TSRMLS_CC",
 			"track_points",
 			"track_point",
 			"get_time_to",
@@ -824,30 +939,7 @@
 			"is_valid_subset",
 			"printf",
 			"is_valid_subset",
-			"bestFwrd",
-			"bestBack",
-			"real_size",
-			"->size",
-			"size",
-			"real_size",
-			"maximum_bound_index_reverse",
-			"bestBack",
-			"get_co",
-			"maximum_bound_index",
-			"maximum_bound_index_reverse",
-			"get_coordinate",
-			"size",
-			"get_coordinate",
-			" != NULL",
-			"rewind",
-			"reset",
-			"match_b_record",
-			"push_coordinate",
-			"bearing",
-			"length",
-			"match_b_record",
-			"rewind_coordinate_set",
-			"ood"
+			"bestFwrd"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -855,6 +947,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"\\n</",
+			"get_task_ft_earth",
+			"get_task_tr_earth",
+			"get_task_or_earth",
+			"get_task_od_earth",
+			"get_task_generic_earth",
 			"coordinate_set",
 			"coordinate",
 			"coordinate_",
@@ -962,16 +1060,76 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "coordinate.h",
-					"semi_transient": true,
+					"file": "/A/uknxcl/web/.core/classes/kml.php",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1460,
+						"buffer_size": 6162,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								853,
+								863
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 347.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "formatter/formatter_kml_earth.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20742,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								19889,
+								19889
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8219.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "test/test1.igc",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 43846,
 						"regions":
 						{
 						},
@@ -980,6 +1138,208 @@
 							[
 								0,
 								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 14732.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "bin/rebuild.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 126,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								126,
+								126
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "test/test.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8156,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6355,
+								6355
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2996.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "test/test1_earth.kml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 242817,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								218460,
+								218460
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 107152.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/rob/Desktop/track_earth.kml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 606021,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								78,
+								78
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "test/php.log",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 49530,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								45134,
+								45134
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 10732.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "coordinate_set.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18461,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13558,
+								13558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5549.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "coordinate.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9023,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1260,
+								1260
 							]
 						],
 						"settings":
@@ -996,88 +1356,91 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 10,
+					"file": "coordinate_set.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 2717,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1728,
+								1728
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 489.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "formatter/formatter_kml_earth.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 970,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								850,
+								850
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "/C/Users/rob/PhpstormProjects/extensions/.idea/workspace.xml",
+					"buffer": 12,
+					"file": "/A/uknxcl/web/inc/track/track.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 26314,
+						"buffer_size": 21112,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								26314,
-								26314
+								10729,
+								10729
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 2,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8324.0,
+						"translation.y": 3824.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Users/rob/.WebIde80/system/LocalHistory/changes.storageData",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 163807,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 12,
 					"type": "text"
 				}
 			]
@@ -1121,7 +1484,7 @@
 	"project": "geometry.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1160,7 +1523,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 345.0,
+	"side_bar_width": 237.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

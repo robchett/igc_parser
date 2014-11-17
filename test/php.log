@@ -1,165 +1,833 @@
-==3578== Memcheck, a memory error detector
-==3578== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==3578== Using Valgrind-3.9.0 and LibVEX; rerun with -h for copyright info
-==3578== Command: /usr/bin/php test.php
-==3578== Parent PID: 3577
-==3578== 
---3578-- 
---3578-- Valgrind options:
---3578--    --tool=memcheck
---3578--    --num-callers=30
---3578--    --log-file=php.log
---3578--    --leak-check=full
---3578--    --track-origins=yes
---3578--    -v
---3578-- Contents of /proc/version:
---3578--   Linux version 3.10.0-123.8.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Mon Sep 22 19:06:58 UTC 2014
---3578-- Arch and hwcaps: AMD64, amd64-cx16-rdtscp-sse3-avx
---3578-- Page sizes: currently 4096, max supported 4096
---3578-- Valgrind library directory: /usr/lib64/valgrind
---3578-- Reading syms from /usr/bin/php
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/ld-2.17.so
---3578-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
---3578--    object doesn't have a symbol table
---3578--    object doesn't have a dynamic symbol table
---3578-- Scheduler: using generic scheduler lock implementation.
---3578-- Reading suppressions file: /usr/lib64/valgrind/default.supp
-==3578== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3578-by-root-on-localhost.localdomain
-==3578== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3578-by-root-on-localhost.localdomain
-==3578== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3578-by-root-on-localhost.localdomain
-==3578== 
-==3578== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==3578== don't want to do, unless you know exactly what you're doing,
-==3578== or are doing some strange experiment):
-==3578==   /usr/lib64/valgrind/../../bin/vgdb --pid=3578 ...command...
-==3578== 
-==3578== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==3578==   /path/to/gdb /usr/bin/php
-==3578== and then give GDB the following command
-==3578==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=3578
-==3578== --pid is optional if only one valgrind process is running
-==3578== 
---3578-- REDIR: 0x40185b0 (strlen) redirected to 0x380673f1 (???)
---3578-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
---3578--    object doesn't have a symbol table
---3578-- REDIR: 0x4018500 (index) redirected to 0x4c2af60 (index)
---3578-- REDIR: 0x4018580 (strcmp) redirected to 0x4c2c040 (strcmp)
---3578-- Reading syms from /usr/lib64/libcrypt-2.17.so
---3578-- Reading syms from /usr/lib64/libresolv-2.17.so
---3578-- Reading syms from /usr/lib64/libedit.so.0.0.42
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libncurses.so.5.9
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libtinfo.so.5.9
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libstdc++.so.6.0.19
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libz.so.1.2.7
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libpcre.so.1.2.0
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/librt-2.17.so
---3578-- Reading syms from /usr/lib64/libm-2.17.so
---3578-- Reading syms from /usr/lib64/libdl-2.17.so
---3578-- Reading syms from /usr/lib64/libnsl-2.17.so
---3578-- Reading syms from /usr/lib64/libxml2.so.2.9.1
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libgssapi_krb5.so.2.2
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libkrb5.so.3.3
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libk5crypto.so.3.1
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libcom_err.so.2.1
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libssl.so.1.0.1e
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libcrypto.so.1.0.1e
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libc-2.17.so
---3578-- Reading syms from /usr/lib64/libfreebl3.so
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libgcc_s-4.8.2-20140120.so.1
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libpthread-2.17.so
---3578-- Reading syms from /usr/lib64/liblzma.so.5.0.99
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libkrb5support.so.0.1
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libkeyutils.so.1.5
---3578--    object doesn't have a symbol table
---3578-- Reading syms from /usr/lib64/libselinux.so.1
---3578--    object doesn't have a symbol table
---3578-- REDIR: 0x7d5d500 (strcasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d598b0 (strnlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5f7d0 (strncasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5c310 (memset) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5c2c0 (memcpy@GLIBC_2.2.5) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d57d30 (strcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d71880 (strstr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d57c70 (index) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5b6d0 (strspn) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d59780 (strlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5bcf0 (bcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d59990 (strncmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5b220 (strncpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d59950 (strncat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d61ea0 (memcpy@@GLIBC_2.14) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d591c0 (strcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5d360 (stpcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5b260 (rindex) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7ddd640 (__memcpy_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d5b340 (strpbrk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d57a70 (strcat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
---3578-- REDIR: 0x7d597d0 (__GI_strlen) redirected to 0x4c2b310 (__GI_strlen)
---3578-- REDIR: 0x7d5b2a0 (__GI_strrchr) redirected to 0x4c2ad80 (__GI_strrchr)
---3578-- REDIR: 0x7d530d0 (malloc) redirected to 0x4c283d6 (malloc)
---3578-- REDIR: 0x7e356d0 (__strlen_sse2_pminub) redirected to 0x4c2b2f0 (strlen)
---3578-- REDIR: 0x7e1aa90 (__memcpy_ssse3_back) redirected to 0x4c2c390 (memcpy@@GLIBC_2.14)
---3578-- REDIR: 0x7d599d0 (__GI_strncmp) redirected to 0x4c2b800 (__GI_strncmp)
---3578-- REDIR: 0x7d5c350 (__GI_memset) redirected to 0x4c2d730 (memset)
---3578-- REDIR: 0x7d535d0 (realloc) redirected to 0x4c2a2e0 (realloc)
---3578-- REDIR: 0x7e06b70 (__strrchr_sse42) redirected to 0x4c2ad50 (rindex)
---3578-- REDIR: 0x7d57d70 (__GI_strcmp) redirected to 0x4c2bff0 (__GI_strcmp)
---3578-- REDIR: 0x7d5b9a0 (memchr) redirected to 0x4c2c0e0 (memchr)
---3578-- REDIR: 0x7d57cb0 (__GI_strchr) redirected to 0x4c2ae60 (__GI_strchr)
---3578-- REDIR: 0x7d63780 (strchrnul) redirected to 0x4c2dd30 (strchrnul)
---3578-- REDIR: 0x7d534f0 (free) redirected to 0x4c294f0 (free)
---3578-- REDIR: 0x7d5d3a0 (__GI_stpcpy) redirected to 0x4c2d340 (__GI_stpcpy)
-==3578== 
-==3578== Process terminating with default action of signal 2 (SIGINT)
-==3578==    at 0x7DBA65E: __open_nocancel (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x7D4B193: _IO_file_fopen@@GLIBC_2.2.5 (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x7D3F553: __fopen_internal (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x7D8261C: __tzfile_read (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x7D81963: tzset_internal (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x7D8225F: tzset (in /usr/lib64/libc-2.17.so)
-==3578==    by 0x2E4522: php_module_startup (in /usr/bin/php)
-==3578==    by 0x3F07FC: ??? (in /usr/bin/php)
-==3578==    by 0x1C5222: ??? (in /usr/bin/php)
-==3578==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
-==3578== 
-==3578== HEAP SUMMARY:
-==3578==     in use at exit: 1,340,104 bytes in 233 blocks
-==3578==   total heap usage: 254 allocs, 21 frees, 1,344,231 bytes allocated
-==3578== 
-==3578== Searching for pointers to 233 not-freed blocks
-==3578== Checked 844,872 bytes
-==3578== 
-==3578== LEAK SUMMARY:
-==3578==    definitely lost: 0 bytes in 0 blocks
-==3578==    indirectly lost: 0 bytes in 0 blocks
-==3578==      possibly lost: 0 bytes in 0 blocks
-==3578==    still reachable: 1,340,104 bytes in 233 blocks
-==3578==         suppressed: 0 bytes in 0 blocks
-==3578== Reachable blocks (those to which a pointer was found) are not shown.
-==3578== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==3578== 
-==3578== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 3 from 3)
---3578-- 
---3578-- used_suppression:      3 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a /usr/lib64/valgrind/default.supp:1286
-==3578== 
-==3578== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 3 from 3)
+==10089== Memcheck, a memory error detector
+==10089== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10089== Using Valgrind-3.9.0 and LibVEX; rerun with -h for copyright info
+==10089== Command: /usr/bin/php test.php
+==10089== Parent PID: 10088
+==10089== 
+--10089-- 
+--10089-- Valgrind options:
+--10089--    --tool=memcheck
+--10089--    --num-callers=30
+--10089--    --log-file=php.log
+--10089--    --leak-check=full
+--10089--    --track-origins=yes
+--10089--    -v
+--10089-- Contents of /proc/version:
+--10089--   Linux version 3.10.0-123.8.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Mon Sep 22 19:06:58 UTC 2014
+--10089-- Arch and hwcaps: AMD64, amd64-cx16-rdtscp-sse3-avx
+--10089-- Page sizes: currently 4096, max supported 4096
+--10089-- Valgrind library directory: /usr/lib64/valgrind
+--10089-- Reading syms from /usr/bin/php
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/ld-2.17.so
+--10089-- Reading syms from /usr/lib64/valgrind/memcheck-amd64-linux
+--10089--    object doesn't have a symbol table
+--10089--    object doesn't have a dynamic symbol table
+--10089-- Scheduler: using generic scheduler lock implementation.
+--10089-- Reading suppressions file: /usr/lib64/valgrind/default.supp
+==10089== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-10089-by-root-on-localhost.localdomain
+==10089== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-10089-by-root-on-localhost.localdomain
+==10089== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-10089-by-root-on-localhost.localdomain
+==10089== 
+==10089== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==10089== don't want to do, unless you know exactly what you're doing,
+==10089== or are doing some strange experiment):
+==10089==   /usr/lib64/valgrind/../../bin/vgdb --pid=10089 ...command...
+==10089== 
+==10089== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==10089==   /path/to/gdb /usr/bin/php
+==10089== and then give GDB the following command
+==10089==   target remote | /usr/lib64/valgrind/../../bin/vgdb --pid=10089
+==10089== --pid is optional if only one valgrind process is running
+==10089== 
+--10089-- REDIR: 0x40185b0 (strlen) redirected to 0x380673f1 (???)
+--10089-- Reading syms from /usr/lib64/valgrind/vgpreload_core-amd64-linux.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so
+--10089--    object doesn't have a symbol table
+--10089-- REDIR: 0x4018500 (index) redirected to 0x4c2af60 (index)
+--10089-- REDIR: 0x4018580 (strcmp) redirected to 0x4c2c040 (strcmp)
+--10089-- Reading syms from /usr/lib64/libcrypt-2.17.so
+--10089-- Reading syms from /usr/lib64/libresolv-2.17.so
+--10089-- Reading syms from /usr/lib64/libedit.so.0.0.42
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libncurses.so.5.9
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libtinfo.so.5.9
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libstdc++.so.6.0.19
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libz.so.1.2.7
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libpcre.so.1.2.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/librt-2.17.so
+--10089-- Reading syms from /usr/lib64/libm-2.17.so
+--10089-- Reading syms from /usr/lib64/libdl-2.17.so
+--10089-- Reading syms from /usr/lib64/libnsl-2.17.so
+--10089-- Reading syms from /usr/lib64/libxml2.so.2.9.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libgssapi_krb5.so.2.2
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libkrb5.so.3.3
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libk5crypto.so.3.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libcom_err.so.2.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libssl.so.1.0.1e
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libcrypto.so.1.0.1e
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libc-2.17.so
+--10089-- Reading syms from /usr/lib64/libfreebl3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libgcc_s-4.8.2-20140120.so.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libpthread-2.17.so
+--10089-- Reading syms from /usr/lib64/liblzma.so.5.0.99
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libkrb5support.so.0.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libkeyutils.so.1.5
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libselinux.so.1
+--10089--    object doesn't have a symbol table
+--10089-- REDIR: 0x7d5d500 (strcasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d598b0 (strnlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5f7d0 (strncasecmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5c310 (memset) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5c2c0 (memcpy@GLIBC_2.2.5) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d57d30 (strcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d71880 (strstr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d57c70 (index) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5b6d0 (strspn) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d59780 (strlen) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5bcf0 (bcmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d59990 (strncmp) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5b220 (strncpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d59950 (strncat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d61ea0 (memcpy@@GLIBC_2.14) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d591c0 (strcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5d360 (stpcpy) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5b260 (rindex) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7ddd640 (__memcpy_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d5b340 (strpbrk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d57a70 (strcat) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d597d0 (__GI_strlen) redirected to 0x4c2b310 (__GI_strlen)
+--10089-- REDIR: 0x7d5b2a0 (__GI_strrchr) redirected to 0x4c2ad80 (__GI_strrchr)
+--10089-- REDIR: 0x7d530d0 (malloc) redirected to 0x4c283d6 (malloc)
+--10089-- REDIR: 0x7e356d0 (__strlen_sse2_pminub) redirected to 0x4c2b2f0 (strlen)
+--10089-- REDIR: 0x7e1aa90 (__memcpy_ssse3_back) redirected to 0x4c2c390 (memcpy@@GLIBC_2.14)
+--10089-- REDIR: 0x7d599d0 (__GI_strncmp) redirected to 0x4c2b800 (__GI_strncmp)
+--10089-- REDIR: 0x7d5c350 (__GI_memset) redirected to 0x4c2d730 (memset)
+--10089-- REDIR: 0x7d535d0 (realloc) redirected to 0x4c2a2e0 (realloc)
+--10089-- REDIR: 0x7e06b70 (__strrchr_sse42) redirected to 0x4c2ad50 (rindex)
+--10089-- REDIR: 0x7d57d70 (__GI_strcmp) redirected to 0x4c2bff0 (__GI_strcmp)
+--10089-- REDIR: 0x7d5b9a0 (memchr) redirected to 0x4c2c0e0 (memchr)
+--10089-- REDIR: 0x7d57cb0 (__GI_strchr) redirected to 0x4c2ae60 (__GI_strchr)
+--10089-- REDIR: 0x7d63780 (strchrnul) redirected to 0x4c2dd30 (strchrnul)
+--10089-- REDIR: 0x7d534f0 (free) redirected to 0x4c294f0 (free)
+--10089-- REDIR: 0x7d5d3a0 (__GI_stpcpy) redirected to 0x4c2d340 (__GI_stpcpy)
+--10089-- REDIR: 0x7d59200 (__GI_strcpy) redirected to 0x4c2b410 (__GI_strcpy)
+--10089-- REDIR: 0x7e30000 (__memcmp_sse4_1) redirected to 0x4c2d1e0 (bcmp)
+--10089-- REDIR: 0x7e04d30 (__strchr_sse42) redirected to 0x4c2ae20 (index)
+--10089-- REDIR: 0x7e1aa80 (__memcpy_chk_ssse3_back) redirected to 0x4c2e030 (__memcpy_chk)
+--10089-- REDIR: 0x7e0e7f0 (__strncasecmp_avx) redirected to 0x4c2b950 (strncasecmp)
+--10089-- REDIR: 0x7e0d180 (__strcasecmp_avx) redirected to 0x4c2b870 (strcasecmp)
+--10089-- REDIR: 0x7d5c130 (__GI_memmove) redirected to 0x4c2da10 (__GI_memmove)
+--10089-- REDIR: 0x7d53aa0 (calloc) redirected to 0x4c2a13e (calloc)
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/opcache.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/bz2.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libbz2.so.1.0.6
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/calendar.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ctype.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/curl.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libcurl.so.4.3.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libidn.so.11.6.11
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libssh2.so.1.0.1
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libssl3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libsmime3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libnss3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libnssutil3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libplds4.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libplc4.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libnspr4.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/liblber-2.4.so.2.10.2
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libldap-2.4.so.2.10.2
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libsasl2.so.3.0.0
+--10089--    object doesn't have a symbol table
+--10089-- REDIR: 0x7ddd830 (__memmove_chk) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- REDIR: 0x7d63530 (rawmemchr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/dom.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/exif.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/fileinfo.so
+--10089--    object doesn't have a symbol table
+--10089-- REDIR: 0x7d72380 (strcasestr) redirected to 0x4a23716 (_vgnU_ifunc_wrapper)
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/ftp.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/gettext.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/iconv.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mbstring.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mcrypt.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libmcrypt.so.4.4.8
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libltdl.so.7.3.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqlnd.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/phar.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/posix.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/shmop.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/simplexml.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sockets.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sqlite3.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libsqlite3.so.0.8.6
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvmsg.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvsem.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/sysvshm.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/tokenizer.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xml.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlwriter.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xsl.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libexslt.so.0.8.17
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libxslt.so.1.1.28
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libgcrypt.so.11.8.2
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libgpg-error.so.0.10.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysql.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/mysqli.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_mysql.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/pdo_sqlite.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/wddx.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/xmlreader.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/apcu.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/igbinary.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/json.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/msgpack.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/zip.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/memcached.so
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libmemcachedprotocol.so.0.0.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libmemcached.so.11.0.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libmemcachedutil.so.2.0.0
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /usr/lib64/libevent-2.0.so.5.1.9
+--10089--    object doesn't have a symbol table
+--10089-- Reading syms from /opt/remi/php56/root/usr/lib64/php/modules/geometry.so
+--10089-- REDIR: 0xffffffffff600400 (???) redirected to 0x380673dd (???)
+--10089-- REDIR: 0x7e04de0 (__strcmp_sse42) redirected to 0x4c2bfa0 (strcmp)
+--10089-- REDIR: 0x7d683c0 (__strncpy_sse2_unaligned) redirected to 0x4c2b4f0 (strncpy)
+--10089-- REDIR: 0x40197b0 (stpcpy) redirected to 0x4c2d500 (stpcpy)
+--10089-- REDIR: 0x7d67d90 (__strcpy_sse2_unaligned) redirected to 0x4c2b330 (strcpy)
+--10089-- REDIR: 0x7d6b4a0 (__strncat_sse2_unaligned) redirected to 0x4c2b180 (strncat)
+--10089-- REDIR: 0xffffffffff600000 (???) redirected to 0x380673d3 (???)
+--10089-- REDIR: 0x7e06d10 (__strstr_sse42) redirected to 0x4c2e140 (strstr)
+--10089-- REDIR: 0x7e20030 (__memmove_ssse3_back) redirected to 0x4c2c160 (memcpy@GLIBC_2.2.5)
+--10089-- REDIR: 0x7d6abb0 (__strcat_sse2_unaligned) redirected to 0x4c2afa0 (strcat)
+--10089-- Discarding syms at 0x18960820-0x1896f900 in /opt/remi/php56/root/usr/lib64/php/modules/geometry.so due to munmap()
+--10089-- Discarding syms at 0x17ebb380-0x17ec8554 in /opt/remi/php56/root/usr/lib64/php/modules/memcached.so due to munmap()
+--10089-- Discarding syms at 0x180d25e0-0x180d5fdc in /usr/lib64/libmemcachedprotocol.so.0.0.0 due to munmap()
+--10089-- Discarding syms at 0x1850d840-0x1850eb20 in /usr/lib64/libmemcachedutil.so.2.0.0 due to munmap()
+--10089-- Discarding syms at 0x182df220-0x182faa3c in /usr/lib64/libmemcached.so.11.0.0 due to munmap()
+--10089-- Discarding syms at 0x1871d840-0x187472c0 in /usr/lib64/libevent-2.0.so.5.1.9 due to munmap()
+--10089-- Discarding syms at 0x17c9bae0-0x17cab278 in /opt/remi/php56/root/usr/lib64/php/modules/zip.so due to munmap()
+--10089-- Discarding syms at 0x17a812b0-0x17a8fb44 in /opt/remi/php56/root/usr/lib64/php/modules/msgpack.so due to munmap()
+--10089-- Discarding syms at 0x17870b20-0x1787a084 in /opt/remi/php56/root/usr/lib64/php/modules/json.so due to munmap()
+--10089-- Discarding syms at 0x1765eff0-0x176696ec in /opt/remi/php56/root/usr/lib64/php/modules/igbinary.so due to munmap()
+--10089-- Discarding syms at 0x1744aaf0-0x17455428 in /opt/remi/php56/root/usr/lib64/php/modules/apcu.so due to munmap()
+--10089-- Discarding syms at 0x1723dfa0-0x172400f8 in /opt/remi/php56/root/usr/lib64/php/modules/xmlreader.so due to munmap()
+--10089-- Discarding syms at 0x17034070-0x170388b0 in /opt/remi/php56/root/usr/lib64/php/modules/wddx.so due to munmap()
+--10089-- Discarding syms at 0x16e2d6f0-0x16e2fd04 in /opt/remi/php56/root/usr/lib64/php/modules/pdo_sqlite.so due to munmap()
+--10089-- Discarding syms at 0x16c24c90-0x16c27ed8 in /opt/remi/php56/root/usr/lib64/php/modules/pdo_mysql.so due to munmap()
+--10089-- Discarding syms at 0x16a08ee0-0x16a17c94 in /opt/remi/php56/root/usr/lib64/php/modules/mysqli.so due to munmap()
+--10089-- Discarding syms at 0x167f7650-0x167fbff8 in /opt/remi/php56/root/usr/lib64/php/modules/mysql.so due to munmap()
+--10089-- Discarding syms at 0x15d1a360-0x15d1d03c in /opt/remi/php56/root/usr/lib64/php/modules/xsl.so due to munmap()
+--10089-- Discarding syms at 0x15f23d80-0x15f303cc in /usr/lib64/libexslt.so.0.8.17 due to munmap()
+--10089-- Discarding syms at 0x1613fc60-0x16164248 in /usr/lib64/libxslt.so.1.1.28 due to munmap()
+--10089-- Discarding syms at 0x1637b200-0x163c7948 in /usr/lib64/libgcrypt.so.11.8.2 due to munmap()
+--10089-- Discarding syms at 0x165efa30-0x165f00a8 in /usr/lib64/libgpg-error.so.0.10.0 due to munmap()
+--10089-- Discarding syms at 0x15b0f590-0x15b12138 in /opt/remi/php56/root/usr/lib64/php/modules/xmlwriter.so due to munmap()
+--10089-- Discarding syms at 0x15901a70-0x15905fb0 in /opt/remi/php56/root/usr/lib64/php/modules/xml.so due to munmap()
+--10089-- Discarding syms at 0x156f9d90-0x156fb6cc in /opt/remi/php56/root/usr/lib64/php/modules/tokenizer.so due to munmap()
+--10089-- Discarding syms at 0x154f6140-0x154f6dd8 in /opt/remi/php56/root/usr/lib64/php/modules/sysvshm.so due to munmap()
+--10089-- Discarding syms at 0x152f2c20-0x152f3418 in /opt/remi/php56/root/usr/lib64/php/modules/sysvsem.so due to munmap()
+--10089-- Discarding syms at 0x150ee5a0-0x150ef8d8 in /opt/remi/php56/root/usr/lib64/php/modules/sysvmsg.so due to munmap()
+--10089-- Discarding syms at 0x14c30080-0x14c348a8 in /opt/remi/php56/root/usr/lib64/php/modules/sqlite3.so due to munmap()
+--10089-- Discarding syms at 0x14e42980-0x14eca820 in /usr/lib64/libsqlite3.so.0.8.6 due to munmap()
+--10089-- Discarding syms at 0x14a1a030-0x14a24980 in /opt/remi/php56/root/usr/lib64/php/modules/sockets.so due to munmap()
+--10089-- Discarding syms at 0x1480c650-0x1481212c in /opt/remi/php56/root/usr/lib64/php/modules/simplexml.so due to munmap()
+--10089-- Discarding syms at 0x14605ea0-0x146067b8 in /opt/remi/php56/root/usr/lib64/php/modules/shmop.so due to munmap()
+--10089-- Discarding syms at 0x143ff770-0x144014e8 in /opt/remi/php56/root/usr/lib64/php/modules/posix.so due to munmap()
+--10089-- Discarding syms at 0x141c1710-0x141eb1e4 in /opt/remi/php56/root/usr/lib64/php/modules/phar.so due to munmap()
+--10089-- Discarding syms at 0x13fa4c00-0x13fb23cc in /opt/remi/php56/root/usr/lib64/php/modules/pdo.so due to munmap()
+--10089-- Discarding syms at 0x13d681d0-0x13d8dc24 in /opt/remi/php56/root/usr/lib64/php/modules/mysqlnd.so due to munmap()
+--10089-- Discarding syms at 0x13716430-0x1371a29c in /opt/remi/php56/root/usr/lib64/php/modules/mcrypt.so due to munmap()
+--10089-- Discarding syms at 0x13924340-0x1393c568 in /usr/lib64/libmcrypt.so.4.4.8 due to munmap()
+--10089-- Discarding syms at 0x13b534b0-0x13b57788 in /usr/lib64/libltdl.so.7.3.0 due to munmap()
+--10089-- Discarding syms at 0x126cb330-0x126d0f68 in /opt/remi/php56/root/usr/lib64/php/modules/exif.so due to munmap()
+--10089-- Discarding syms at 0x131b1490-0x131b6834 in /opt/remi/php56/root/usr/lib64/php/modules/iconv.so due to munmap()
+--10089-- Discarding syms at 0x12fac020-0x12facaa8 in /opt/remi/php56/root/usr/lib64/php/modules/gettext.so due to munmap()
+--10089-- Discarding syms at 0x12da10e0-0x12da6cf0 in /opt/remi/php56/root/usr/lib64/php/modules/ftp.so due to munmap()
+--10089-- Discarding syms at 0x128da540-0x128e9c8c in /opt/remi/php56/root/usr/lib64/php/modules/fileinfo.so due to munmap()
+--10089-- Discarding syms at 0x133d0950-0x13413aa0 in /opt/remi/php56/root/usr/lib64/php/modules/mbstring.so due to munmap()
+--10089-- Discarding syms at 0x124a3ea0-0x124baa18 in /opt/remi/php56/root/usr/lib64/php/modules/dom.so due to munmap()
+--10089-- Discarding syms at 0x1054cbc0-0x105579ac in /opt/remi/php56/root/usr/lib64/php/modules/curl.so due to munmap()
+--10089-- Discarding syms at 0x10767ea0-0x107ad00c in /usr/lib64/libcurl.so.4.3.0 due to munmap()
+--10089-- Discarding syms at 0x109c6000-0x109ca538 in /usr/lib64/libidn.so.11.6.11 due to munmap()
+--10089-- Discarding syms at 0x10bfb4d0-0x10c15378 in /usr/lib64/libssh2.so.1.0.1 due to munmap()
+--10089-- Discarding syms at 0x1203b0a0-0x1206b7f4 in /usr/lib64/libldap-2.4.so.2.10.2 due to munmap()
+--10089-- Discarding syms at 0x11e206d0-0x11e279f4 in /usr/lib64/liblber-2.4.so.2.10.2 due to munmap()
+--10089-- Discarding syms at 0x11067230-0x1107b5d7 in /usr/lib64/libsmime3.so due to munmap()
+--10089-- Discarding syms at 0x10e2ad80-0x10e4e01f in /usr/lib64/libssl3.so due to munmap()
+--10089-- Discarding syms at 0x1129d2b0-0x1136ea24 in /usr/lib64/libnss3.so due to munmap()
+--10089-- Discarding syms at 0x115b5e30-0x115c4218 in /usr/lib64/libnssutil3.so due to munmap()
+--10089-- Discarding syms at 0x119db510-0x119dcb28 in /usr/lib64/libplc4.so due to munmap()
+--10089-- Discarding syms at 0x117d7090-0x117d8018 in /usr/lib64/libplds4.so due to munmap()
+--10089-- Discarding syms at 0x11bebd70-0x11c0bcf0 in /usr/lib64/libnspr4.so due to munmap()
+--10089-- Discarding syms at 0x12282b60-0x12293fb4 in /usr/lib64/libsasl2.so.3.0.0 due to munmap()
+--10089-- Discarding syms at 0x10345d00-0x10347168 in /opt/remi/php56/root/usr/lib64/php/modules/ctype.so due to munmap()
+--10089-- Discarding syms at 0x1013f1f0-0x10141efc in /opt/remi/php56/root/usr/lib64/php/modules/calendar.so due to munmap()
+--10089-- Discarding syms at 0xfd29280-0xfd2ade4 in /opt/remi/php56/root/usr/lib64/php/modules/bz2.so due to munmap()
+--10089-- Discarding syms at 0xff2e760-0xff3a5c0 in /usr/lib64/libbz2.so.1.0.6 due to munmap()
+--10089-- Discarding syms at 0xf8d1210-0xf8ed940 in /opt/remi/php56/root/usr/lib64/php/modules/xdebug.so due to munmap()
+--10089-- Discarding syms at 0xfafea40-0xfb17388 in /opt/remi/php56/root/usr/lib64/php/modules/opcache.so due to munmap()
+==10089== 
+==10089== HEAP SUMMARY:
+==10089==     in use at exit: 88,168 bytes in 2,757 blocks
+==10089==   total heap usage: 49,929 allocs, 47,172 frees, 10,970,060 bytes allocated
+==10089== 
+==10089== Searching for pointers to 2,757 not-freed blocks
+==10089== Checked 903,792 bytes
+==10089== 
+==10089== 24 bytes in 1 blocks are definitely lost in loss record 26 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BEC59E: ???
+==10089==    by 0x11BF945E: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 24 bytes in 1 blocks are definitely lost in loss record 27 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF9202: ???
+==10089==    by 0x11BF9468: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 46 (40 direct, 6 indirect) bytes in 1 blocks are definitely lost in loss record 37 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF38A1: ???
+==10089==    by 0x11BF9439: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 64 bytes in 1 blocks are definitely lost in loss record 40 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF2C66: ???
+==10089==    by 0x11BF941D: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 88 (48 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 44 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BEBFC9: ???
+==10089==    by 0x11C05CB6: ???
+==10089==    by 0x11C05DC0: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 88 (48 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 45 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BEBFC9: ???
+==10089==    by 0x11C05CB6: ???
+==10089==    by 0x11C05DDE: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 88 (48 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 46 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BEBFC9: ???
+==10089==    by 0x11C05CB6: ???
+==10089==    by 0x11C05DFC: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 59 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BF8D08: ???
+==10089==    by 0x11BF93EE: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 60 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BEEEC9: ???
+==10089==    by 0x11BF93F4: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 61 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BF93FE: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 62 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BF2DA8: ???
+==10089==    by 0x11BF941D: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 63 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11C05DA3: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 64 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BEC2B0: ???
+==10089==    by 0x11C05DAF: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 65 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BFA748: ???
+==10089==    by 0x11BF9429: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 66 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BFFDE8: ???
+==10089==    by 0x11BF942E: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 67 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BEF325: ???
+==10089==    by 0x11BF9434: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 68 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C022F9: ???
+==10089==    by 0x11C023E8: ???
+==10089==    by 0x11BF395B: ???
+==10089==    by 0x11BF9439: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 69 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BF6608: ???
+==10089==    by 0x11BF9459: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 70 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BF6614: ???
+==10089==    by 0x11BF9459: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 71 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11BEC588: ???
+==10089==    by 0x11BF945E: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 72 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01E8C: ???
+==10089==    by 0x11C09247: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 168 bytes in 1 blocks are definitely lost in loss record 73 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C022F9: ???
+==10089==    by 0x11C09253: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 195 (24 direct, 171 indirect) bytes in 1 blocks are definitely lost in loss record 77 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF50EF: ???
+==10089==    by 0x11BEC2C3: ???
+==10089==    by 0x11C05DAF: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 232 (64 direct, 168 indirect) bytes in 1 blocks are definitely lost in loss record 78 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01F32: ???
+==10089==    by 0x11C083E0: ???
+==10089==    by 0x11BF9413: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 232 (64 direct, 168 indirect) bytes in 1 blocks are definitely lost in loss record 79 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01F32: ???
+==10089==    by 0x11C05D97: ???
+==10089==    by 0x11BF9424: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 232 (64 direct, 168 indirect) bytes in 1 blocks are definitely lost in loss record 80 of 133
+==10089==    at 0x4C2845D: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11C01F32: ???
+==10089==    by 0x11BF944D: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 319 (24 direct, 295 indirect) bytes in 1 blocks are definitely lost in loss record 85 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BEEFA0: ???
+==10089==    by 0x11BF93C1: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 1,024 bytes in 1 blocks are definitely lost in loss record 109 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF3472: ???
+==10089==    by 0x11BF93E9: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== 1,608 (264 direct, 1,344 indirect) bytes in 1 blocks are definitely lost in loss record 121 of 133
+==10089==    at 0x4C2A1D4: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10089==    by 0x11BF2B7D: ???
+==10089==    by 0x11BF941D: ???
+==10089==    by 0x1079E4F4: ???
+==10089==    by 0x10787874: ???
+==10089==    by 0x1055015A: ???
+==10089==    by 0x34ACE4: zend_startup_module_ex (in /usr/bin/php)
+==10089==    by 0x357432: zend_hash_apply (in /usr/bin/php)
+==10089==    by 0x34EE79: zend_startup_modules (in /usr/bin/php)
+==10089==    by 0x2E4A7D: php_module_startup (in /usr/bin/php)
+==10089==    by 0x3F07FC: ??? (in /usr/bin/php)
+==10089==    by 0x1C5222: ??? (in /usr/bin/php)
+==10089==    by 0x7CF4AF4: (below main) (in /usr/lib64/libc-2.17.so)
+==10089== 
+==10089== LEAK SUMMARY:
+==10089==    definitely lost: 4,344 bytes in 29 blocks
+==10089==    indirectly lost: 2,440 bytes in 38 blocks
+==10089==      possibly lost: 0 bytes in 0 blocks
+==10089==    still reachable: 81,384 bytes in 2,690 blocks
+==10089==         suppressed: 0 bytes in 0 blocks
+==10089== Reachable blocks (those to which a pointer was found) are not shown.
+==10089== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10089== 
+==10089== ERROR SUMMARY: 29 errors from 29 contexts (suppressed: 3 from 3)
+--10089-- 
+--10089-- used_suppression:      3 glibc-2.5.x-on-SUSE-10.2-(PPC)-2a /usr/lib64/valgrind/default.supp:1286
+==10089== 
+==10089== ERROR SUMMARY: 29 errors from 29 contexts (suppressed: 3 from 3)
