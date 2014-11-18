@@ -260,7 +260,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
             }
         }
     }
-    if(maximum_distance) {
+    if (maximum_distance) {
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);
@@ -321,7 +321,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
         }
     }
 
-    if(best_score) {
+    if (best_score) {
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);

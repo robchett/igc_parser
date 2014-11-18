@@ -114,46 +114,46 @@ echo pass("Looping successful");
 
 echo PHP_EOL;
 
-//score_track('test0.igc', [
+// score_track('test0.igc', [
 //    'OD: 014.50 -> 140,346,642,771,813,',
 //    'OR: 007.88 -> 352,642,771,',
 //    'TR: 009.23 -> 191,257,345,446,755,'
-//]);
+// ]);
  score_track('test1.igc', [
      'OD: 014.50 -> 140,346,642,771,813,',
      'OR: 007.88 -> 352,642,771,',
      'TR: 009.23 -> 191,257,345,446,755,'
  ]);
-// score_track('test2.igc', [
-//     'OD: 028.92 -> 3,126,975,1014,1597,',
-//     'OR: 002.68 -> 892,975,1013,',
-//     'TR: 002.80 -> 2,121,293,431,436,'
-// ]);
-// score_track('test3.igc', [
-//     'OD: 060.30 -> 1,581,1293,1719,1963,',
-//     'OR: 030.08 -> 414,1293,1875,',
-//     'TR: 053.07 -> 409,581,1286,1592,1862,'
-// ]);
-// score_track('test4.igc', [
-//     'OD: 121.63 -> 333,599,885,2108,4901,',
-//     'OR: 003.25 -> 599,884,958,',
-//     'TR: 003.71 -> 12,67,487,965,1000,'
-// ]);
-// score_track('test5.igc', [
-//     'OD: 060.30 -> 1,581,1293,1719,1963,',
-//     'OR: 030.08 -> 414,1293,1875,',
-//     'TR: 053.07 -> 409,581,1286,1592,1862,'
-// ]);
-// score_track('test6.igc', [
-//     'OD: 308.32 -> 201,943,2113,4110,4414,',
-//     'OR: 001.64 -> 4398,4414,4423,',
-//     'TR: 001.38 -> 4199,4200,4214,4230,4231,'
-// ]);
-// score_track('test7.igc', [
-//     'OD: 110.27 -> 11,206,4025,5300,7613,',
-//     'OR: 105.24 -> 615,4025,7614,',
-//     'TR: 033.63 -> 1841,2636,3429,5166,6657,'
-// ]);
+score_track('test2.igc', [
+    'OD: 028.92 -> 3,126,975,1014,1597,',
+    'OR: 002.68 -> 892,975,1013,',
+    'TR: 002.80 -> 2,121,293,431,436,'
+]);
+score_track('test3.igc', [
+    'OD: 060.30 -> 1,581,1293,1719,1963,',
+    'OR: 030.08 -> 414,1293,1875,',
+    'TR: 053.07 -> 409,581,1286,1592,1862,'
+]);
+score_track('test4.igc', [
+    'OD: 121.63 -> 333,599,885,2108,4901,',
+    'OR: 003.25 -> 599,884,958,',
+    'TR: 003.71 -> 12,67,487,965,1000,'
+]);
+score_track('test5.igc', [
+    'OD: 060.30 -> 1,581,1293,1719,1963,',
+    'OR: 030.08 -> 414,1293,1875,',
+    'TR: 053.07 -> 409,581,1286,1592,1862,'
+]);
+score_track('test6.igc', [
+    'OD: 308.32 -> 201,943,2113,4110,4414,',
+    'OR: 001.64 -> 4398,4414,4423,',
+    'TR: 001.38 -> 4199,4200,4214,4230,4231,'
+]);
+score_track('test7.igc', [
+    'OD: 110.27 -> 11,206,4025,5300,7613,',
+    'OR: 105.24 -> 615,4025,7614,',
+    'TR: 033.63 -> 1841,2636,3429,5166,6657,'
+]);
 
 ini_set('memory_limit', '512M');
 function score_track($file, $answers = []) {
@@ -172,19 +172,23 @@ function score_track($file, $answers = []) {
 
     _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
     $intial = $set_2->count();
-    //action('Simplifing file', $set_2->simplify());
-    action('Trimming file', $set_2->trim());
-
-
 
     _log('Points', $set_2->count() . " (" . $intial . ")");
     _log('Parts',  $set_2->part_count());
+    
+    action('Simplifing file', $set_2->simplify());
+    _log('Points', $set_2->count() . " (" . $intial . ")");
+
+    action('Trimming file', $set_2->trim());
+    _log('Points', $set_2->count() . " (" . $intial . ")");
+    _log('Parts',  $set_2->part_count());
+
 
     action('Repairing track', $set_2->repair());
     action('Graphing track',$set_2->set_graph_values());
     action('Ranging track', $set_2->set_ranges());
     if($set_2->part_count() > 1) {
-        action('Setting section', $set_2->set_section(1));
+       action('Setting section', $set_2->set_section(1));
     }
 
     _log('Points', $set_2->count() . " (" . $intial . ")");
@@ -192,16 +196,12 @@ function score_track($file, $answers = []) {
 
     action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
 
-    $od = $map_2->score_open_distance_3tp();
-    echo get_score($map_2, $od, $answers[0], 'OD') . get_time($time) . PHP_EOL;
-    $or = $map_2->score_out_and_return();
-    echo get_score($map_2, $or, $answers[1], 'OR') . get_time($time) . PHP_EOL;
-    $tr = $map_2->score_triangle();
-    echo get_score($map_2, $tr, $answers[2], 'TR') . get_time($time) . PHP_EOL;
+    echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
+    echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
+    echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
 
     _log('Coordinates', $od->get_gridref());
     _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
-
 
     $task = new task($coordinate_1, $coordinate_2, $coordinate_3);
     _log('Checking task:');
@@ -243,9 +243,9 @@ function get_score($map_2, $od, $correct, $type) {
     $distance = $od->get_distance();
     $string = sprintf('%s: %06.2f -> %s', $type, $distance, $od->get_coordinate_ids());
     if ($string != $correct) {
-        return fail($string . PHP_EOL .  str_repeat('=', 6) . ' ' . $correct);
+        return fail($string . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
     }
-    return pass($string);
+    return pass(str_pad($string, 45)) . ' @ ' . get_time() . PHP_EOL;;
 }
 
 function pass_fail($string, $bool) {
@@ -266,5 +266,5 @@ function _log($action, $result = '') {
 
 
 function action($action, $result) {
-    echo sprintf("%-20s: %-15s @ %s\n", $action, $result, get_time());
+    echo sprintf("%-20s: %-30s @ %s\n", $action, $result, get_time());
 }

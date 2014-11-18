@@ -93,11 +93,14 @@ char *get_meta_data_earth(formatter_object *intern) {
     return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
 }
 
-char *get_linestring_earth(formatter_object *intern) {
-    char *buffer = create_buffer("<LineString>\n\
-	<extrude>0</extrude>\n\
-	<altitudeMode>absolute</altitudeMode>\n\
-	<coordinates>");
+char *get_linestring_earth(formatter_object *intern, char *style, char *altitude_mode, char *extrude) {
+    char *buffer = create_buffer("");
+    buffer = vstrcat(buffer, "\n\
+    <styleUrl>#", style, "</styleUrl>    \
+    <LineString>\n\
+	<extrude>", extrude, "</extrude>\n\
+	<altitudeMode>", altitude_mode, "</altitudeMode>\n\
+	<coordinates>", NULL);
     coordinate_object *coordinate = intern->set->first;
     int i = 0;
     while (coordinate) {
@@ -110,14 +113,14 @@ char *get_linestring_earth(formatter_object *intern) {
         }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
+    return vstrcat(buffer, "\n</coordinates></LineString>", NULL);
 }
 
-char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_object *last, char* style) {
+char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_object *last, char *style) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\
 <Placemark>\n\
-    <styleUrl>#S", style ,"</styleUrl>\n\
+    <styleUrl>#S", style , "</styleUrl>\n\
     <LineString>\n\
         <extrude>0</extrude>\n\
         <altitudeMode>absolute</altitudeMode>\n\
@@ -350,7 +353,9 @@ char *formatter_kml_earth_output(formatter_object *intern) {
 
     char *styles = get_kml_styles_earth();
     char *metadata = get_meta_data_earth(intern);
-    char *linestring = get_linestring_earth(intern);
+    char *linestring = get_linestring_earth(intern, "", "absolute", "0");
+    char *shadow = get_linestring_earth(intern, "shadow", "clampToGround", "0");
+    char *shadow_extrude = get_linestring_earth(intern, "shadow", "absolute", "1");
     char *height = get_colour_by_height(intern->set);
     char *speed = get_colour_by_speed(intern->set);
     char *climb_rate = get_colour_by_climb_rate(intern->set);
@@ -360,7 +365,7 @@ char *formatter_kml_earth_output(formatter_object *intern) {
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
 	<open>1</open>\n",
-    styles,"\n\
+                     styles, "\n\
     <Folder>\n\
         <name>", intern->name, "</name>\n\
 		<visibility>1</visibility>\n\
@@ -374,14 +379,14 @@ char *formatter_kml_earth_output(formatter_object *intern) {
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by height</name>\n\
                 <visibility>1</visibility>\n",
-                height,  "\
+                     height,  "\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by ground speed</name>\n\
                 <visibility>0</visibility>\n",
-                speed,  "\
+                     speed,  "\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
@@ -389,14 +394,44 @@ char *formatter_kml_earth_output(formatter_object *intern) {
                 <name>Colour By Climb</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n",
-                climb_rate,  "\
+                     climb_rate,  "\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by time</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n",
-                timestamp,  "\
+                     timestamp,  "\
+            </Folder>\n\
+        </Folder>\n\
+        <Folder>\n\
+            <name>Shadow</name>\n\
+            <visibility>1</visibility>\n\
+            <open>1</open>\n\
+            <styleUrl>radioFolder</styleUrl>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>None</name>\n\
+                <visibility>1</visibility>\n\
+                <open>0</open>\n\
+            </Folder>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Shadow</name>\n\
+                <visibility>0</visibility>\n\
+                <open>0</open>\n\
+                <Placemark>\n",
+                     shadow,  "\
+                 </Placemark>\n\
+            </Folder>\n\
+            <Folder>\n\
+                <styleUrl>hideChildren</styleUrl>\n\
+                <name>Extrude</name>\n\
+                <visibility>0</visibility>\n\
+                <open>0</open>\n\
+                 <Placemark>\n",
+                     shadow_extrude,  "\
+                 </Placemark>\n\
             </Folder>\n\
         </Folder>\n\
 		<Folder>\n\
@@ -420,27 +455,29 @@ char *formatter_kml_earth_output(formatter_object *intern) {
     efree(height);
     efree(climb_rate);
     efree(timestamp);
+    efree(shadow);
+    efree(shadow_extrude);
     efree(speed);
     return output;
 }
 
 char *colour_grad_16[] = {
-        "ff0000",
-        "ff3f00",
-        "ff7f00",
-        "ffbf00",
-        "ffff00",
-        "bfff00",
-        "7fff00",
-        "3fff00",
-        "00ff00",
-        "00ff3f",
-        "00ff7f",
-        "00ffbf",
-        "00ffff",
-        "00bfff",
-        "007fff",
-        "003fff",
+    "ff0000",
+    "ff3f00",
+    "ff7f00",
+    "ffbf00",
+    "ffff00",
+    "bfff00",
+    "7fff00",
+    "3fff00",
+    "00ff00",
+    "00ff3f",
+    "00ff7f",
+    "00ffbf",
+    "00ffff",
+    "00bfff",
+    "007fff",
+    "003fff",
 };
 
 char *get_kml_styles_earth() {
@@ -467,13 +504,15 @@ char *get_kml_styles_earth() {
 
     int i;
     for (i = 0; i < 16; i++) {
+        char *level = itos(i);
         buffer = vstrcat(buffer, "\n\
-    <Style id=\"S", itos(i), "\">\n\
+    <Style id=\"S", level, "\">\n\
         <LineStyle>\n\
             <width>2</width>\n\
             <color>FF", colour_grad_16[i], "</color>\n\
         </LineStyle>\n\
     </Style>", NULL);
+        efree(level);
     }
     //$kml->set_animation_styles(1);
     //public function set_animation_styles() {
@@ -489,109 +528,147 @@ char *get_kml_styles_earth() {
 char *get_colour_by_height(coordinate_set_object *set) {
     char *buffer = create_buffer("");
     long min = set->min_ele;
-    long delta = set->max_ele - set->min_ele ? : 1;
+    double delta = (set->max_ele - set->min_ele ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
     int last_level, current_level;
-    last_level = floor((current->ele - min) * 16 / delta);
-    while(current) {
-        current_level = floor((current->ele - min) * 16 / delta);
+    last_level = floor((current->ele - min) / delta);
+    while (current) {
+        char *level = itos(last_level);
+        current_level = floor((current->ele - min) / delta);
         if (current_level != last_level && current_level != 16) {
-            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            char *linestring = get_partial_linestring_earth(first, current->next, level);
             buffer = vstrcat(buffer, linestring, NULL);
             efree(linestring);
+            efree(level);
             last_level = current_level;
             first = current;
         }
         current = current->next;
     };
     if (first) {
-        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        char *level = itos(last_level);
+        char *linestring = get_partial_linestring_earth(first, current, level);
         buffer = vstrcat(buffer, linestring, NULL);
         efree(linestring);
+        efree(level);
     }
-    return buffer;        
+    return buffer;
 }
 
-char *get_colour_by_climb_rate(coordinate_set_object *set) { 
+char *get_colour_by_climb_rate(coordinate_set_object *set) {
     char *buffer = create_buffer("");
     long min = set->min_climb_rate;
-    long delta = set->max_climb_rate - set->min_climb_rate ? : 1;
+    double delta = (set->max_climb_rate - set->min_climb_rate ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
     int last_level, current_level;
-    last_level = floor((current->climb_rate - min) * 16 / delta);
-    while(current) {
-        current_level = floor((current->climb_rate - min) * 16 / delta);
+    last_level = floor((current->climb_rate - min) / delta);
+    while (current) {
+        char *level = itos(last_level);
+        current_level = floor((current->climb_rate - min) / delta);
         if (current_level != last_level && current_level != 16) {
-            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            char *linestring = get_partial_linestring_earth(first, current->next, level);
             buffer = vstrcat(buffer, linestring, NULL);
             efree(linestring);
+            efree(level);
             last_level = current_level;
             first = current;
         }
         current = current->next;
     };
     if (first) {
-        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        char *level = itos(last_level);
+        char *linestring = get_partial_linestring_earth(first, current, level);
         buffer = vstrcat(buffer, linestring, NULL);
         efree(linestring);
+        efree(level);
     }
-    return buffer;  
+    return buffer;
 }
 
 
 char *get_colour_by_speed(coordinate_set_object *set) {
     char *buffer = create_buffer("");
     long min = 0;
-    long delta = set->max_speed ? : 1;
+    double delta = (set->max_speed ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
     int last_level, current_level;
-    last_level = floor((current->speed - min) * 16 / delta);
-    while(current) {
-        current_level = floor((current->speed - min) * 16 / delta);
+    last_level = floor((current->speed - min) / delta);
+    while (current) {
+        current_level = floor((current->speed - min) / delta);
         if (current_level != last_level && current_level != 16) {
-            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
+            char *level = itos(last_level);
+            char *linestring = get_partial_linestring_earth(first, current->next, level);
             buffer = vstrcat(buffer, linestring, NULL);
             efree(linestring);
+            efree(level);
             last_level = current_level;
             first = current;
         }
         current = current->next;
     };
     if (first) {
-        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
+        char *level = itos(last_level);
+        char *linestring = get_partial_linestring_earth(first, current, level);
         buffer = vstrcat(buffer, linestring, NULL);
         efree(linestring);
+        efree(level);
     }
-    return buffer;  
+    return buffer;
 }
 
+char *format_timestamp(int year, int month, int day, int ts) {
+    char *buffer = emalloc(sizeof(char) * 20);
+    struct tm point_time = {
+        .tm_year = year - 1990,
+        .tm_mon = month - 1,
+        .tm_mday = day,
+        .tm_hour = floor(ts / 3600),
+        .tm_min = floor((ts % 3600) / 60),
+        .tm_sec = (ts % 60)
+    };
+    strftime(buffer, 20, "%Y-%m-%dT%T", &point_time);
+    return buffer;
+}
 
 char *get_colour_by_time(coordinate_set_object *set) {
- char *buffer = create_buffer("");
-    long delta = set->last->timestamp ?: 1;
-    coordinate_object *last, *first, *current;
-    first = current = set->first;
-    int last_level, current_level;
-    last_level = floor((current->timestamp) * 16 / delta);
-    while(current) {
-        current_level = floor((current->timestamp) * 16 / delta);
-        if (current_level != last_level && current_level != 16) {
-            char *linestring = get_partial_linestring_earth(first, current->next, itos(last_level));
-            buffer = vstrcat(buffer, linestring, NULL);
-            efree(linestring);
-            last_level = current_level;
-            first = current;
+    char *buffer = create_buffer("");
+    long min = set->first->timestamp; 
+    double delta = (set->last->timestamp - min ? : 1) / 16;
+    coordinate_object *current = set->first;
+    int current_level;
+    char *point, *next_point;
+    char *point_date, *next_point_date;
+    if (current) {
+        point = coordinate_to_kml(current);
+        point_date = format_timestamp(set->year, set->month, set->day, current->timestamp);
+        while (current && current->next) {
+            next_point = coordinate_to_kml(current->next);
+            next_point_date = format_timestamp(set->year, set->month, set->day, current->next->timestamp);
+            char *level = itos(floor((current->timestamp - min) / delta));
+            buffer = vstrcat(buffer, "\n\
+<Placemark>\n\
+    <styleUrl>#S", level , "</styleUrl>\n\
+    <TimeSpan>\n\
+        <begin>", point_date, "Z</begin>\n\
+        <end>", next_point_date, "Z</end>\n\
+    </TimeSpan>\n\
+    <LineString>\n\
+        <altitudeMode>absolute</altitudeMode>\n\
+        <coordinates>\n", point, " ", next_point, "\n\
+        </coordinates>\n\
+    </LineString>\n\
+</Placemark>\n", NULL);
+            efree(point);
+            efree(level);
+            efree(point_date);
+            current = current->next;
+            point = next_point;
+            point_date = next_point_date;
         }
-        current = current->next;
     };
-    if (first) {
-        char *linestring = get_partial_linestring_earth(first, current, itos(last_level));
-        buffer = vstrcat(buffer, linestring, NULL);
-        efree(linestring);
-    }
-    return buffer;  
+    return buffer;
 }
 

@@ -112,13 +112,17 @@ json_t *get_bounds(coordinate_set_object *set) {
 
 char *get_html_output(formatter_object *intern) {
     char *string = create_buffer("");
-    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", (intern->id ? itos(intern->id) :  ""), "}'>", "", "</div>", NULL);
+    char *id = (intern->id ? itos(intern->id) :  "");
+    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
+    efree(id);
     return string;
 }
 
 char *get_html_output_earth(formatter_object *intern) {
     char *string = create_buffer("");
-    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", (intern->id ? itos(intern->id) :  ""), "}'>", "", "</div>", NULL);
+    char *id = (intern->id ? itos(intern->id) :  "");
+    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
+    efree(id);
     return string;
 }
 
@@ -130,6 +134,7 @@ PHP_METHOD(formatter_js, output) {
 
     json_object_set(json, "id", json_integer(intern->id));
     json_object_set(json, "xMin", json_integer(intern->set->first->timestamp));
+
     json_object_set(json, "xMax", json_integer(intern->set->last->timestamp));
     if (intern->open_distance) {
         json_object_set(json, "od_score", json_real(get_task_distance(intern->open_distance)));

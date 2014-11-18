@@ -32,7 +32,7 @@ typedef struct coordinate_subset {
 typedef struct coordinate_set_object {
     zend_object std;
 
-    coordinate_object *coordinate, *first, *last;
+    coordinate_object *first, *last;
     long length;
     long offset;
 
@@ -47,7 +47,7 @@ typedef struct coordinate_set_object {
     double max_climb_rate, min_climb_rate, max_speed;
 
     // Subset
-    coordinate_subset *coordinate_subset, *first_subset, *last_subset;
+    coordinate_subset *first_subset, *last_subset;
     long subset_count;
 } coordinate_set_object;
 
