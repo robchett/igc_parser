@@ -2,6 +2,7 @@
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
+#include "../geometry.h"
 #include "../task.h"
 #include "formatter_js.h"
 #include "../include/json/jansson.h"
@@ -49,20 +50,20 @@ PHP_METHOD(formatter_js, __construct) {
     formatter_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     if (zend_parse_parameters(
                 ZEND_NUM_ARGS() TSRMLS_CC,
-                "Ol|OOO",
+                "Ol|zzz",
                 &coordinate_set_zval, coordinate_set_ce,
                 &id,
-                &od_zval, task_ce,
-                &or_zval, task_ce,
-                &tr_zval, task_ce
+                &od_zval,
+                &or_zval,
+                &tr_zval
             ) == FAILURE) {
         return;
     }
 
     intern->set = (coordinate_set_object *)zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
-    intern->open_distance = od_zval ? (task_object *)zend_object_store_get_object(od_zval TSRMLS_CC) : NULL;
-    intern->out_and_return = or_zval ? (task_object *)zend_object_store_get_object(or_zval TSRMLS_CC) : NULL;
-    intern->triangle = tr_zval ? (task_object *)zend_object_store_get_object(tr_zval TSRMLS_CC) : NULL;
+    intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *)zend_object_store_get_object(od_zval TSRMLS_CC) : NULL;
+    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *)zend_object_store_get_object(or_zval TSRMLS_CC) : NULL;
+    intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *)zend_object_store_get_object(tr_zval TSRMLS_CC) : NULL;
     intern->id = id;
 }
 

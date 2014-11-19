@@ -57,22 +57,22 @@ PHP_METHOD(formatter_kml_earth, __construct) {
     intern->name = NULL;
     if (zend_parse_parameters(
                 ZEND_NUM_ARGS() TSRMLS_CC,
-                "Os|OOOO",
+                "Os|zzzz",
                 &coordinate_set_zval, coordinate_set_ce,
                 &name, &length,
-                &od_zval, task_ce,
-                &or_zval, task_ce,
-                &tr_zval, task_ce,
-                &task_zval, task_ce
+                &od_zval,
+                &or_zval,
+                &tr_zval,
+                &task_zval
             ) == FAILURE) {
         return;
     }
 
     intern->set = (coordinate_set_object *)zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
-    intern->open_distance = od_zval ? (task_object *)zend_object_store_get_object(od_zval TSRMLS_CC) : NULL;
-    intern->out_and_return = or_zval ? (task_object *)zend_object_store_get_object(or_zval TSRMLS_CC) : NULL;
-    intern->triangle = tr_zval ? (task_object *)zend_object_store_get_object(tr_zval TSRMLS_CC) : NULL;
-    intern->task = task_zval ? (task_object *)zend_object_store_get_object(task_zval TSRMLS_CC) : NULL;
+    intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *)zend_object_store_get_object(od_zval TSRMLS_CC) : NULL;
+    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *)zend_object_store_get_object(or_zval TSRMLS_CC) : NULL;
+    intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *)zend_object_store_get_object(tr_zval TSRMLS_CC) : NULL;
+    intern->task = is_object_of_type(task_zval, task_ce) ? (task_object *)zend_object_store_get_object(task_zval TSRMLS_CC) : NULL;
     intern->name = name;
 }
 

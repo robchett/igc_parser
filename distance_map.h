@@ -30,7 +30,9 @@ unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long p
 unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);
 unsigned long furthest_between(distance_map_object *map, unsigned long from, unsigned long to);
 #define MAP(map, from, to) (from >= to ? 0 : map->distances[from][to - from - 1])
-#define SKIP(map, diff) (floor(diff / map->maximum_distance))
 coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);
 #endif
+
+#define skip_up(index, distance, required, maximum_distance) if (required > distance) { index += floor((required - distance) / maximum_distance); continue; }
+#define skip_down(index, distance, required, maximum_distance) if (required > distance) { index -= floor((required - distance) / maximum_distance); continue; }

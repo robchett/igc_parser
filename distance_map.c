@@ -117,15 +117,25 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
     return 1;
 }
 
+inline void check_y(long x, long y, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, unsigned long *best_score, unsigned long (*indexes)[5]) {
+    long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
+    long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z)));
+    if (distance > *best_score && min > distance * 0.28) {
+        *best_score = distance;
+        *indexes[0] = row;
+        *indexes[1] = x;
+        *indexes[2] = y;
+        *indexes[3] = z;
+        *indexes[4] = col;
+        printf("%ld -> %ld\n", *_minleg, fmax(distance * 0.28, *_minleg));
+        *_minleg = fmax(distance * 0.28, *_minleg);
+    }
+}
+
 PHP_METHOD(distance_map, score_triangle) {
     distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     unsigned long maximum_distance = 0;
-    unsigned long indexes[5];
-    indexes[0] = 0;
-    indexes[1] = 0;
-    indexes[2] = 0;
-    indexes[3] = 0;
-    indexes[4] = 0;
+    unsigned long indexes[] = {0,0,0,0,0};
     long closest_end = 0;
     long best_score = 0;
     long const minleg = 800000;
@@ -134,67 +144,23 @@ PHP_METHOD(distance_map, score_triangle) {
     for (row = 0; row < intern->size; ++row) {
         long col = intern->size - 1;
         for (col; col > row && col > closest_end; --col) {
-            if (MAP(intern, row, col) > minleg) {
-                long skip = ((MAP(intern, row, col) - minleg) / intern->maximum_distance);
-                col -= skip;
-                continue;
-            }
+            skip_down(col, MAP(intern, row, col), minleg, intern->maximum_distance);
             long x = row;
             for (x; x <= col - 2; ++x) {
                 long z = col;
                 for (z; z > x + 1; --z) {
-                    if (minleg > MAP(intern, x, z)) {
-                        long skip = ((_minleg - MAP(intern, x, z)) / intern->maximum_distance);
-                        z -= skip;
-                        continue;
-                    }
+                    skip_down(z, _minleg, MAP(intern, x, z), intern->maximum_distance);
                     long y = 0;
                     for (y = floor((x + z) / 2); y <= (z - 1); ++y) {
-                        if (_minleg > MAP(intern, x, y)) {
-                            long skip = ((_minleg - MAP(intern, x, y)) / intern->maximum_distance);
-                            y += skip;
-                            continue;
-                        }
-                        if (_minleg > MAP(intern, y, z)) {
-                            long skip = ((_minleg - MAP(intern, y, z)) / intern->maximum_distance);
-                            y += skip;
-                            continue;
-                        }
-                        long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
-                        long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z)));
-                        if (distance > best_score && min > distance * 0.28) {
-                            best_score = distance;
-                            indexes[0] = row;
-                            indexes[1] = x;
-                            indexes[2] = y;
-                            indexes[3] = z;
-                            indexes[4] = col;
-                            _minleg = fmax(distance * 0.28, _minleg);
-                        }
+                        skip_up(y, _minleg, MAP(intern, x, y), intern->maximum_distance);
+                        skip_up(y, _minleg, MAP(intern, y, z), intern->maximum_distance);
+                        check_y(x, y, z, row, col, intern, &_minleg, &best_score, &indexes);
                     }
                     y = floor((x + z) / 2);
                     for (; y >= (x + 1); --y) {
-                        if (_minleg > MAP(intern, x, y)) {
-                            long skip = ((_minleg - MAP(intern, x, y)) / intern->maximum_distance);
-                            y -= skip;
-                            continue;
-                        }
-                        if (_minleg > MAP(intern, y, z)) {
-                            long skip = ((_minleg - MAP(intern, y, z)) / intern->maximum_distance);
-                            y -= skip;
-                            continue;
-                        }
-                        long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
-                        long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z)));
-                        if (distance > best_score && min > distance * 0.28) {
-                            best_score = distance;
-                            indexes[0] = row;
-                            indexes[1] = x;
-                            indexes[2] = y;
-                            indexes[3] = z;
-                            indexes[4] = col;
-                            _minleg = fmax(distance * 0.28, _minleg);
-                        }
+                        skip_down(y, _minleg, MAP(intern, x, y), intern->maximum_distance);
+                        skip_down(y, _minleg, MAP(intern, y, z), intern->maximum_distance); 
+                        check_y(x, y, z, row, col, intern, &_minleg, &best_score, &indexes);
                     }
                 }
             }
@@ -202,21 +168,22 @@ PHP_METHOD(distance_map, score_triangle) {
             col = 0;
         }
     }
-
-    unsigned long sgap = MAP(intern, indexes[0], indexes[4]);
-    unsigned long a = indexes[4];
-    for (a; a >= indexes[3]; a--) {
-        unsigned long b = indexes[0];
-        for (b = indexes[0]; b < indexes[1]; b++) {
-            if (MAP(intern, b, a) < sgap) {
-                indexes[4] = a;
-                indexes[0] = b;
-                sgap = MAP(intern, b, a);
-            }
-        }
-    }
+    printf("%s\n", "Im HERE!!!");
 
     if (best_score) {
+        unsigned long sgap = MAP(intern, indexes[0], indexes[4]);
+        unsigned long a = indexes[4];
+        for (a; a >= indexes[3]; a--) {
+            unsigned long b = indexes[0];
+            for (b = indexes[0]; b < indexes[1]; b++) {
+                if (MAP(intern, b, a) < sgap) {
+                    indexes[4] = a;
+                    indexes[0] = b;
+                    sgap = MAP(intern, b, a);
+                }
+            }
+        }
+
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);

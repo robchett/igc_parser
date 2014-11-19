@@ -119,36 +119,36 @@ echo PHP_EOL;
 //    'OR: 007.88 -> 352,642,771,',
 //    'TR: 009.23 -> 191,257,345,446,755,'
 // ]);
- score_track('test1.igc', [
-     'OD: 014.50 -> 140,346,642,771,813,',
-     'OR: 007.88 -> 352,642,771,',
-     'TR: 009.23 -> 191,257,345,446,755,'
- ]);
-score_track('test2.igc', [
-    'OD: 028.92 -> 3,126,975,1014,1597,',
-    'OR: 002.68 -> 892,975,1013,',
-    'TR: 002.80 -> 2,121,293,431,436,'
-]);
-score_track('test3.igc', [
-    'OD: 060.30 -> 1,581,1293,1719,1963,',
-    'OR: 030.08 -> 414,1293,1875,',
-    'TR: 053.07 -> 409,581,1286,1592,1862,'
-]);
-score_track('test4.igc', [
-    'OD: 121.63 -> 333,599,885,2108,4901,',
-    'OR: 003.25 -> 599,884,958,',
-    'TR: 003.71 -> 12,67,487,965,1000,'
-]);
-score_track('test5.igc', [
-    'OD: 060.30 -> 1,581,1293,1719,1963,',
-    'OR: 030.08 -> 414,1293,1875,',
-    'TR: 053.07 -> 409,581,1286,1592,1862,'
-]);
-score_track('test6.igc', [
-    'OD: 308.32 -> 201,943,2113,4110,4414,',
-    'OR: 001.64 -> 4398,4414,4423,',
-    'TR: 001.38 -> 4199,4200,4214,4230,4231,'
-]);
+//  score_track('test1.igc', [
+//      'OD: 014.50 -> 140,346,642,771,813,',
+//      'OR: 007.88 -> 352,642,771,',
+//      'TR: 009.23 -> 191,257,345,446,755,'
+//  ]);
+// score_track('test2.igc', [
+//     'OD: 028.92 -> 3,126,975,1014,1597,',
+//     'OR: 002.68 -> 892,975,1013,',
+//     'TR: 002.80 -> 2,121,293,431,436,'
+// ]);
+// score_track('test3.igc', [
+//     'OD: 060.30 -> 1,581,1293,1719,1963,',
+//     'OR: 030.08 -> 414,1293,1875,',
+//     'TR: 053.07 -> 409,581,1286,1592,1862,'
+// ]);
+// score_track('test4.igc', [
+//     'OD: 121.63 -> 333,599,885,2108,4901,',
+//     'OR: 003.25 -> 599,884,958,',
+//     'TR: 003.71 -> 12,67,487,965,1000,'
+// ]);
+// score_track('test5.igc', [
+//     'OD: 060.30 -> 1,581,1293,1719,1963,',
+//     'OR: 030.08 -> 414,1293,1875,',
+//     'TR: 053.07 -> 409,581,1286,1592,1862,'
+// ]);
+// score_track('test6.igc', [
+//     'OD: 308.32 -> 201,943,2113,4110,4414,',
+//     'OR: 001.64 -> 4398,4414,4423,',
+//     'TR: 001.38 -> 4199,4200,4214,4230,4231,'
+// ]);
 score_track('test7.igc', [
     'OD: 110.27 -> 11,206,4025,5300,7613,',
     'OR: 105.24 -> 615,4025,7614,',
@@ -196,8 +196,8 @@ function score_track($file, $answers = []) {
 
     action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
 
-    echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
-    echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
+    // echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
+    // echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
     echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
 
     _log('Coordinates', $od->get_gridref());
@@ -240,12 +240,16 @@ function get_time() {
 }
 
 function get_score($map_2, $od, $correct, $type) {
-    $distance = $od->get_distance();
-    $string = sprintf('%s: %06.2f -> %s', $type, $distance, $od->get_coordinate_ids());
-    if ($string != $correct) {
-        return fail($string . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
+    if($od) {
+        $distance = $od->get_distance();
+        $string = sprintf('%s: %06.2f -> %s', $type, $distance, $od->get_coordinate_ids());
+        if ($string != $correct) {
+            return fail($string . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
+        }
+        return pass(str_pad($string, 45)) . ' @ ' . get_time() . PHP_EOL;;
+    } else {
+        return fail('No match' . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
     }
-    return pass(str_pad($string, 45)) . ' @ ' . get_time() . PHP_EOL;;
 }
 
 function pass_fail($string, $bool) {
