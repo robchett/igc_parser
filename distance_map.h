@@ -34,5 +34,5 @@ coordinate_object *get_coordinate(distance_map_object *map, unsigned long index)
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);
 #endif
 
-#define skip_up(index, distance, required, maximum_distance) if (required > distance) { index += floor((required - distance) / maximum_distance); continue; }
-#define skip_down(index, distance, required, maximum_distance) if (required > distance) { index -= floor((required - distance) / maximum_distance); continue; }
+#define skip_up(index, required, distance, maximum_distance) if (required > distance) { index += floor((required - distance) / maximum_distance); continue; }
+#define skip_down(index, required, distance, maximum_distance) if (required > distance) { index -= floor((required - distance) / maximum_distance); continue; }

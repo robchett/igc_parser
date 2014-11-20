@@ -27,10 +27,10 @@ zend_object_value create_coordinate_object(zend_class_entry *class_type TSRMLS_D
     return retval;
 }
 void _free_coordinate_object(coordinate_object *intern) {
-    if(intern->prev) {
+    if (intern->prev) {
         intern->prev->next = intern->next;
     }
-    if(intern->next) {
+    if (intern->next) {
         intern->next->prev = intern->prev;
     }
     efree(intern);
@@ -195,20 +195,12 @@ double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {
 }
 
 double get_distance(coordinate_object *point1, coordinate_object *point2) {
-
-    double sin_lat_1 = 0;
-    double cos_lat_1 = 0;
-    sincos(point1->lat toRAD, &sin_lat_1, &cos_lat_1);
-
-    double sin_lat_2 = 0;
-    double cos_lat_2 = 0;
-
-    sincos(point2->lat toRAD, &sin_lat_2, &cos_lat_2);
-
-    double delta_rad = (point1->lng - point2->lng) toRAD;
-
-    double res = (sin_lat_1 * sin_lat_2) + cos_lat_1 * cos_lat_2 * cos(delta_rad);
-    return acos(res) * 6371;
+    if (point1->lat != point2->lat && point1->lng != point2->lng) {
+        double delta_rad = (point1->lng - point2->lng) toRAD;
+        double res = (point1->sin_lat * point2->sin_lat) + point1->cos_lat * point2->cos_lat * cos(delta_rad);
+        return acos(res) * 6371;
+    }
+    return 0;
 }
 
 double get_distance_precise(coordinate_object *obj1, coordinate_object *obj2) {

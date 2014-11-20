@@ -24,8 +24,9 @@ typedef struct coordinate_object {
     zend_object std;
 
     // actual struct contents
-    double lat;
-    double lng;
+    double lat, lng;
+    double sin_lat, cos_lat, cos_lng;
+
     long ele;
     long alt;
     long timestamp;

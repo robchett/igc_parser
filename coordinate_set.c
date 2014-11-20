@@ -543,6 +543,7 @@ coordinate_object *parse_igc_coordiante(char *line) {
     intern->lat = parse_degree(p, 2, 'S');
     p += 8;
     intern->lng = parse_degree(p, 3, 'W');
+    sincos(intern->lat toRAD, &intern->sin_lat, &intern->cos_lat);;
     p += 10;
 
     // Extract alt

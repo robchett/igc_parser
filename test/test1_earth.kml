@@ -1436,7 +1436,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S2</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -1496,7 +1496,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -2357,7 +2357,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S3</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -3788,12 +3788,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+0.10100,50.83550,345 0.09973,50.83552,345 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S12</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.10100,50.83550,345 0.09973,50.83552,345 0.09850,50.83552,343 0.09728,50.83555,340 
+0.09973,50.83552,345 0.09850,50.83552,343 0.09728,50.83555,340 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3873,8 +3883,28 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.09988,50.83543,313 0.10038,50.83535,311 0.10092,50.83528,310 0.10143,50.83525,309 0.10195,50.83523,311 0.10252,50.83525,315 
-0.10308,50.83527,316 0.10363,50.83528,317 0.10420,50.83523,315 0.10475,50.83508,317 0.10527,50.83500,316 
+0.09988,50.83543,313 0.10038,50.83535,311 0.10092,50.83528,310 0.10143,50.83525,309 0.10195,50.83523,311 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+0.10195,50.83523,311 0.10252,50.83525,315 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S5</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+0.10252,50.83525,315 0.10308,50.83527,316 0.10363,50.83528,317 0.10420,50.83523,315 0.10475,50.83508,317 0.10527,50.83500,316 
+
         </coordinates>
     </LineString>
 </Placemark>
@@ -4611,8 +4641,28 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.10208,50.83505,321 0.10257,50.83500,320 0.10302,50.83498,319 0.10345,50.83500,317 0.10392,50.83497,314 0.10440,50.83492,311 
-0.10487,50.83493,309 0.10532,50.83495,308 0.10583,50.83487,307 
+0.10208,50.83505,321 0.10257,50.83500,320 0.10302,50.83498,319 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+0.10302,50.83498,319 0.10345,50.83500,317 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S4</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+0.10345,50.83500,317 0.10392,50.83497,314 0.10440,50.83492,311 0.10487,50.83493,309 0.10532,50.83495,308 0.10583,50.83487,307 
+
         </coordinates>
     </LineString>
 </Placemark>
@@ -4887,7 +4937,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -20665,9 +20715,9 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.83523   0.11012
                 <name>Out and Return</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.81367   0.14530     TQ511038   0.00       0.00 
-2    50.83600   0.09488     TQ474062   4.34       4.34 
-3    50.81822   0.13672     TQ504043   3.55       7.88 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82488   0.12153     TQ494050   0.00       0.00 
+2    50.82412   0.12582     TQ497049   0.31       0.31 
+3    50.82387   0.12722     TQ498049   0.10       0.42 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -20679,7 +20729,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.81367   0.14530
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        0.14530,50.81367,265 0.09488,50.83600,343 0.13672,50.81822,290 
+                    <coordinates>                        0.12153,50.82488,186 0.12582,50.82412,268 0.12722,50.82387,240 
                     </coordinates>
                 </LineString>
             </Placemark>
@@ -20693,11 +20743,11 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.81367   0.14530
                 <name>FAI Triangle</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82283   0.12790     TQ498048   0.00       0.00 
-2    50.83438   0.14257     TQ508061   1.65       1.65 
-3    50.81143   0.14843     TQ513035   2.59       4.24 
-4    50.83595   0.10583     TQ482062   4.06       8.29 
-5    50.82285   0.12787     TQ498048   2.13       10.42
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82485   0.12203     TQ494050   0.00       0.00 
+2    50.83438   0.14257     TQ508061   1.79       1.79 
+3    50.81143   0.14843     TQ513035   2.59       4.38 
+4    50.83498   0.10517     TQ482061   4.02       8.40 
+5    50.82485   0.12107     TQ493050   1.59       9.99 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -20709,7 +20759,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82283   0.12790
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        0.12790,50.82283,435 0.14257,50.83438,295 0.14843,50.81143,284 0.10583,50.83595,344 0.12787,50.82285,292 
+                    <coordinates>                        0.12203,50.82485,186 0.14257,50.83438,295 0.14843,50.81143,284 0.10517,50.83498,346 0.12107,50.82485,170 
                     </coordinates>
                 </LineString>
             </Placemark>

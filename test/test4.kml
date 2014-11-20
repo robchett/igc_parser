@@ -25,13 +25,13 @@
 			Pilot                
 			Club                 
 			Glider               
-			Date                 1503-2014-08
+			Date                 2014-08-31
 			Start/finish         
 			Duration             
-			Max./min. height     10783 / 0 m
+			Max./min. height     1503 / 0 m
 OD Score / Time      121.63 / 13651s
-OR Score / Time      3.34 / 1078s
-TR Score / Time      4.19 / 2744s
+OR Score / Time      13.19 / 1228s
+TR Score / Time      4.86 / 2192s
 
 		</pre>]]>
 		</description>
@@ -46,11 +46,11 @@ TR Score / Time      4.19 / 2744s
 						<width>2</width>
 					</LineStyle>
 				</Style>
-				<Metadata><SecondsFromTimeOfFirstPoint>57611 
+				<Metadata><SecondsFromTimeOfFirstPoint>774911276 
 </SecondsFromTimeOfFirstPoint></Metadata><LineString>
 	<extrude>0</extrude>
 	<altitudeMode>absolute</altitudeMode>
-	<coordinates>-0.68890,53.77678,1 
+	<coordinates>-2.20487,54.26962,575 
 </coordinates></LineString>
 			</Placemark>
 		</Folder>
@@ -97,9 +97,9 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.27942   -2.1971
                 <name>Out and Return</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.26783   -2.21277    SD861858   0.00       0.00 
-2    54.28127   -2.20167    SD868873   1.66       1.66 
-3    54.26745   -2.21192    SD861857   1.68       3.34 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.03590   -1.77952    SE144600   0.00       0.00 
+2    54.03572   -1.57888    SE275600   13.15      13.15
+3    54.03590   -1.57830    SE276600   0.04       13.19
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -111,7 +111,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.26783   -2.2127
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        -2.21277,54.26783,668 -2.20167,54.28127,779 -2.21192,54.26745,678 
+                    <coordinates>                        -1.77952,54.03590,1065 -1.57888,54.03572,680 -1.57830,54.03590,681 
                     </coordinates>
                 </LineString>
             </Placemark>
@@ -125,11 +125,11 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.26783   -2.2127
                 <name>FAI Triangle</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.26885   -2.21055    SD862859   0.00       0.00 
-2    54.27027   -2.19888    SD870861   0.78       0.78 
-3    54.27975   -2.20673    SD865871   1.17       1.95 
-4    54.26447   -2.21498    SD859854   1.78       3.73 
-5    54.26447   -2.21498    SD859854   0.00       3.73 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.27098   -2.19885    SD870861   0.00       0.00 
+2    54.26977   -2.21350    SD860860   0.96       0.96 
+3    54.27982   -2.20153    SD868871   1.36       2.33 
+4    54.26078   -2.19903    SD870850   2.12       4.45 
+5    54.26020   -2.19885    SD870849   0.07       4.52 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -141,7 +141,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    54.26885   -2.2105
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        -2.21055,54.26885,868 -2.19888,54.27027,906 -2.20673,54.27975,735 -2.21498,54.26447,730 -2.21498,54.26447,730 
+                    <coordinates>                        -2.19885,54.27098,902 -2.21350,54.26977,778 -2.20153,54.27982,774 -2.19903,54.26078,1020 -2.19885,54.26020,1028 
                     </coordinates>
                 </LineString>
             </Placemark>

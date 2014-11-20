@@ -1248,8 +1248,27 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.12290,52.23630,316 1.12268,52.23640,319 1.12232,52.23643,324 1.12205,52.23640,328 1.12178,52.23638,330 1.12132,52.23593,330 
-
+1.12290,52.23630,316 1.12268,52.23640,319 1.12232,52.23643,324 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12232,52.23643,324 1.12205,52.23640,328 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S5</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12205,52.23640,328 1.12178,52.23638,330 1.12132,52.23593,330 
         </coordinates>
     </LineString>
 </Placemark>
@@ -1309,8 +1328,28 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.12473,52.23637,341 1.12482,52.23643,345 1.12490,52.23652,342 1.12482,52.23715,342 1.12452,52.23737,349 1.12422,52.23743,353 
-1.12373,52.23743,351 1.12335,52.23730,349 1.12305,52.23707,345 
+1.12473,52.23637,341 1.12482,52.23643,345 1.12490,52.23652,342 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12490,52.23652,342 1.12482,52.23715,342 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S6</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12482,52.23715,342 1.12452,52.23737,349 1.12422,52.23743,353 1.12373,52.23743,351 1.12335,52.23730,349 1.12305,52.23707,345 
+
         </coordinates>
     </LineString>
 </Placemark>
@@ -1848,12 +1887,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12235,52.23532,256 1.12240,52.23467,260 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S8</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.12235,52.23532,256 1.12240,52.23467,260 1.12267,52.23448,263 1.12342,52.23428,266 1.12378,52.23433,267 
+1.12240,52.23467,260 1.12267,52.23448,263 1.12342,52.23428,266 1.12378,52.23433,267 
         </coordinates>
     </LineString>
 </Placemark>
@@ -2053,7 +2102,27 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.12438,52.23370,370 1.12468,52.23355,374 1.12528,52.23342,378 1.12588,52.23355,382 1.12625,52.23378,385 
+1.12438,52.23370,370 1.12468,52.23355,374 1.12528,52.23342,378 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12528,52.23342,378 1.12588,52.23355,382 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S8</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12588,52.23355,382 1.12625,52.23378,385 
         </coordinates>
     </LineString>
 </Placemark>
@@ -2510,12 +2579,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.12580,52.23177,418 1.12640,52.23183,421 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S8</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.12580,52.23177,418 1.12640,52.23183,421 1.12695,52.23218,425 1.12705,52.23242,426 
+1.12640,52.23183,421 1.12695,52.23218,425 1.12705,52.23242,426 
         </coordinates>
     </LineString>
 </Placemark>
@@ -2821,7 +2900,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -3017,7 +3096,17 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.13097,52.22988,653 1.13140,52.22978,655 1.13228,52.22988,656 
+1.13097,52.22988,653 1.13140,52.22978,655 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13140,52.22978,655 1.13228,52.22988,656 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3213,12 +3302,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13440,52.22923,785 1.13430,52.22957,791 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S7</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.13440,52.22923,785 1.13430,52.22957,791 1.13423,52.22963,791 
+1.13430,52.22957,791 1.13423,52.22963,791 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3384,7 +3483,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -3644,12 +3743,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13280,52.22195,975 1.13265,52.22192,979 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S6</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.13280,52.22195,975 1.13265,52.22192,979 1.13238,52.22188,982 1.13213,52.22177,986 
+1.13265,52.22192,979 1.13238,52.22188,982 1.13213,52.22177,986 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3705,7 +3814,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -3837,12 +3946,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13358,52.22035,1131 1.13377,52.22002,1134 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S8</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.13358,52.22035,1131 1.13377,52.22002,1134 1.13402,52.21980,1135 
+1.13377,52.22002,1134 1.13402,52.21980,1135 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3882,7 +4001,27 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.13692,52.22123,1160 1.13678,52.22128,1163 1.13665,52.22130,1167 1.13635,52.22128,1170 1.13598,52.22107,1175 
+1.13692,52.22123,1160 1.13678,52.22128,1163 1.13665,52.22130,1167 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13665,52.22130,1167 1.13635,52.22128,1170 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S6</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.13635,52.22128,1170 1.13598,52.22107,1175 
         </coordinates>
     </LineString>
 </Placemark>
@@ -4573,13 +4712,22 @@
     </LineString>
 </Placemark>
 <Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.18813,52.19520,1036 1.18812,52.19530,1036 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
     <styleUrl>#S6</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.18813,52.19520,1036 1.18812,52.19530,1036 1.18788,52.19552,1040 1.18760,52.19560,1042 1.18718,52.19555,1046 1.18685,52.19520,1045 
-
+1.18812,52.19530,1036 1.18788,52.19552,1040 1.18760,52.19560,1042 1.18718,52.19555,1046 1.18685,52.19520,1045 
         </coordinates>
     </LineString>
 </Placemark>
@@ -4976,7 +5124,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -5161,7 +5309,17 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.22297,52.17828,942 1.22255,52.17822,938 1.22160,52.17828,941 
+1.22297,52.17828,942 1.22255,52.17822,938 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.22255,52.17822,938 1.22160,52.17828,941 
         </coordinates>
     </LineString>
 </Placemark>
@@ -5595,7 +5753,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -5970,7 +6128,17 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.26045,52.16120,719 1.26012,52.16123,714 1.26000,52.16120,714 
+1.26045,52.16120,719 1.26012,52.16123,714 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.26012,52.16123,714 1.26000,52.16120,714 
         </coordinates>
     </LineString>
 </Placemark>
@@ -6087,7 +6255,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -6258,7 +6426,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -6498,7 +6666,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -6763,7 +6931,17 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.25942,52.16067,916 1.25950,52.16000,913 1.25950,52.15987,912 1.25948,52.15958,910 1.25950,52.15903,910 
+1.25942,52.16067,916 1.25950,52.16000,913 1.25950,52.15987,912 1.25948,52.15958,910 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.25948,52.15958,910 1.25950,52.15903,910 
         </coordinates>
     </LineString>
 </Placemark>
@@ -7404,7 +7582,17 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.27420,52.15558,1125 1.27398,52.15567,1127 1.27330,52.15558,1128 
+1.27420,52.15558,1125 1.27398,52.15567,1127 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.27398,52.15567,1127 1.27330,52.15558,1128 
         </coordinates>
     </LineString>
 </Placemark>
@@ -8246,7 +8434,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -8276,7 +8464,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -8336,7 +8524,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S0</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -8411,9 +8599,28 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.36505,52.15482,857 1.36623,52.15462,855 1.36670,52.15455,855 1.36790,52.15462,853 1.36862,52.15467,851 1.36998,52.15487,849 
-1.37175,52.15522,845 1.37238,52.15537,842 1.37332,52.15578,838 1.37370,52.15598,837 1.37562,52.15665,836 1.37610,52.15673,833 
-
+1.36505,52.15482,857 1.36623,52.15462,855 1.36670,52.15455,855 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.36670,52.15455,855 1.36790,52.15462,853 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S10</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.36790,52.15462,853 1.36862,52.15467,851 1.36998,52.15487,849 1.37175,52.15522,845 1.37238,52.15537,842 1.37332,52.15578,838 
+1.37370,52.15598,837 1.37562,52.15665,836 1.37610,52.15673,833 
         </coordinates>
     </LineString>
 </Placemark>
@@ -8855,8 +9062,27 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-1.43620,52.18180,266 1.43647,52.18180,263 1.43750,52.18173,258 1.43803,52.18173,254 1.43907,52.18173,250 1.44082,52.18188,245 
-1.44150,52.18212,237 
+1.43620,52.18180,266 1.43647,52.18180,263 1.43750,52.18173,258 1.43803,52.18173,254 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S0</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.43803,52.18173,254 1.43907,52.18173,250 
+        </coordinates>
+    </LineString>
+</Placemark>
+<Placemark>
+    <styleUrl>#S11</styleUrl>
+    <LineString>
+        <extrude>0</extrude>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+1.43907,52.18173,250 1.44082,52.18188,245 1.44150,52.18212,237 
         </coordinates>
     </LineString>
 </Placemark>
@@ -40233,9 +40459,9 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.23128   1.12885
                 <name>Out and Return</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.16785   1.24360     TM217571   0.00       0.00 
-2    52.15873   1.26455     TM232562   1.76       1.76 
-3    52.16293   1.25217     TM224566   0.97       2.72 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.17650   1.43105     TM345587   0.00       0.00 
+2    52.17673   1.43120     TM345587   0.03       0.03 
+3    52.17697   1.43135     TM345587   0.03       0.06 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -40247,7 +40473,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.16785   1.24360
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        1.24360,52.16785,834 1.26455,52.15873,772 1.25217,52.16293,699 
+                    <coordinates>                        1.43105,52.17650,380 1.43120,52.17673,373 1.43135,52.17697,366 
                     </coordinates>
                 </LineString>
             </Placemark>
@@ -40261,11 +40487,11 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.16785   1.24360
                 <name>FAI Triangle</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.23128   1.12885     TM136638   0.00       0.00 
-2    52.23953   1.12542     TM133647   0.95       0.95 
-3    52.23167   1.12247     TM132639   0.90       1.85 
-4    52.22923   1.13440     TM140636   0.86       2.70 
-5    52.22963   1.13222     TM138637   0.16       2.86 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.15787   1.25257     TM224561   0.00       0.00 
+2    52.15787   1.25257     TM224561   0.00       0.00 
+3    52.16410   1.25777     TM227568   0.78       0.78 
+4    52.15645   1.26627     TM233559   1.03       1.81 
+5    52.15787   1.35917     TM297564   6.36       8.17 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -40277,7 +40503,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    52.23128   1.12885
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        1.12885,52.23128,65 1.12542,52.23953,302 1.12247,52.23167,381 1.13440,52.22923,785 1.13222,52.22963,802 
+                    <coordinates>                        1.25257,52.15787,731 1.25257,52.15787,731 1.25777,52.16410,880 1.26627,52.15645,1030 1.35917,52.15787,868 
                     </coordinates>
                 </LineString>
             </Placemark>

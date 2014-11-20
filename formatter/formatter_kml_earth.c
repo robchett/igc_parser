@@ -14,7 +14,7 @@ void init_formatter_kml_earth(TSRMLS_D) {
     formatter_kml_earth_ce->create_object = create_formatter_kml_earth_object;
 }
 
-zend_object_value create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) {
+zend_object_value create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) { 
     zend_object_value retval;
 
     formatter_object *intern = emalloc(sizeof(formatter_object));
