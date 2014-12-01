@@ -87,7 +87,7 @@ char *get_meta_data(formatter_object *intern) {
         if (i++ == 15) {
             i = 0;
             buffer = vstrcat(buffer, "\n", NULL);
-        } 
+        }
         coordinate = coordinate->next;
     }
     return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
@@ -133,13 +133,17 @@ char *get_task_generic(task_object *task, char *title, char *colour) {
     coordinate_object *prev = NULL;
     int i;
     for (i = 0; i < task->size; i++) {
-        char *line = format_task_point(task->coordinate[i], i + 1, prev, &distance);
-        info = vstrcat(info, line, "\n", NULL);
-        prev = task->coordinate[i];
-        char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
-        coordinates = vstrcat(coordinates, kml_coordinate, NULL);
-        efree(kml_coordinate);
-        efree(line);
+        if (task->coordinate[i]) {
+            char *line = format_task_point(task->coordinate[i], i + 1, prev, &distance);
+            info = vstrcat(info, line, "\n", NULL);
+            prev = task->coordinate[i];
+            char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
+            coordinates = vstrcat(coordinates, kml_coordinate, NULL);
+            efree(kml_coordinate);
+            efree(line);
+        } else {
+            printf("%s -> %d missing\n", title, i);
+        }
     }
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\

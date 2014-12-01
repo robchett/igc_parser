@@ -132,7 +132,7 @@ int completes_task(coordinate_set_object *set, task_object *task) {
     int i = 0, j = 0;
     coordinate_object *task_point;
     coordinate_object *track_point = set->first;
-    start:
+start:
     for (i; i < task->size; i++) {
         task_point = task->coordinate[i];
         while (track_point) {
@@ -168,16 +168,21 @@ PHP_METHOD(task, get_coordinate_ids) {
     RETURN_STRING(coordinates, 1);
 }
 
+PHP_METHOD(task, get_gap_ids) {
+    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    if (intern->gap) {
+        char coordinate[12];
+        sprintf(coordinate, "%5d,%5d", intern->gap[0]->id + 1, intern->gap[1]->id + 1);
+        RETURN_STRING(coordinate, 0);
+    }
+    RETURN_NULL();
+}
+
 PHP_METHOD(task, get_gridref) {
     task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
 
     int i = 0;
     int end = intern->size;
-
-    if (intern->type == TRIANGLE) {
-        i++;
-        end--;
-    }
 
     char *coordinates = create_buffer("");
 
@@ -188,12 +193,6 @@ PHP_METHOD(task, get_gridref) {
         efree(gridref);
     }
 
-    if (intern->type == TRIANGLE) {
-        coordinate_object *point1 = intern->coordinate[1];
-        char *gridref = get_os_grid_ref(point1);
-        coordinates = vstrcat(coordinates, gridref, ";", NULL);
-        efree(gridref);
-    }
     RETURN_STRING(coordinates, 1);
 }
 
@@ -210,20 +209,17 @@ double get_task_distance(task_object *task) {
     int i = 0;
     int end = task->size - 1;
 
-    if (task->type == TRIANGLE) {
-        i++;
-        end--;
-    }
     double distance = 0;
     for (i; i < end; i++) {
         coordinate_object *point1 = task->coordinate[i];
         coordinate_object *point2 = task->coordinate[i + 1];
         distance += get_distance_precise(point1, point2);
     }
-    if (task->type == TRIANGLE) {
-        coordinate_object *point1 = task->coordinate[1];
-        coordinate_object *point2 = task->coordinate[3];
-        distance += get_distance_precise(point1, point2);
+
+    if (task->gap) {
+        coordinate_object *point1 = task->gap[0];
+        coordinate_object *point2 = task->gap[1];
+        distance -= get_distance_precise(point1, point2);
     }
     return distance;
 }

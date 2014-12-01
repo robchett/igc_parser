@@ -4,12 +4,104 @@
 		"selected_items":
 		[
 			[
-				"su",
-				"subset_count"
+				"RET",
+				"RETURN_NULL"
+			],
+			[
+				"stack",
+				"stack_size"
+			],
+			[
+				"st",
+				"stack"
+			],
+			[
+				"push",
+				"push_out_and_return_to_stack"
+			],
+			[
+				"size",
+				"sizeof"
+			],
+			[
+				"tas",
+				"task_object"
+			],
+			[
+				"task",
+				"task_object"
+			],
+			[
+				"co",
+				"coordinate1"
+			],
+			[
+				"ret",
+				"return_intern"
+			],
+			[
+				"in",
+				"indexes"
+			],
+			[
+				"ra",
+				"range_bottom"
+			],
+			[
+				"p",
+				"point1"
+			],
+			[
+				"cl",
+				"closest_end"
+			],
+			[
+				"po",
+				"point1"
+			],
+			[
+				"ma",
+				"maximum_distance"
+			],
+			[
+				"_",
+				"_minleg"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"index",
+				"indexes"
+			],
+			[
+				"best",
+				"best_score"
+			],
+			[
+				"di",
+				"distance"
+			],
+			[
+				"min",
+				"minleg"
+			],
+			[
+				"dist",
+				"distance"
 			],
 			[
 				"s",
-				"set"
+				"skip"
+			],
+			[
+				"b",
+				"best_score"
+			],
+			[
+				"su",
+				"subset_count"
 			],
 			[
 				"e",
@@ -30,10 +122,6 @@
 			[
 				"n",
 				"next"
-			],
-			[
-				"po",
-				"point_time"
 			],
 			[
 				"m",
@@ -76,20 +164,12 @@
 				"delta"
 			],
 			[
-				"min",
-				"min_climb_rate"
-			],
-			[
 				"climb",
 				"climb_rate"
 			],
 			[
 				"c",
 				"current"
-			],
-			[
-				"co",
-				"coordinate"
 			],
 			[
 				"coord",
@@ -104,16 +184,8 @@
 				"first"
 			],
 			[
-				"in",
-				"intern"
-			],
-			[
 				"track",
 				"track_point"
-			],
-			[
-				"p",
-				"points"
 			],
 			[
 				"si",
@@ -122,10 +194,6 @@
 			[
 				"an",
 				"angularDistance"
-			],
-			[
-				"b",
-				"bearing"
 			],
 			[
 				"str_r",
@@ -150,10 +218,6 @@
 			[
 				"set",
 				"set_2"
-			],
-			[
-				"tas",
-				"tasks_info"
 			],
 			[
 				"tasks",
@@ -208,10 +272,6 @@
 				"timestamp"
 			],
 			[
-				"ret",
-				"return"
-			],
-			[
 				"i",
 				"intern"
 			],
@@ -260,24 +320,12 @@
 				"open_distance"
 			],
 			[
-				"task",
-				"task"
-			],
-			[
 				"int",
 				"intern"
 			],
 			[
-				"di",
-				"distance_s"
-			],
-			[
 				"get_ta",
 				"get_task_generic"
-			],
-			[
-				"dist",
-				"distance_s"
 			],
 			[
 				"str",
@@ -308,10 +356,6 @@
 				"min_ele"
 			],
 			[
-				"ma",
-				"max_ele"
-			],
-			[
 				"ln",
 				"length"
 			],
@@ -324,16 +368,8 @@
 				"kml_formatter"
 			],
 			[
-				"st",
-				"start_coordinate"
-			],
-			[
 				"poi",
 				"point"
-			],
-			[
-				"size",
-				"real_size"
 			],
 			[
 				"bes",
@@ -342,10 +378,6 @@
 			[
 				"bestBac",
 				"bestBack_index"
-			],
-			[
-				"best",
-				"bestBack"
 			],
 			[
 				"be",
@@ -390,10 +422,6 @@
 			[
 				"le",
 				"letter2"
-			],
-			[
-				"re",
-				"return_intern"
 			],
 			[
 				"get_",
@@ -480,58 +508,22 @@
 				"get_distance"
 			],
 			[
-				"cl",
-				"climb_rate"
-			],
-			[
 				"par",
 				"parser"
 			],
 			[
 				"tie",
 				"timestamp"
-			],
-			[
-				"mem",
-				"memcpy"
-			],
-			[
-				"do",
-				"double"
-			],
-			[
-				"pri",
-				"print_r"
-			],
-			[
-				"parse",
-				"parse_igc"
-			],
-			[
-				"cont",
-				"count"
-			],
-			[
-				"ch",
-				"current_char"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "/A/uknxcl/web/.core/classes/kml.php",
-			"settings":
-			{
-				"buffer_size": 6162,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "formatter/formatter_kml_earth.c",
 			"settings":
 			{
-				"buffer_size": 23381,
+				"buffer_size": 23613,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +531,7 @@
 			"file": "formatter/formatter_js.c",
 			"settings":
 			{
-				"buffer_size": 7600,
+				"buffer_size": 7683,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,31 +555,7 @@
 			"file": "test/test.php",
 			"settings":
 			{
-				"buffer_size": 8241,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "test/test1_earth.kml",
-			"settings":
-			{
-				"buffer_size": 584559,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "test/php.log",
-			"settings":
-			{
-				"buffer_size": 23338,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "coordinate.c",
-			"settings":
-			{
-				"buffer_size": 9023,
+				"buffer_size": 8637,
 				"line_ending": "Unix"
 			}
 		},
@@ -595,42 +563,66 @@
 			"file": "coordinate_set.c",
 			"settings":
 			{
-				"buffer_size": 18907,
+				"buffer_size": 18978,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "Searching 3464 files for \"coordinate_object\"\n\nUnable to open A:\\extensions\\coordinate\\config.h.in\nA:\\extensions\\coordinate\\coordinate.c:\n   10      INIT_CLASS_ENTRY(ce, \"coordinate\", coordinate_methods);\n   11      coordinate_ce = zend_register_internal_class(&ce TSRMLS_CC);\n   12:     coordinate_ce->create_object = create_coordinate_object;\n   13  }\n   14  \n   15: zend_object_value create_coordinate_object(zend_class_entry *class_type TSRMLS_DC) {\n   16      zend_object_value retval;\n   17  \n   18:     coordinate_object *intern = emalloc(sizeof(coordinate_object));\n   19:     memset(intern, 0, sizeof(coordinate_object));\n   20  \n   21      zend_object_std_init(&intern->std, class_type TSRMLS_CC);\n   22      object_properties_init(&intern->std, class_type);\n   23  \n   24:     retval.handle = zend_objects_store_put(intern, (zend_objects_store_dtor_t) zend_objects_destroy_object,  (zend_objects_free_object_storage_t)free_coordinate_object, NULL TSRMLS_CC);\n   25      retval.handlers = zend_get_std_object_handlers();\n   26  \n   27      return retval;\n   28  }\n   29: void _free_coordinate_object(coordinate_object *intern) {\n   30      if(intern->prev) {\n   31          intern->prev->next = intern->next;\n   ..\n   37  }\n   38  \n   39: void free_coordinate_object(coordinate_object *intern TSRMLS_DC) {\n   40      zend_object_std_dtor(&intern->std TSRMLS_CC);\n   41:     _free_coordinate_object(intern);\n   42  }\n   43  \n   ..\n   68      }\n   69  \n   70:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n   71      intern->lat = lat;\n   72      intern->lng = lng;\n   ..\n   77  \n   78  PHP_METHOD(coordinate, id) {\n   79:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n   80      RETURN_LONG(intern->id);\n   81  }\n   ..\n   87      }\n   88  \n   89:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n   90      if (as_rad) {\n   91          RETURN_DOUBLE(intern->lat toRAD);\n   ..\n   96  \n   97  PHP_METHOD(coordinate, gridref) {\n   98:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n   99      RETURN_STRING(get_os_grid_ref(intern), 0);\n  100  }\n  101  \n  102  PHP_METHOD(coordinate, timestamp) {\n  103:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  104      RETURN_LONG(intern->timestamp);\n  105  }\n  ...\n  111      }\n  112  \n  113:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  114      if (as_rad) {\n  115          RETURN_DOUBLE(intern->lng toRAD);\n  ...\n  120  \n  121  PHP_METHOD(coordinate, ele) {\n  122:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  123      RETURN_DOUBLE(intern->ele);\n  124  }\n  ...\n  129          return;\n  130      }\n  131:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  132      intern->ele = val;\n  133  }\n  ...\n  138          return;\n  139      }\n  140:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  141      intern->lng = val;\n  142  }\n  ...\n  147          return;\n  148      }\n  149:     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  150      intern->lat = val;\n  151  }\n  ...\n  157      }\n  158  \n  159:     coordinate_object *point1 = zend_object_store_get_object(getThis() TSRMLS_CC);\n  160:     coordinate_object *point2 = zend_object_store_get_object(_point TSRMLS_CC);\n  161  \n  162      RETURN_DOUBLE(get_bearing(point1, point2));\n  ...\n  171      }\n  172  \n  173:     coordinate_object *point1 = zend_object_store_get_object(getThis() TSRMLS_CC);\n  174:     coordinate_object *point2 = zend_object_store_get_object(_point TSRMLS_CC);\n  175  \n  176      if (precise) {\n  ...\n  181  }\n  182  \n  183: double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {\n  184      double lat1 = obj1->lat toRAD, lng1 = obj1->lng toRAD;\n  185      double lat2 = obj2->lat toRAD, lng2 = obj2->lng toRAD;\n  ...\n  195  }\n  196  \n  197: double get_distance(coordinate_object *point1, coordinate_object *point2) {\n  198  \n  199      double sin_lat_1 = 0;\n  ...\n  212  }\n  213  \n  214: double get_distance_precise(coordinate_object *obj1, coordinate_object *obj2) {\n  215      double lat1 = obj1->lat toRAD, lng1 = obj1->lng toRAD;\n  216      double lat2 = obj2->lat toRAD, lng2 = obj2->lng toRAD;\n  ...\n  253  }\n  254  \n  255: char *coordinate_to_kml(coordinate_object *coordinate) {\n  256      char *buffer = create_buffer(\"\");\n  257      char *lat = fdtos(coordinate->lat, \"%.5f\");\n\nA:\\extensions\\coordinate\\coordinate.h:\n   20  PHP_METHOD(coordinate, __construct);\n   21  \n   22: typedef struct coordinate_object {\n   23      // required\n   24      zend_object std;\n   ..\n   34      double speed;\n   35      double bearing;\n   36:     struct coordinate_object *prev;\n   37:     struct coordinate_object *next;\n   38: } coordinate_object;\n   39  \n   40  zend_class_entry *coordinate_ce;\n   41  static zend_function_entry coordinate_methods[];\n   42  \n   43: zend_object_value create_coordinate_object(zend_class_entry *class_type TSRMLS_DC);\n   44: void free_coordinate_object(coordinate_object *intern TSRMLS_DC);\n   45: void _free_coordinate_object(coordinate_object *intern);\n   46  \n   47  #endif\n   ..\n   50  #define toDEG * 180 / M_PI\n   51  \n   52: double get_distance(coordinate_object *point1, coordinate_object *point2);\n   53: double get_distance_precise(coordinate_object *point1, coordinate_object *point2);\n   54: double get_bearing(coordinate_object *point1, coordinate_object *point2);\n   55: char *coordinate_to_kml(coordinate_object *coordinate);\n\nA:\\extensions\\coordinate\\coordinate_set.c:\n  108  \n  109      coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  110:     coordinate_object *coordinate_intern = zend_object_store_get_object(coordinate TSRMLS_CC);\n  111      coordinate_intern->id = intern->length++;\n  112      if (intern->last) {\n  ...\n  122  }\n  123  \n  124: void _clone_coordinate_object(coordinate_object *coordinate, coordinate_object *return_intern) {\n  125      return_intern->lat = coordinate->lat;\n  126      return_intern->lng = coordinate->lng;\n  ...\n  134      MAKE_STD_ZVAL(ret);\n  135      object_init_ex(ret, coordinate_ce);\n  136:     coordinate_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  137      if (intern->first) {\n  138:         _clone_coordinate_object(intern->first, return_intern);\n  139          RETURN_ZVAL(ret, 0, 0);\n  140      }\n  ...\n  147      MAKE_STD_ZVAL(ret);\n  148      object_init_ex(ret, coordinate_ce);\n  149:     coordinate_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  150      if (intern->last) {\n  151:         _clone_coordinate_object(intern->last, return_intern);\n  152          RETURN_ZVAL(ret, 0, 0);\n  153      }\n  ...\n  165      object_init_ex(ret, coordinate_ce);\n  166      coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  167:     coordinate_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  168:     coordinate_object *coordinate = intern->first;\n  169      int i = 0;\n  170      while (coordinate && ++i < offset) {\n  171          coordinate = coordinate->next;\n  172      }\n  173:     _clone_coordinate_object(coordinate, return_intern);\n  174      RETURN_ZVAL(ret, 0, 0);\n  175  }\n  ...\n  201          set->next->first->prev = set->prev ? set->prev->last : NULL;\n  202      }\n  203:     coordinate_object *tmp, *current = set->first;\n  204      while (current != set->last) {\n  205          tmp = current->next;\n  ...\n  220  \n  221  \n  222: coordinate_subset *create_subset(coordinate_set_object *set, coordinate_object *coordinate) {\n  223      coordinate_subset *subset = emalloc(sizeof(coordinate_subset));\n  224      subset->length = 1;\n  ...\n  245              parse_h_record(intern, curLine);\n  246          } else if (is_b_record(curLine)) {\n  247:             coordinate_object *coordinate = parse_igc_coordiante(curLine);\n  248              coordinate->id = intern->length++;\n  249              coordinate->prev = intern->last;\n  ...\n  271  \n  272  int has_height_data(coordinate_set_object *coordinate_set) {\n  273:     coordinate_object *coordinate = coordinate_set->first;\n  274      while (coordinate) {\n  275          if (coordinate->ele) {\n  ...\n  289      coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  290      if (intern->first) {\n  291:         coordinate_object *current = intern->first->next;\n  292          while (current) {\n  293              if (current->ele == 0) {\n  ...\n  349      }\n  350      coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);\n  351:     coordinate_object_set_section(intern, offset);\n  352      RETURN_NULL();\n  353  }\n  354  \n  355: void coordinate_object_set_section(coordinate_set_object *intern, long index) {\n  356      coordinate_subset *current = intern->first_subset;\n  357      coordinate_subset *tmp;\n  ...\n  378  int set_graph_values(coordinate_set_object *intern) {\n  379      if (intern->first) {\n  380:         coordinate_object *current = intern->first->next;\n  381          while (current && current->next) {\n  382              double distance = get_distance(current->next, current->prev);\n  ...\n  397  \n  398  long coordinate_set_simplify(coordinate_set_object *set) {\n  399:     coordinate_object *tmp, *current;\n  400      if (set->first) {\n  401          current = set->first->next;\n  ...\n  405              if (distance < 0.0001) {\n  406                  tmp = current->next;\n  407:                 _free_coordinate_object(current);\n  408                  i++;\n  409                  current = tmp;\n  ...\n  459      intern->max_ele = intern->max_ele = intern->max_alt = intern->min_alt = 0;\n  460      intern->max_climb_rate = intern->min_climb_rate = intern->max_speed = 0;\n  461:     coordinate_object *current = intern->first;\n  462      while (current) {\n  463          // Compare heights with max/min\n  ...\n  521  }\n  522  \n  523: coordinate_object *parse_igc_coordiante(char *line) {\n  524:     coordinate_object *intern = emalloc(sizeof(coordinate_object));\n  525      char *p = line + 1;\n  526      intern->bearing = 0;\n\nA:\\extensions\\coordinate\\coordinate_set.h:\n   25  \n   26  typedef struct coordinate_subset {\n   27:     coordinate_object *first, *last;\n   28      long length;\n   29      struct coordinate_subset *next, *prev;\n   ..\n   33      zend_object std;\n   34  \n   35:     coordinate_object *coordinate, *first, *last;\n   36      long length;\n   37      long offset;\n   ..\n   60  static zend_object_value coordinate_set_object_clone(zval *object TSRMLS_DC);\n   61  \n   62: coordinate_object *match_b_record(char *line);\n   63  int set_graph_values(coordinate_set_object *intern);\n   64  int parse_igc(coordinate_set_object *intern, char *string);\n   65: coordinate_object *parse_igc_coordiante(char *string);\n   66  int is_b_record(char *line);\n   67  int is_h_record(char *line);\n   68  int is_valid_subset(coordinate_subset *start);\n   69: void push_coordinate(coordinate_set_object *set, coordinate_object *coordinate);\n   70  int parse_h_record(coordinate_set_object *coordinate_set, char *line);\n   71  int has_height_data(coordinate_set_object *coordinate_set);\n   72: void clone_coordinate_object(coordinate_object *source, coordinate_object *dest);\n   73: void coordinate_object_trim(coordinate_set_object *source);\n   74  void free_subset(coordinate_set_object *parser, coordinate_subset *subset);\n   75: void coordinate_object_set_section(coordinate_set_object *intern, long index);\n   76  #endif\n\nA:\\extensions\\coordinate\\distance_map.c:\n   96      }\n   97      int j;\n   98:     coordinate_object *coordinate1 = set->first;\n   99      i = 0;\n  100      while (coordinate1) {\n  101          j = i + 1;\n  102:         coordinate_object *coordinate2 = coordinate1->next;\n  103          while (coordinate2) {\n  104              map->distances[i][j - i - 1] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);\n  ...\n  224          return_intern->size = 5;\n  225          return_intern->type = TRIANGLE;\n  226:         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 5);\n  227          return_intern->coordinate[0] = get_coordinate(intern, indexes[0]);\n  228          return_intern->coordinate[1] = get_coordinate(intern, indexes[1]);\n  ...\n  268          return_intern->size = 3;\n  269          return_intern->type = OUT_AND_RETURN;\n  270:         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);\n  271          return_intern->coordinate[0] = get_coordinate(intern, indexes[0]);\n  272          return_intern->coordinate[1] = get_coordinate(intern, indexes[1]);\n  ...\n  329          return_intern->size = 5;\n  330          return_intern->type = OPEN_DISTANCE;\n  331:         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 5);\n  332          return_intern->coordinate[0] = get_coordinate(intern, indexes[0]);\n  333          return_intern->coordinate[1] = get_coordinate(intern, indexes[1]);\n  ...\n  354      }\n  355  \n  356:     coordinate_object *point1 = get_coordinate(intern, offset1);\n  357:     coordinate_object *point2 = get_coordinate(intern, offset2);\n  358      double distance = get_distance_precise(point1, point2);\n  359      RETURN_DOUBLE(distance);\n  ...\n  377  }\n  378  \n  379: coordinate_object *get_coordinate(distance_map_object *map, unsigned long index) {\n  380      int i = 0;\n  381:     coordinate_object *current = map->coordinate_set->first;\n  382      while (i < index) {\n  383          i++;\n\nA:\\extensions\\coordinate\\distance_map.h:\n   32  #define MAP(map, from, to) (from >= to ? 0 : map->distances[from][to - from - 1])\n   33  #define SKIP(map, diff) (floor(diff / map->maximum_distance))\n   34: coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);\n   35  int create_distance_map(distance_map_object *map, coordinate_set_object *set);\n   36  #endif\n\nA:\\extensions\\coordinate\\geometry.c:\n   47  #endif\n   48  \n   49: char *get_os_grid_ref(coordinate_object *point) {\n   50      double lat = point->lat toRAD;\n   51      double lon = point->lng toRAD;\n\nA:\\extensions\\coordinate\\geometry.h:\n    8  PHP_MINIT_FUNCTION(geometry);\n    9  \n   10: char *get_os_grid_ref(coordinate_object *point);\n   11  char *gridref_number_to_letter(long e, long n);\n   12  #endif\n\nA:\\extensions\\coordinate\\helmert.c:\n   34  };\n   35  \n   36: void osgb36_to_wgs84(coordinate_object *point) {\n   37      helmert_trans(point, osgb36, wsg84, osgb36_to_wsg84_transform);\n   38  }\n   39  \n   40: void wgs84_to_osgb36(coordinate_object *point) {\n   41      helmert_trans(point, wsg84, osgb36, wsg84_osgb36_to_transform);\n   42  }\n   43  \n   44: void helmert_trans(coordinate_object *point, const helmert_ellipsoid source_ellipse, const helmert_ellipsoid target_ellipse, const helmert_transform transform) {\n   45      printf(\"%f, %f\\n\", point->lat, point->lng);\n   46      double lat = point->lat;\n\nA:\\extensions\\coordinate\\helmert.h:\n   23  static helmert_transform wsg84_osgb36_to_transform;\n   24  \n   25: void osgb36_to_wgs84(coordinate_object *point);\n   26: void wgs84_to_osgb36(coordinate_object *point);\n   27: void helmert_trans(coordinate_object *point, const helmert_ellipsoid source_ellipse, const helmert_ellipsoid target_ellipse, const helmert_transform transform);\n   28  \n   29  #endif\n\nA:\\extensions\\coordinate\\task.c:\n   63      }\n   64  \n   65:     coordinate_object *coordinate_1, *coordinate_2, *coordinate_3, *coordinate_4, *coordinate_5;\n   66      coordinate_1 = coordinate_zval_1 ? zend_object_store_get_object(coordinate_zval_1 TSRMLS_CC) : NULL;\n   67      coordinate_2 = coordinate_zval_2 ? zend_object_store_get_object(coordinate_zval_2 TSRMLS_CC) : NULL;\n   ..\n   73          intern->type = TRIANGLE;\n   74          intern->size = 4;\n   75:         intern->coordinate = emalloc(sizeof(coordinate_object) * 4);\n   76          intern->coordinate[0] = coordinate_1;\n   77          intern->coordinate[1] = coordinate_2;\n   ..\n   81          intern->type = OUT_AND_RETURN;\n   82          intern->size = 3;\n   83:         intern->coordinate = emalloc(sizeof(coordinate_object) * 3);\n   84          intern->coordinate[0] = coordinate_1;\n   85          intern->coordinate[1] = coordinate_2;\n   ..\n   89          if (coordinate_5) {\n   90              intern->size = 5;\n   91:             intern->coordinate = emalloc(sizeof(coordinate_object) * 5);\n   92              intern->coordinate[0] = coordinate_1;\n   93              intern->coordinate[1] = coordinate_2;\n   ..\n   97          } else if (coordinate_4) {\n   98              intern->size = 4;\n   99:             intern->coordinate = emalloc(sizeof(coordinate_object) * 4);\n  100              intern->coordinate[0] = coordinate_1;\n  101              intern->coordinate[1] = coordinate_2;\n  ...\n  104          } else if (coordinate_3) {\n  105              intern->size = 3;\n  106:             intern->coordinate = emalloc(sizeof(coordinate_object) * 3);\n  107              intern->coordinate[0] = coordinate_1;\n  108              intern->coordinate[1] = coordinate_2;\n  ...\n  110          } else if (coordinate_2) {\n  111              intern->size = 2;\n  112:             intern->coordinate = emalloc(sizeof(coordinate_object) * 2);\n  113              intern->coordinate[0] = coordinate_1;\n  114              intern->coordinate[1] = coordinate_2;\n  ...\n  131  int completes_task(coordinate_set_object *set, task_object *task) {\n  132      int i = 0, j = 0;\n  133:     coordinate_object *task_point;\n  134:     coordinate_object *track_point = set->first;\n  135      start:\n  136      for (i; i < task->size; i++) {\n  ...\n  158  \n  159      for (i; i < intern->size; i++) {\n  160:         coordinate_object *point1 = intern->coordinate[i];\n  161          char coordinate[6];\n  162          sprintf(coordinate, \"%d,\", point1->id + 1);\n  ...\n  183  \n  184      for (i; i < end; i++) {\n  185:         coordinate_object *point1 = intern->coordinate[i];\n  186          char *gridref = get_os_grid_ref(point1);\n  187          coordinates = vstrcat(coordinates, gridref, \";\", NULL);\n  ...\n  190  \n  191      if (intern->type == TRIANGLE) {\n  192:         coordinate_object *point1 = intern->coordinate[1];\n  193          char *gridref = get_os_grid_ref(point1);\n  194          coordinates = vstrcat(coordinates, gridref, \";\", NULL);\n  ...\n  217      double distance = 0;\n  218      for (i; i < end; i++) {\n  219:         coordinate_object *point1 = task->coordinate[i];\n  220:         coordinate_object *point2 = task->coordinate[i + 1];\n  221          distance += get_distance_precise(point1, point2);\n  222      }\n  223      if (task->type == TRIANGLE) {\n  224:         coordinate_object *point1 = task->coordinate[1];\n  225:         coordinate_object *point2 = task->coordinate[3];\n  226          distance += get_distance_precise(point1, point2);\n  227      }\n\nA:\\extensions\\coordinate\\task.h:\n   20      zend_object std;\n   21  \n   22:     coordinate_object **coordinate;\n   23      int size;\n   24      task_type type;\n\nA:\\extensions\\coordinate\\formatter\\formatter_js.c:\n   68  \n   69  json_t *get_bounds(coordinate_set_object *set) {\n   70:     coordinate_object *coordinate = set->first;\n   71      double north = coordinate->lat;\n   72      double south = coordinate->lat;\n   ..\n   93      );\n   94  \n   95:     coordinate_object *se = emalloc(sizeof(coordinate_object));\n   96      se->lat = south;\n   97      se->lng = east;\n   98:     coordinate_object *nw = emalloc(sizeof(coordinate_object));\n   99      nw->lat = north;\n  100      nw->lng = west;\n  ...\n  176      json_t *data = json_array();\n  177      json_t *coordinates = json_array();\n  178:     coordinate_object *coordinate = intern->set->first;\n  179      while (coordinate) {\n  180          json_t *point = json_pack(\"{s:i, s:f, s:f}\", \"ele\", coordinate->ele, \"lat\", coordinate->lat, \"lng\", coordinate->lng);\n\nA:\\extensions\\coordinate\\formatter\\formatter_kml.c:\n   79  char *get_meta_data(formatter_object *intern) {\n   80      char *buffer = create_buffer(\"<Metadata><SecondsFromTimeOfFirstPoint>\");\n   81:     coordinate_object *coordinate = intern->set->first;\n   82      int i = 0;\n   83      while (coordinate) {\n   ..\n   99  	<altitudeMode>absolute</altitudeMode>\\n\\\n  100  	<coordinates>\");\n  101:     coordinate_object *coordinate = intern->set->first;\n  102      int i = 0;\n  103      while (coordinate) {\n  ...\n  114  }\n  115  \n  116: char *format_task_point(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {\n  117      double distance = 0;\n  118      if (prev) {\n  ...\n  131      char *info = create_buffer(\"\");\n  132      char *coordinates = create_buffer(\"\");\n  133:     coordinate_object *prev = NULL;\n  134      int i;\n  135      for (i = 0; i < task->size; i++) {\n  ...\n  176  }\n  177  \n  178: char *get_circle_coordinates(coordinate_object *coordinate, int radius) {\n  179      double angularDistance = radius / 6378137.0;\n  180      double sin_lat = 0;\n\nA:\\extensions\\coordinate\\formatter\\formatter_kml_earth.c:\n   79  char *get_meta_data_earth(formatter_object *intern) {\n   80      char *buffer = create_buffer(\"<Metadata><SecondsFromTimeOfFirstPoint>\");\n   81:     coordinate_object *coordinate = intern->set->first;\n   82      int i = 0;\n   83      while (coordinate) {\n   ..\n  102  	<altitudeMode>\", altitude_mode, \"</altitudeMode>\\n\\\n  103  	<coordinates>\", NULL);\n  104:     coordinate_object *coordinate = intern->set->first;\n  105      int i = 0;\n  106      while (coordinate) {\n  ...\n  117  }\n  118  \n  119: char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_object *last, char *style) {\n  120      char *buffer = create_buffer(\"\");\n  121      buffer = vstrcat(buffer, \"\\\n  ...\n  143  }\n  144  \n  145: char *format_task_point_earth(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {\n  146      double distance = 0;\n  147      if (prev) {\n  ...\n  160      char *info = create_buffer(\"\");\n  161      char *coordinates = create_buffer(\"\");\n  162:     coordinate_object *prev = NULL;\n  163      int i;\n  164      for (i = 0; i < task->size; i++) {\n  ...\n  205  }\n  206  \n  207: char *get_circle_coordinates_earth(coordinate_object *coordinate, int radius) {\n  208      double angularDistance = radius / 6378137.0;\n  209      double sin_lat = 0;\n  ...\n  530      long min = set->min_ele;\n  531      double delta = (set->max_ele - set->min_ele ? : 1) / 16;\n  532:     coordinate_object *last, *first, *current;\n  533      first = current = set->first;\n  534      int last_level, current_level;\n  ...\n  561      long min = set->min_climb_rate;\n  562      double delta = (set->max_climb_rate - set->min_climb_rate ? : 1) / 16;\n  563:     coordinate_object *last, *first, *current;\n  564      first = current = set->first;\n  565      int last_level, current_level;\n  ...\n  593      long min = 0;\n  594      double delta = (set->max_speed ? : 1) / 16;\n  595:     coordinate_object *last, *first, *current;\n  596      first = current = set->first;\n  597      int last_level, current_level;\n  ...\n  638      long min = set->first->timestamp;\n  639      double delta = (set->last->timestamp - min ? : 1) / 16;\n  640:     coordinate_object *current = set->first;\n  641      int current_level;\n  642      char *point, *next_point;\n\nA:\\extensions\\coordinate\\formatter\\formatter_kml_split.c:\n   56      <altitudeMode>absolute</altitudeMode>\\n\\\n   57      <coordinates>\");\n   58:     coordinate_object *coordinate = intern->first;\n   59      int i = 0;\n   60      while (coordinate && coordinate != intern->last) {\n\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\0_boostrap.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\1_variables.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\2_bootswatch.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\3_cms.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\_cms.scssc\n143 matches across 16 files\n",
+			"file": "task.h",
 			"settings":
 			{
-				"buffer_size": 24411,
+				"buffer_size": 928,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "formatter/formatter_kml.c",
+			"settings":
+			{
+				"buffer_size": 13531,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "geometry.h",
+			"settings":
+			{
+				"buffer_size": 401,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "distance_map.c",
+			"settings":
+			{
+				"buffer_size": 15860,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "coordinate.c",
+			"settings":
+			{
+				"buffer_size": 9794,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/php.log",
+			"settings":
+			{
+				"buffer_size": 7717,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\n\nSearching 3514 files for \"->size =\"\n\nUnable to open A:\\extensions\\coordinate\\config.h.in\nA:\\extensions\\coordinate\\distance_map.c:\n   89      map->coordinate_set = set;\n   90  \n   91:     long real_size = map->size = set->length;\n   92      map->distances = (unsigned long **) emalloc(sizeof(unsigned long *) * real_size);\n   93      int i = 0;\n   ..\n  219          object_init_ex(ret, task_ce);\n  220          task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  221:         return_intern->size = 4;\n  222          return_intern->type = TRIANGLE;\n  223          return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);\n  ...\n  268          object_init_ex(ret, task_ce);\n  269          task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  270:         return_intern->size = 3;\n  271          return_intern->type = OUT_AND_RETURN;\n  272          return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);\n  ...\n  328          object_init_ex(ret, task_ce);\n  329          task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);\n  330:         return_intern->size = 5;\n  331          return_intern->gap = NULL;\n  332          return_intern->type = OPEN_DISTANCE;\n\nA:\\extensions\\coordinate\\task.c:\n   72      if (coordinate_4 && coordinate_1 && !coordinate_5 && coordinate_1->lat == coordinate_4->lat) {\n   73          intern->type = TRIANGLE;\n   74:         intern->size = 4;\n   75          intern->coordinate = emalloc(sizeof(coordinate_object) * 4);\n   76          intern->coordinate[0] = coordinate_1;\n   ..\n   80      } else if (coordinate_3 && coordinate_1 && !coordinate_4 && coordinate_1->lat == coordinate_3->lat) {\n   81          intern->type = OUT_AND_RETURN;\n   82:         intern->size = 3;\n   83          intern->coordinate = emalloc(sizeof(coordinate_object) * 3);\n   84          intern->coordinate[0] = coordinate_1;\n   ..\n   88          intern->type = OPEN_DISTANCE;\n   89          if (coordinate_5) {\n   90:             intern->size = 5;\n   91              intern->coordinate = emalloc(sizeof(coordinate_object) * 5);\n   92              intern->coordinate[0] = coordinate_1;\n   ..\n   96              intern->coordinate[4] = coordinate_5;\n   97          } else if (coordinate_4) {\n   98:             intern->size = 4;\n   99              intern->coordinate = emalloc(sizeof(coordinate_object) * 4);\n  100              intern->coordinate[0] = coordinate_1;\n  ...\n  103              intern->coordinate[3] = coordinate_4;\n  104          } else if (coordinate_3) {\n  105:             intern->size = 3;\n  106              intern->coordinate = emalloc(sizeof(coordinate_object) * 3);\n  107              intern->coordinate[0] = coordinate_1;\n  ...\n  109              intern->coordinate[2] = coordinate_3;\n  110          } else if (coordinate_2) {\n  111:             intern->size = 2;\n  112              intern->coordinate = emalloc(sizeof(coordinate_object) * 2);\n  113              intern->coordinate[0] = coordinate_1;\n\nUnable to open A:\\extensions\\coordinate\\autom4te.cache\\output.0t\nUnable to open A:\\extensions\\coordinate\\autom4te.cache\\traces.0t\nA:\\extensions\\coordinate\\include\\json\\hashtable.c:\n  184      size_t i;\n  185  \n  186:     hashtable->size = 0;\n  187      hashtable->order = 3;\n  188      hashtable->buckets = jsonp_malloc(hashsize(hashtable->order) * sizeof(bucket_t));\n  ...\n  294  \n  295      list_init(&hashtable->list);\n  296:     hashtable->size = 0;\n  297  }\n  298  \n\nA:\\extensions\\coordinate\\include\\json\\strbuffer.c:\n   21  int strbuffer_init(strbuffer_t *strbuff)\n   22  {\n   23:     strbuff->size = STRBUFFER_MIN_SIZE;\n   24      strbuff->length = 0;\n   25  \n   ..\n   38          jsonp_free(strbuff->value);\n   39  \n   40:     strbuff->size = 0;\n   41      strbuff->length = 0;\n   42      strbuff->value = NULL;\n   ..\n   95          jsonp_free(strbuff->value);\n   96          strbuff->value = new_value;\n   97:         strbuff->size = new_size;\n   98      }\n   99  \n\nA:\\extensions\\coordinate\\include\\json\\value.c:\n  347  \n  348      array->entries = 0;\n  349:     array->size = 8;\n  350  \n  351      array->table = jsonp_malloc(array->size * sizeof(json_t *));\n  ...\n  448          return NULL;\n  449  \n  450:     array->size = new_size;\n  451      array->table = new_table;\n  452  \n\nA:\\uknxcl\\web\\.core\\form\\field_image.php:\n   57      public function get_image_size($size) {\n   58          foreach ($this->get_image_sizes() as $image_size) {\n   59:             if ($image_size->size == $size) {\n   60                  return $image_size;\n   61              }\n\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\0_boostrap.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\1_variables.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\2_bootswatch.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\3_cms.scssc\nUnable to open A:\\uknxcl\\web\\.core\\module\\cms\\scss\\.sass-cache\\ba53a3af6e9448bece5b5f58f766d359fb910d0e\\_cms.scssc\n18 matches across 6 files\n",
+			"settings":
+			{
+				"buffer_size": 5210,
 				"line_ending": "Windows",
 				"name": "Find Results",
 				"scratch": true
-			}
-		},
-		{
-			"file": "coordinate_set.h",
-			"settings":
-			{
-				"buffer_size": 2717,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "formatter/formatter_kml_earth.h",
-			"settings":
-			{
-				"buffer_size": 970,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/A/uknxcl/web/inc/track/track.php",
-			"settings":
-			{
-				"buffer_size": 15951,
-				"line_ending": "Windows"
 			}
 		}
 	],
@@ -688,7 +680,6 @@
 	[
 		"/A/extensions/coordinate",
 		"/A/extensions/coordinate/formatter",
-		"/A/extensions/coordinate/test",
 		"/A/uknxcl/web",
 		"/A/uknxcl/web/.core",
 		"/A/uknxcl/web/.core/classes",
@@ -697,13 +688,28 @@
 	],
 	"file_history":
 	[
+		"/A/extensions/coordinate/test/test2.igc",
+		"/A/extensions/coordinate/distance_map.h",
+		"/A/extensions/coordinate/task.c",
+		"/A/extensions/coordinate/formatter/formatter_kml_earth.h",
+		"/A/extensions/coordinate/test/test4_earth.kml",
+		"/A/extensions/coordinate/test/test5_earth.kml",
+		"/A/extensions/coordinate/test/test6_earth.kml",
+		"/A/uknxcl/web/.core/classes/kml.php",
+		"/A/uknxcl/web/inc/track/track.php",
+		"/A/extensions/coordinate/coordinate_set.h",
 		"/A/extensions/coordinate/coordinate_set.c",
+		"/A/extensions/coordinate/coordinate.h",
+		"/A/extensions/coordinate/test/test7.igc",
+		"/A/extensions/coordinate/test/php.log",
+		"/A/extensions/coordinate/coordinate.c",
+		"/A/extensions/coordinate/test/test1_earth.kml",
+		"/A/extensions/coordinate/Makefile",
 		"/C/Users/rob/Desktop/track_earth.kml",
 		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/A/extensions/coordinate/test1_earth.kml",
-		"/A/extensions/coordinate/test/php.log",
 		"/A/extensions/coordinate/formatter/formatter_kml_earth.c",
 		"/C/Users/rob/PhpstormProjects/extensions/.idea/workspace.xml",
 		"/A/extensions/coordinate/test/test.php",
@@ -715,17 +721,12 @@
 		"/A/extensions/coordinate/formatter_kml_split.c",
 		"/A/extensions/coordinate/formatter_kml.c",
 		"/A/extensions/coordinate/formatter_js.c",
-		"/A/extensions/coordinate/coordinate.c",
-		"/A/extensions/coordinate/coordinate.h",
 		"/A/extensions/coordinate/distance_map.c",
-		"/A/extensions/coordinate/coordinate_set.h",
 		"/A/uknxcl/web/.core/classes/interfaces/geometry.php",
-		"/A/uknxcl/web/inc/track/track.php",
 		"/A/uknxcl/web/inc/track/defined_task.php",
 		"/A/uknxcl/web/inc/module/comps/object/comp.php",
 		"/A/uknxcl/web/inc/object/flight.php",
 		"/A/extensions/coordinate/test0.kml",
-		"/A/extensions/coordinate/task.c",
 		"/A/extensions/coordinate/task.h",
 		"/A/uknxcl/web/inc/track/track_point.php",
 		"/A/uknxcl/web/inc/track/task.php",
@@ -769,7 +770,6 @@
 		"/C/Users/rob/Downloads/9838-Brown_Malcolm-2014-09-07.kml",
 		"/A/uknxcl/web/uploads/flight/temp/1411909744/track.kmz",
 		"/A/extensions/coordinate/libtool",
-		"/A/extensions/coordinate/distance_map.h",
 		"/A/extensions/coordinate/rebuild.sh",
 		"/A/extensions/coordinate/helmert.c",
 		"/A/extensions/coordinate/reload.sh",
@@ -799,7 +799,6 @@
 		"/A/extensions/coordinate/reload_full.sh",
 		"/A/extensions/coordinate/mkinstalldirs",
 		"/A/extensions/coordinate/configure",
-		"/A/extensions/coordinate/Makefile",
 		"/A/uknxcl.old/conf/uknxcl.old.local.com.conf",
 		"/C/Users/rob/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
 		"/A/extensions/coordinate/Makefile.global"
@@ -823,6 +822,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"get",
+			"php_m",
+			"task",
+			"->size =",
+			"task",
+			"furthest_between",
 			"coordinate_object",
 			"->id =",
 			"free_s",
@@ -944,13 +949,7 @@
 			"get_coordinate_string",
 			"vstrcat(",
 			"vstrcat",
-			"output_concat",
-			"get_os_grid_ref",
-			"><",
-			"\\",
-			"sprintf",
-			"&",
-			"intern"
+			"output_concat"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1072,101 +1071,71 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 9,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/A/uknxcl/web/.core/classes/kml.php",
+					"file": "formatter/formatter_kml_earth.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6162,
+						"buffer_size": 23613,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3363,
-								3363
+								5879,
+								5879
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1018.0,
+						"translation.y": 1829.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "formatter/formatter_js.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7683,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								125,
+								125
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "formatter/formatter_kml_earth.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 23381,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								22217,
-								22217
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C Improved/C Improved.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 8618.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
 					"buffer": 2,
-					"file": "formatter/formatter_js.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7600,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4055,
-								4055
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C Improved/C Improved.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1160.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "test/test1.igc",
 					"semi_transient": false,
 					"settings":
@@ -1187,14 +1156,14 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 14182.0,
+						"translation.y": 15191.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "bin/rebuild.sh",
 					"semi_transient": false,
 					"settings":
@@ -1218,24 +1187,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "test/test.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8241,
+						"buffer_size": 8637,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5061,
-								5061
+								3300,
+								3150
 							]
 						],
 						"settings":
@@ -1245,759 +1214,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1820.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "test/test1_earth.kml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 584559,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								214633,
-								214633
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 122967.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "test/php.log",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 23338,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17981,
-								17981
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 3753.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "coordinate.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9023,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1349,
-								1349
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C Improved/C Improved.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3355.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "coordinate_set.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 18907,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17627,
-								17644
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C Improved/C Improved.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6873.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 24411,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										325,
-										342
-									],
-									[
-										393,
-										410
-									],
-									[
-										509,
-										526
-									],
-									[
-										552,
-										569
-									],
-									[
-										609,
-										626
-									],
-									[
-										933,
-										950
-									],
-									[
-										1091,
-										1108
-									],
-									[
-										1109,
-										1126
-									],
-									[
-										1258,
-										1275
-									],
-									[
-										1276,
-										1293
-									],
-									[
-										1389,
-										1406
-									],
-									[
-										1471,
-										1488
-									],
-									[
-										1671,
-										1688
-									],
-									[
-										1833,
-										1850
-									],
-									[
-										2052,
-										2069
-									],
-									[
-										2256,
-										2273
-									],
-									[
-										2425,
-										2442
-									],
-									[
-										2640,
-										2657
-									],
-									[
-										2820,
-										2837
-									],
-									[
-										2991,
-										3008
-									],
-									[
-										3162,
-										3179
-									],
-									[
-										3318,
-										3335
-									],
-									[
-										3408,
-										3425
-									],
-									[
-										3585,
-										3602
-									],
-									[
-										3675,
-										3692
-									],
-									[
-										3834,
-										3851
-									],
-									[
-										3859,
-										3876
-									],
-									[
-										4068,
-										4085
-									],
-									[
-										4095,
-										4112
-									],
-									[
-										4223,
-										4240
-									],
-									[
-										4248,
-										4265
-									],
-									[
-										4461,
-										4478
-									],
-									[
-										4708,
-										4725
-									],
-									[
-										4855,
-										4872
-									],
-									[
-										4898,
-										4915
-									],
-									[
-										4932,
-										4949
-									],
-									[
-										5095,
-										5112
-									],
-									[
-										5171,
-										5188
-									],
-									[
-										5189,
-										5206
-									],
-									[
-										5245,
-										5262
-									],
-									[
-										5263,
-										5280
-									],
-									[
-										5388,
-										5405
-									],
-									[
-										5415,
-										5432
-									],
-									[
-										5478,
-										5495
-									],
-									[
-										5505,
-										5522
-									],
-									[
-										5559,
-										5576
-									],
-									[
-										5586,
-										5603
-									],
-									[
-										5645,
-										5662
-									],
-									[
-										5834,
-										5851
-									],
-									[
-										6051,
-										6068
-									],
-									[
-										6069,
-										6086
-									],
-									[
-										6100,
-										6117
-									],
-									[
-										6329,
-										6346
-									],
-									[
-										6463,
-										6480
-									],
-									[
-										6659,
-										6676
-									],
-									[
-										6792,
-										6809
-									],
-									[
-										7050,
-										7067
-									],
-									[
-										7141,
-										7158
-									],
-									[
-										7335,
-										7352
-									],
-									[
-										7531,
-										7548
-									],
-									[
-										7746,
-										7763
-									],
-									[
-										8012,
-										8029
-									],
-									[
-										8274,
-										8291
-									],
-									[
-										8546,
-										8563
-									],
-									[
-										8797,
-										8814
-									],
-									[
-										8899,
-										8916
-									],
-									[
-										9185,
-										9202
-									],
-									[
-										9457,
-										9474
-									],
-									[
-										9686,
-										9703
-									],
-									[
-										9967,
-										9984
-									],
-									[
-										10117,
-										10134
-									],
-									[
-										10182,
-										10199
-									],
-									[
-										10225,
-										10242
-									],
-									[
-										10414,
-										10431
-									],
-									[
-										10574,
-										10591
-									],
-									[
-										10774,
-										10791
-									],
-									[
-										10955,
-										10972
-									],
-									[
-										11192,
-										11209
-									],
-									[
-										11387,
-										11404
-									],
-									[
-										11405,
-										11422
-									],
-									[
-										11432,
-										11449
-									],
-									[
-										11470,
-										11487
-									],
-									[
-										11620,
-										11637
-									],
-									[
-										11792,
-										11809
-									],
-									[
-										11929,
-										11946
-									],
-									[
-										12284,
-										12301
-									],
-									[
-										12632,
-										12649
-									],
-									[
-										12979,
-										12996
-									],
-									[
-										13208,
-										13225
-									],
-									[
-										13280,
-										13297
-									],
-									[
-										13474,
-										13491
-									],
-									[
-										13590,
-										13607
-									],
-									[
-										13905,
-										13922
-									],
-									[
-										14176,
-										14193
-									],
-									[
-										14400,
-										14417
-									],
-									[
-										14579,
-										14596
-									],
-									[
-										14727,
-										14744
-									],
-									[
-										14873,
-										14890
-									],
-									[
-										15239,
-										15256
-									],
-									[
-										15294,
-										15311
-									],
-									[
-										15347,
-										15364
-									],
-									[
-										15577,
-										15594
-									],
-									[
-										16024,
-										16041
-									],
-									[
-										16291,
-										16308
-									],
-									[
-										16555,
-										16572
-									],
-									[
-										16834,
-										16851
-									],
-									[
-										17113,
-										17130
-									],
-									[
-										17392,
-										17409
-									],
-									[
-										17652,
-										17669
-									],
-									[
-										17694,
-										17711
-									],
-									[
-										17872,
-										17889
-									],
-									[
-										18081,
-										18098
-									],
-									[
-										18331,
-										18348
-									],
-									[
-										18597,
-										18614
-									],
-									[
-										18661,
-										18678
-									],
-									[
-										18848,
-										18865
-									],
-									[
-										18912,
-										18929
-									],
-									[
-										19120,
-										19137
-									],
-									[
-										19327,
-										19344
-									],
-									[
-										19496,
-										19513
-									],
-									[
-										19535,
-										19552
-									],
-									[
-										19622,
-										19639
-									],
-									[
-										19661,
-										19678
-									],
-									[
-										19841,
-										19858
-									],
-									[
-										20261,
-										20278
-									],
-									[
-										20458,
-										20475
-									],
-									[
-										20618,
-										20635
-									],
-									[
-										20660,
-										20677
-									],
-									[
-										20876,
-										20893
-									],
-									[
-										21031,
-										21048
-									],
-									[
-										21378,
-										21395
-									],
-									[
-										21592,
-										21609
-									],
-									[
-										21763,
-										21780
-									],
-									[
-										21794,
-										21811
-									],
-									[
-										21978,
-										21995
-									],
-									[
-										22020,
-										22037
-									],
-									[
-										22236,
-										22253
-									],
-									[
-										22397,
-										22414
-									],
-									[
-										22650,
-										22667
-									],
-									[
-										22918,
-										22935
-									],
-									[
-										23141,
-										23158
-									],
-									[
-										23396,
-										23413
-									],
-									[
-										23654,
-										23671
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								23049,
-								23049
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 7700.0,
+						"translation.y": 1590.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "coordinate_set.h",
+					"buffer": 5,
+					"file": "coordinate_set.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2717,
+						"buffer_size": 18978,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1464,
-								1476
+								6178,
+								6178
 							]
 						],
 						"settings":
@@ -2007,27 +1244,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 196.0,
+						"translation.y": 2070.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
-					"file": "formatter/formatter_kml_earth.h",
+					"buffer": 6,
+					"file": "task.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 970,
+						"buffer_size": 928,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								970,
-								970
+								516,
+								516
 							]
 						],
 						"settings":
@@ -2038,34 +1275,268 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "/A/uknxcl/web/inc/track/track.php",
+					"buffer": 7,
+					"file": "formatter/formatter_kml.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15951,
+						"buffer_size": 13531,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13322,
-								13322
+								5408,
+								4909
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4673.0,
+						"translation.y": 1482.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "geometry.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 401,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								332,
+								332
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "distance_map.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15860,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10432,
+								10432
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3659.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "coordinate.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9794,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7035,
+								7035
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 2856.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "test/php.log",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7717,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7717,
+								7717
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2190.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5210,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										209,
+										217
+									],
+									[
+										514,
+										522
+									],
+									[
+										826,
+										834
+									],
+									[
+										1144,
+										1152
+									],
+									[
+										1451,
+										1459
+									],
+									[
+										1778,
+										1786
+									],
+									[
+										2030,
+										2038
+									],
+									[
+										2309,
+										2317
+									],
+									[
+										2588,
+										2596
+									],
+									[
+										2867,
+										2875
+									],
+									[
+										3247,
+										3255
+									],
+									[
+										3459,
+										3467
+									],
+									[
+										3615,
+										3623
+									],
+									[
+										3759,
+										3767
+									],
+									[
+										3951,
+										3959
+									],
+									[
+										4094,
+										4102
+									],
+									[
+										4244,
+										4252
+									],
+									[
+										4503,
+										4511
+									],
+									[
+										5210,
+										5210
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								4829,
+								4829
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 3,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1353.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
@@ -2151,7 +1622,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 237.0,
+	"side_bar_width": 236.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

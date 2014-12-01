@@ -4,6 +4,8 @@
 void init_coordinate(TSRMLS_D);
 
 extern zend_class_entry coordinate;
+struct coordinate_set_object;
+struct coordinate_subset;
 
 PHP_METHOD(coordinate, id);
 PHP_METHOD(coordinate, lat);
@@ -36,6 +38,8 @@ typedef struct coordinate_object {
     double bearing;
     struct coordinate_object *prev;
     struct coordinate_object *next;
+    struct coordinate_set_object *coordinate_set;
+    struct coordinate_subset *coordinate_subset;
 } coordinate_object;
 
 zend_class_entry *coordinate_ce;

@@ -1,6 +1,7 @@
 #include <math.h>
 #include <php.h>
 #include "coordinate.h"
+#include "coordinate_set.h"
 #include "geometry.h"
 #include "string_manip.h"
 
@@ -32,6 +33,25 @@ void _free_coordinate_object(coordinate_object *intern) {
     }
     if (intern->next) {
         intern->next->prev = intern->prev;
+    }
+    if (intern->coordinate_set) {
+        if (intern == intern->coordinate_set->first) {
+            intern->coordinate_set->first = intern->next;
+        }
+        if (intern == intern->coordinate_set->last) {
+            intern->coordinate_set->last = intern->prev;
+        }
+        intern->coordinate_set->length--;
+        // printf("First exists... %s -> %d\n", intern->coordinate_set->first ? "Yes" : "No", intern->coordinate_set->first ? intern->coordinate_set->first->id : 0);
+    }
+    if (intern->coordinate_subset) {
+        if (intern == intern->coordinate_subset->first) {
+            intern->coordinate_subset->first = intern->next;
+        }
+        if (intern == intern->coordinate_subset->last) {
+            intern->coordinate_subset->last = intern->prev;
+        }
+        intern->coordinate_subset->length--;
     }
     efree(intern);
 }
@@ -195,7 +215,7 @@ double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {
 }
 
 double get_distance(coordinate_object *point1, coordinate_object *point2) {
-    if (point1->lat != point2->lat && point1->lng != point2->lng) {
+    if (point1->lat != point2->lat || point1->lng != point2->lng) {
         double delta_rad = (point1->lng - point2->lng) toRAD;
         double res = (point1->sin_lat * point2->sin_lat) + point1->cos_lat * point2->cos_lat * cos(delta_rad);
         return acos(res) * 6371;

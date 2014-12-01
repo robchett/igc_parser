@@ -14,7 +14,7 @@ void init_formatter_kml_earth(TSRMLS_D) {
     formatter_kml_earth_ce->create_object = create_formatter_kml_earth_object;
 }
 
-zend_object_value create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) { 
+zend_object_value create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) {
     zend_object_value retval;
 
     formatter_object *intern = emalloc(sizeof(formatter_object));
@@ -144,7 +144,7 @@ char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_obj
 
 char *format_task_point_earth(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {
     double distance = 0;
-    if (prev) {
+    if (prev && coordinate) {
         distance = get_distance_precise(coordinate, prev);
         *total_distance += distance;
     }
@@ -162,13 +162,17 @@ char *get_task_generic_earth(task_object *task, char *title, char *colour) {
     coordinate_object *prev = NULL;
     int i;
     for (i = 0; i < task->size; i++) {
-        char *line = format_task_point_earth(task->coordinate[i], i + 1, prev, &distance);
-        info = vstrcat(info, line, "\n", NULL);
-        prev = task->coordinate[i];
-        char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
-        coordinates = vstrcat(coordinates, kml_coordinate, NULL);
-        efree(kml_coordinate);
-        efree(line);
+        if (task->coordinate[i]) {
+            char *line = format_task_point_earth(task->coordinate[i], i + 1, prev, &distance);
+            info = vstrcat(info, line, "\n", NULL);
+            prev = task->coordinate[i];
+            char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
+            coordinates = vstrcat(coordinates, kml_coordinate, NULL);
+            efree(kml_coordinate);
+            efree(line);
+        } else {
+            printf("%s -> %d missing\n", title, i);
+        }
     }
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\
@@ -635,7 +639,7 @@ char *format_timestamp(int year, int month, int day, int ts) {
 
 char *get_colour_by_time(coordinate_set_object *set) {
     char *buffer = create_buffer("");
-    long min = set->first->timestamp; 
+    long min = set->first->timestamp;
     double delta = (set->last->timestamp - min ? : 1) / 16;
     coordinate_object *current = set->first;
     int current_level;

@@ -28,7 +28,6 @@ static zend_object_value clone_distance_map_object(zval *object TSRMLS_DC);
 
 unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index);
 unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);
-unsigned long furthest_between(distance_map_object *map, unsigned long from, unsigned long to);
 #define MAP(map, from, to) (from >= to ? 0 : map->distances[from][to - from - 1])
 coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);

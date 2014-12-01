@@ -20,6 +20,7 @@ typedef struct task_object {
     zend_object std;
 
     coordinate_object **coordinate;
+    coordinate_object **gap;
     int size;
     task_type type;
 } task_object;
