@@ -981,19 +981,11 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12160,50.82493,173 0.12158,50.82493,173 0.12152,50.82493,174 
-0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 
-0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 
-0.12112,50.82485,172 0.12110,50.82485,172 0.12110,50.82485,171 0.12108,50.82485,171 0.12107,50.82485,171 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 
-0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,171 0.12107,50.82483,171 0.12107,50.82483,171 
-0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12105,50.82483,170 
-0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
-0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
+0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12158,50.82493,173 0.12152,50.82493,174 0.12145,50.82493,174 
+0.12140,50.82493,174 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 
+0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 0.12108,50.82485,171 
+0.12107,50.82485,171 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,171 
+0.12107,50.82485,170 0.12107,50.82483,170 0.12105,50.82483,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -1436,7 +1428,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S0</styleUrl>
+    <styleUrl>#S2</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -1496,7 +1488,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S0</styleUrl>
+    <styleUrl>#S5</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -2357,7 +2349,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S0</styleUrl>
+    <styleUrl>#S3</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -3788,22 +3780,12 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S0</styleUrl>
-    <LineString>
-        <extrude>0</extrude>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.10100,50.83550,345 0.09973,50.83552,345 
-        </coordinates>
-    </LineString>
-</Placemark>
-<Placemark>
     <styleUrl>#S12</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.09973,50.83552,345 0.09850,50.83552,343 0.09728,50.83555,340 
+0.10100,50.83550,345 0.09973,50.83552,345 0.09850,50.83552,343 0.09728,50.83555,340 
         </coordinates>
     </LineString>
 </Placemark>
@@ -3883,28 +3865,8 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.09988,50.83543,313 0.10038,50.83535,311 0.10092,50.83528,310 0.10143,50.83525,309 0.10195,50.83523,311 
-        </coordinates>
-    </LineString>
-</Placemark>
-<Placemark>
-    <styleUrl>#S0</styleUrl>
-    <LineString>
-        <extrude>0</extrude>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.10195,50.83523,311 0.10252,50.83525,315 
-        </coordinates>
-    </LineString>
-</Placemark>
-<Placemark>
-    <styleUrl>#S5</styleUrl>
-    <LineString>
-        <extrude>0</extrude>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.10252,50.83525,315 0.10308,50.83527,316 0.10363,50.83528,317 0.10420,50.83523,315 0.10475,50.83508,317 0.10527,50.83500,316 
-
+0.09988,50.83543,313 0.10038,50.83535,311 0.10092,50.83528,310 0.10143,50.83525,309 0.10195,50.83523,311 0.10252,50.83525,315 
+0.10308,50.83527,316 0.10363,50.83528,317 0.10420,50.83523,315 0.10475,50.83508,317 0.10527,50.83500,316 
         </coordinates>
     </LineString>
 </Placemark>
@@ -4641,28 +4603,8 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.10208,50.83505,321 0.10257,50.83500,320 0.10302,50.83498,319 
-        </coordinates>
-    </LineString>
-</Placemark>
-<Placemark>
-    <styleUrl>#S0</styleUrl>
-    <LineString>
-        <extrude>0</extrude>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.10302,50.83498,319 0.10345,50.83500,317 
-        </coordinates>
-    </LineString>
-</Placemark>
-<Placemark>
-    <styleUrl>#S4</styleUrl>
-    <LineString>
-        <extrude>0</extrude>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.10345,50.83500,317 0.10392,50.83497,314 0.10440,50.83492,311 0.10487,50.83493,309 0.10532,50.83495,308 0.10583,50.83487,307 
-
+0.10208,50.83505,321 0.10257,50.83500,320 0.10302,50.83498,319 0.10345,50.83500,317 0.10392,50.83497,314 0.10440,50.83492,311 
+0.10487,50.83493,309 0.10532,50.83495,308 0.10583,50.83487,307 
         </coordinates>
     </LineString>
 </Placemark>
@@ -4937,7 +4879,7 @@
     </LineString>
 </Placemark>
 <Placemark>
-    <styleUrl>#S0</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <LineString>
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
@@ -5996,19 +5938,11 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12160,50.82493,174 0.12160,50.82493,173 0.12158,50.82493,173 0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 
-0.12137,50.82492,173 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 
-0.12117,50.82488,172 0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 
-0.12110,50.82485,171 0.12108,50.82485,171 0.12107,50.82485,171 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 
-0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 
-0.12105,50.82483,170 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
-0.12105,50.82483,169 
+0.12160,50.82493,174 0.12158,50.82493,173 0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 
+0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12115,50.82487,172 
+0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 0.12108,50.82485,171 0.12107,50.82485,171 0.12108,50.82485,170 
+0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,171 0.12107,50.82485,170 0.12107,50.82483,170 
+0.12105,50.82483,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -6970,19 +6904,11 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12043,50.82508,200 0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12160,50.82493,173 
-0.12158,50.82493,173 0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12137,50.82492,173 
-0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12117,50.82488,172 
-0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 0.12110,50.82485,171 0.12108,50.82485,171 
-0.12107,50.82485,171 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 
-0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,171 
-0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,170 0.12107,50.82483,170 
-0.12107,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,169 
-0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
+0.12043,50.82508,200 0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12158,50.82493,173 
+0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 
+0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 
+0.12110,50.82485,172 0.12108,50.82485,171 0.12107,50.82485,171 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 
+0.12107,50.82485,170 0.12107,50.82483,171 0.12107,50.82485,170 0.12107,50.82483,170 0.12105,50.82483,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -6992,7 +6918,7 @@
         <extrude>0</extrude>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12105,50.82483,169 
+0.12105,50.82483,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -7298,7 +7224,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S0</styleUrl>
+    <styleUrl>#S1</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:26:02Z</begin>
         <end>1924-09-17T14:26:07Z</end>
@@ -8166,7 +8092,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S1</styleUrl>
+    <styleUrl>#S2</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:31:12Z</begin>
         <end>1924-09-17T14:31:17Z</end>
@@ -9020,7 +8946,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S2</styleUrl>
+    <styleUrl>#S3</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:36:17Z</begin>
         <end>1924-09-17T14:36:22Z</end>
@@ -9034,7 +8960,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S2</styleUrl>
+    <styleUrl>#S3</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:36:22Z</begin>
         <end>1924-09-17T14:36:27Z</end>
@@ -9874,7 +9800,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S3</styleUrl>
+    <styleUrl>#S4</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:41:22Z</begin>
         <end>1924-09-17T14:41:27Z</end>
@@ -9888,7 +9814,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S3</styleUrl>
+    <styleUrl>#S4</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:41:27Z</begin>
         <end>1924-09-17T14:41:32Z</end>
@@ -10728,7 +10654,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S4</styleUrl>
+    <styleUrl>#S5</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:46:27Z</begin>
         <end>1924-09-17T14:46:32Z</end>
@@ -10742,7 +10668,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S4</styleUrl>
+    <styleUrl>#S5</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:46:32Z</begin>
         <end>1924-09-17T14:46:37Z</end>
@@ -10756,7 +10682,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S4</styleUrl>
+    <styleUrl>#S5</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:46:37Z</begin>
         <end>1924-09-17T14:46:42Z</end>
@@ -11582,7 +11508,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S6</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:51:32Z</begin>
         <end>1924-09-17T14:51:37Z</end>
@@ -11596,7 +11522,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S6</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:51:37Z</begin>
         <end>1924-09-17T14:51:42Z</end>
@@ -11610,7 +11536,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S6</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:51:42Z</begin>
         <end>1924-09-17T14:51:47Z</end>
@@ -11624,7 +11550,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S5</styleUrl>
+    <styleUrl>#S6</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:51:47Z</begin>
         <end>1924-09-17T14:51:52Z</end>
@@ -12450,7 +12376,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S7</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:56:42Z</begin>
         <end>1924-09-17T14:56:47Z</end>
@@ -12464,7 +12390,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S7</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:56:47Z</begin>
         <end>1924-09-17T14:56:52Z</end>
@@ -12478,7 +12404,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S7</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:56:52Z</begin>
         <end>1924-09-17T14:56:57Z</end>
@@ -12492,7 +12418,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S6</styleUrl>
+    <styleUrl>#S7</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T14:56:57Z</begin>
         <end>1924-09-17T14:57:02Z</end>
@@ -13304,7 +13230,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S8</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:01:47Z</begin>
         <end>1924-09-17T15:01:52Z</end>
@@ -13318,7 +13244,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S8</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:01:52Z</begin>
         <end>1924-09-17T15:01:57Z</end>
@@ -13332,7 +13258,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S8</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:01:57Z</begin>
         <end>1924-09-17T15:02:02Z</end>
@@ -13346,7 +13272,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S8</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:02:02Z</begin>
         <end>1924-09-17T15:02:07Z</end>
@@ -13360,7 +13286,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S7</styleUrl>
+    <styleUrl>#S8</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:02:07Z</begin>
         <end>1924-09-17T15:02:12Z</end>
@@ -14158,7 +14084,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:06:52Z</begin>
         <end>1924-09-17T15:06:57Z</end>
@@ -14172,7 +14098,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:06:57Z</begin>
         <end>1924-09-17T15:07:02Z</end>
@@ -14186,7 +14112,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:07:02Z</begin>
         <end>1924-09-17T15:07:07Z</end>
@@ -14200,7 +14126,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:07:07Z</begin>
         <end>1924-09-17T15:07:12Z</end>
@@ -14214,7 +14140,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S8</styleUrl>
+    <styleUrl>#S9</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:07:12Z</begin>
         <end>1924-09-17T15:07:17Z</end>
@@ -15012,7 +14938,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:11:57Z</begin>
         <end>1924-09-17T15:12:02Z</end>
@@ -15026,7 +14952,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:12:02Z</begin>
         <end>1924-09-17T15:12:07Z</end>
@@ -15040,7 +14966,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:12:07Z</begin>
         <end>1924-09-17T15:12:12Z</end>
@@ -15054,7 +14980,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:12:12Z</begin>
         <end>1924-09-17T15:12:17Z</end>
@@ -15068,7 +14994,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:12:17Z</begin>
         <end>1924-09-17T15:12:22Z</end>
@@ -15082,7 +15008,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S9</styleUrl>
+    <styleUrl>#S10</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:12:22Z</begin>
         <end>1924-09-17T15:12:27Z</end>
@@ -15866,7 +15792,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:02Z</begin>
         <end>1924-09-17T15:17:07Z</end>
@@ -15880,7 +15806,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:07Z</begin>
         <end>1924-09-17T15:17:12Z</end>
@@ -15894,7 +15820,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:12Z</begin>
         <end>1924-09-17T15:17:17Z</end>
@@ -15908,7 +15834,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:17Z</begin>
         <end>1924-09-17T15:17:22Z</end>
@@ -15922,7 +15848,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:22Z</begin>
         <end>1924-09-17T15:17:27Z</end>
@@ -15936,7 +15862,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:27Z</begin>
         <end>1924-09-17T15:17:32Z</end>
@@ -15950,7 +15876,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S10</styleUrl>
+    <styleUrl>#S11</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:17:32Z</begin>
         <end>1924-09-17T15:17:37Z</end>
@@ -16734,7 +16660,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:12Z</begin>
         <end>1924-09-17T15:22:17Z</end>
@@ -16748,7 +16674,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:17Z</begin>
         <end>1924-09-17T15:22:22Z</end>
@@ -16762,7 +16688,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:22Z</begin>
         <end>1924-09-17T15:22:27Z</end>
@@ -16776,7 +16702,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:27Z</begin>
         <end>1924-09-17T15:22:32Z</end>
@@ -16790,7 +16716,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:32Z</begin>
         <end>1924-09-17T15:22:37Z</end>
@@ -16804,7 +16730,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:37Z</begin>
         <end>1924-09-17T15:22:42Z</end>
@@ -16818,7 +16744,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S11</styleUrl>
+    <styleUrl>#S12</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:22:42Z</begin>
         <end>1924-09-17T15:22:47Z</end>
@@ -17588,7 +17514,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:17Z</begin>
         <end>1924-09-17T15:27:22Z</end>
@@ -17602,7 +17528,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:22Z</begin>
         <end>1924-09-17T15:27:27Z</end>
@@ -17616,7 +17542,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:27Z</begin>
         <end>1924-09-17T15:27:32Z</end>
@@ -17630,7 +17556,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:32Z</begin>
         <end>1924-09-17T15:27:37Z</end>
@@ -17644,7 +17570,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:37Z</begin>
         <end>1924-09-17T15:27:42Z</end>
@@ -17658,7 +17584,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:42Z</begin>
         <end>1924-09-17T15:27:47Z</end>
@@ -17672,7 +17598,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:47Z</begin>
         <end>1924-09-17T15:27:52Z</end>
@@ -17686,7 +17612,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S12</styleUrl>
+    <styleUrl>#S13</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:27:52Z</begin>
         <end>1924-09-17T15:27:57Z</end>
@@ -18442,7 +18368,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:22Z</begin>
         <end>1924-09-17T15:32:27Z</end>
@@ -18456,7 +18382,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:27Z</begin>
         <end>1924-09-17T15:32:32Z</end>
@@ -18470,7 +18396,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:32Z</begin>
         <end>1924-09-17T15:32:37Z</end>
@@ -18484,7 +18410,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:37Z</begin>
         <end>1924-09-17T15:32:42Z</end>
@@ -18498,7 +18424,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:42Z</begin>
         <end>1924-09-17T15:32:47Z</end>
@@ -18512,7 +18438,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:47Z</begin>
         <end>1924-09-17T15:32:52Z</end>
@@ -18526,7 +18452,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:52Z</begin>
         <end>1924-09-17T15:32:57Z</end>
@@ -18540,7 +18466,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S13</styleUrl>
+    <styleUrl>#S14</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:32:57Z</begin>
         <end>1924-09-17T15:33:02Z</end>
@@ -19296,7 +19222,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:27Z</begin>
         <end>1924-09-17T15:37:32Z</end>
@@ -19310,35 +19236,21 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:32Z</begin>
-        <end>1924-09-17T15:37:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12160,50.82493,174  0.12160,50.82493,173 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S14</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:37:37Z</begin>
         <end>1924-09-17T15:37:42Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12160,50.82493,173  0.12158,50.82493,173 
+0.12160,50.82493,174  0.12158,50.82493,173 
         </coordinates>
     </LineString>
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:42Z</begin>
         <end>1924-09-17T15:37:47Z</end>
@@ -19352,7 +19264,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:47Z</begin>
         <end>1924-09-17T15:37:52Z</end>
@@ -19366,7 +19278,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:52Z</begin>
         <end>1924-09-17T15:37:57Z</end>
@@ -19380,7 +19292,7 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:37:57Z</begin>
         <end>1924-09-17T15:38:02Z</end>
@@ -19394,23 +19306,9 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S14</styleUrl>
+    <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:38:02Z</begin>
-        <end>1924-09-17T15:38:07Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12137,50.82492,173  0.12137,50.82492,173 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S14</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:38:07Z</begin>
         <end>1924-09-17T15:38:12Z</end>
     </TimeSpan>
     <LineString>
@@ -19481,20 +19379,6 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:38:32Z</begin>
-        <end>1924-09-17T15:38:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12117,50.82488,172  0.12117,50.82488,172 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:38:37Z</begin>
         <end>1924-09-17T15:38:42Z</end>
     </TimeSpan>
     <LineString>
@@ -19551,26 +19435,12 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:38:57Z</begin>
-        <end>1924-09-17T15:39:02Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12110,50.82485,172  0.12110,50.82485,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:02Z</begin>
         <end>1924-09-17T15:39:07Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12110,50.82485,171  0.12108,50.82485,171 
+0.12110,50.82485,172  0.12108,50.82485,171 
         </coordinates>
     </LineString>
 </Placemark>
@@ -19593,54 +19463,12 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:39:12Z</begin>
-        <end>1924-09-17T15:39:17Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,171  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:17Z</begin>
-        <end>1924-09-17T15:39:22Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:22Z</begin>
-        <end>1924-09-17T15:39:27Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:27Z</begin>
         <end>1924-09-17T15:39:32Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12107,50.82485,170  0.12108,50.82485,170 
+0.12107,50.82485,171  0.12108,50.82485,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -19649,48 +19477,6 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:39:32Z</begin>
-        <end>1924-09-17T15:39:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12108,50.82485,170  0.12108,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:37Z</begin>
-        <end>1924-09-17T15:39:42Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12108,50.82485,170  0.12108,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:42Z</begin>
-        <end>1924-09-17T15:39:47Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12108,50.82485,170  0.12108,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:39:47Z</begin>
         <end>1924-09-17T15:39:52Z</end>
     </TimeSpan>
     <LineString>
@@ -19733,26 +19519,12 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:40:02Z</begin>
-        <end>1924-09-17T15:40:07Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:07Z</begin>
         <end>1924-09-17T15:40:12Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12107,50.82485,171  0.12107,50.82483,171 
+0.12107,50.82485,170  0.12107,50.82483,171 
         </coordinates>
     </LineString>
 </Placemark>
@@ -19761,222 +19533,12 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:40:12Z</begin>
-        <end>1924-09-17T15:40:17Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:17Z</begin>
-        <end>1924-09-17T15:40:22Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:22Z</begin>
-        <end>1924-09-17T15:40:27Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:27Z</begin>
-        <end>1924-09-17T15:40:32Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:32Z</begin>
-        <end>1924-09-17T15:40:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,171 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:37Z</begin>
-        <end>1924-09-17T15:40:42Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,171  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:42Z</begin>
-        <end>1924-09-17T15:40:47Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:47Z</begin>
-        <end>1924-09-17T15:40:52Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:52Z</begin>
-        <end>1924-09-17T15:40:57Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:40:57Z</begin>
-        <end>1924-09-17T15:41:02Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:02Z</begin>
-        <end>1924-09-17T15:41:07Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:07Z</begin>
-        <end>1924-09-17T15:41:12Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:12Z</begin>
-        <end>1924-09-17T15:41:17Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:17Z</begin>
-        <end>1924-09-17T15:41:22Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:22Z</begin>
-        <end>1924-09-17T15:41:27Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:27Z</begin>
         <end>1924-09-17T15:41:32Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
-0.12107,50.82483,170  0.12107,50.82485,170 
+0.12107,50.82483,171  0.12107,50.82485,170 
         </coordinates>
     </LineString>
 </Placemark>
@@ -19985,160 +19547,6 @@
     <styleUrl>#S15</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:41:32Z</begin>
-        <end>1924-09-17T15:41:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:37Z</begin>
-        <end>1924-09-17T15:41:42Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:42Z</begin>
-        <end>1924-09-17T15:41:47Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:47Z</begin>
-        <end>1924-09-17T15:41:52Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:52Z</begin>
-        <end>1924-09-17T15:41:57Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:41:57Z</begin>
-        <end>1924-09-17T15:42:02Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:02Z</begin>
-        <end>1924-09-17T15:42:07Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:07Z</begin>
-        <end>1924-09-17T15:42:12Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:12Z</begin>
-        <end>1924-09-17T15:42:17Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:17Z</begin>
-        <end>1924-09-17T15:42:22Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:22Z</begin>
-        <end>1924-09-17T15:42:27Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82485,170  0.12107,50.82485,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:27Z</begin>
         <end>1924-09-17T15:42:32Z</end>
     </TimeSpan>
     <LineString>
@@ -20150,169 +19558,15 @@
 </Placemark>
 
 <Placemark>
-    <styleUrl>#S15</styleUrl>
+    <styleUrl>#S16</styleUrl>
     <TimeSpan>
         <begin>1924-09-17T15:42:32Z</begin>
-        <end>1924-09-17T15:42:37Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:37Z</begin>
-        <end>1924-09-17T15:42:42Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12107,50.82483,170  0.12107,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:42Z</begin>
         <end>1924-09-17T15:42:47Z</end>
     </TimeSpan>
     <LineString>
         <altitudeMode>absolute</altitudeMode>
         <coordinates>
 0.12107,50.82483,170  0.12105,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:47Z</begin>
-        <end>1924-09-17T15:42:52Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,170  0.12105,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:52Z</begin>
-        <end>1924-09-17T15:42:57Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,170  0.12105,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:42:57Z</begin>
-        <end>1924-09-17T15:43:02Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,170  0.12105,50.82483,170 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:02Z</begin>
-        <end>1924-09-17T15:43:07Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,170  0.12105,50.82483,169 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:07Z</begin>
-        <end>1924-09-17T15:43:12Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,169  0.12105,50.82483,169 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:12Z</begin>
-        <end>1924-09-17T15:43:17Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,169  0.12105,50.82483,169 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S15</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:17Z</begin>
-        <end>1924-09-17T15:43:22Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,169  0.12105,50.82483,169 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S16</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:22Z</begin>
-        <end>1924-09-17T15:43:27Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,169  0.12105,50.82483,169 
-        </coordinates>
-    </LineString>
-</Placemark>
-
-<Placemark>
-    <styleUrl>#S16</styleUrl>
-    <TimeSpan>
-        <begin>1924-09-17T15:43:27Z</begin>
-        <end>1924-09-17T15:43:32Z</end>
-    </TimeSpan>
-    <LineString>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-0.12105,50.82483,169  0.12105,50.82483,169 
         </coordinates>
     </LineString>
 </Placemark>
@@ -20485,19 +19739,11 @@
 				0.12298,50.82612,257 0.12245,50.82640,257 0.12173,50.82673,256 0.12105,50.82710,255 0.12050,50.82745,253 0.12002,50.82783,251 
 				0.11965,50.82823,250 0.11913,50.82870,249 0.11853,50.82915,251 0.11877,50.82943,252 0.11950,50.82892,248 0.11885,50.82787,245 
 				0.11827,50.82702,242 0.11842,50.82622,234 0.11907,50.82572,224 0.11960,50.82548,217 0.12002,50.82527,210 0.12043,50.82508,200 
-				0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12160,50.82493,173 0.12158,50.82493,173 
-				0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12137,50.82492,173 0.12135,50.82490,173 
-				0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12117,50.82488,172 0.12115,50.82487,172 
-				0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 0.12110,50.82485,171 0.12108,50.82485,171 0.12107,50.82485,171 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 
-				0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,171 0.12107,50.82483,171 
-				0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,170 
-				0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-				0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-				0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,169 0.12105,50.82483,169 
-				0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
+				0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12158,50.82493,173 0.12152,50.82493,174 
+				0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 
+				0.12122,50.82490,173 0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 
+				0.12108,50.82485,171 0.12107,50.82485,171 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 
+				0.12107,50.82483,171 0.12107,50.82485,170 0.12107,50.82483,170 0.12105,50.82483,170 
 </coordinates></LineString>                 </Placemark>
             </Folder>
             <Folder>
@@ -20656,19 +19902,11 @@
 				0.12298,50.82612,257 0.12245,50.82640,257 0.12173,50.82673,256 0.12105,50.82710,255 0.12050,50.82745,253 0.12002,50.82783,251 
 				0.11965,50.82823,250 0.11913,50.82870,249 0.11853,50.82915,251 0.11877,50.82943,252 0.11950,50.82892,248 0.11885,50.82787,245 
 				0.11827,50.82702,242 0.11842,50.82622,234 0.11907,50.82572,224 0.11960,50.82548,217 0.12002,50.82527,210 0.12043,50.82508,200 
-				0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12160,50.82493,173 0.12158,50.82493,173 
-				0.12152,50.82493,174 0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12137,50.82492,173 0.12135,50.82490,173 
-				0.12130,50.82492,173 0.12127,50.82492,173 0.12122,50.82490,173 0.12117,50.82488,172 0.12117,50.82488,172 0.12115,50.82487,172 
-				0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 0.12110,50.82485,171 0.12108,50.82485,171 0.12107,50.82485,171 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 0.12108,50.82485,170 
-				0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,171 0.12107,50.82483,171 
-				0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,171 0.12107,50.82483,170 
-				0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-				0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 
-				0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82485,170 0.12107,50.82483,170 0.12107,50.82483,170 0.12107,50.82483,170 
-				0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,170 0.12105,50.82483,169 0.12105,50.82483,169 
-				0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 0.12105,50.82483,169 
+				0.12083,50.82493,191 0.12130,50.82473,183 0.12158,50.82487,176 0.12160,50.82493,174 0.12158,50.82493,173 0.12152,50.82493,174 
+				0.12145,50.82493,174 0.12140,50.82493,174 0.12137,50.82492,173 0.12135,50.82490,173 0.12130,50.82492,173 0.12127,50.82492,173 
+				0.12122,50.82490,173 0.12117,50.82488,172 0.12115,50.82487,172 0.12113,50.82487,172 0.12112,50.82485,172 0.12110,50.82485,172 
+				0.12108,50.82485,171 0.12107,50.82485,171 0.12108,50.82485,170 0.12108,50.82487,170 0.12108,50.82485,170 0.12107,50.82485,170 
+				0.12107,50.82483,171 0.12107,50.82485,170 0.12107,50.82483,170 0.12105,50.82483,170 
 </coordinates></LineString>                 </Placemark>
             </Folder>
         </Folder>
@@ -20715,9 +19953,9 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.83523   0.11012
                 <name>Out and Return</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82488   0.12153     TQ494050   0.00       0.00 
-2    50.82412   0.12582     TQ497049   0.31       0.31 
-3    50.82387   0.12722     TQ498049   0.10       0.42 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.83523   0.11012     TQ485061   0.00       0.00 
+2    50.81155   0.14865     TQ513035   3.78       3.78 
+3    50.83628   0.10660     TQ483062   4.04       7.83 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -20729,7 +19967,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82488   0.12153
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        0.12153,50.82488,186 0.12582,50.82412,268 0.12722,50.82387,240 
+                    <coordinates>                        0.11012,50.83523,364 0.14865,50.81155,286 0.10660,50.83628,347 
                     </coordinates>
                 </LineString>
             </Placemark>
@@ -20743,11 +19981,10 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82488   0.12153
                 <name>FAI Triangle</name>
                 <description>
                 <![CDATA[<pre>
-TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82485   0.12203     TQ494050   0.00       0.00 
-2    50.83438   0.14257     TQ508061   1.79       1.79 
-3    50.81143   0.14843     TQ513035   2.59       4.38 
-4    50.83498   0.10517     TQ482061   4.02       8.40 
-5    50.82485   0.12107     TQ493050   1.59       9.99 
+TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.83438   0.14257     TQ508061   0.00       0.00 
+2    50.81143   0.14843     TQ513035   2.59       2.59 
+3    50.82297   0.12778     TQ498048   1.94       4.53 
+4    50.83438   0.14257     TQ508061   1.64       6.17 
 
                                           Duration: 01:56:00
                     </pre>]]>
@@ -20759,7 +19996,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total1    50.82485   0.12203
                     </LineStyle>
                 </Style>
                 <LineString>
-                    <coordinates>                        0.12203,50.82485,186 0.14257,50.83438,295 0.14843,50.81143,284 0.10517,50.83498,346 0.12107,50.82485,170 
+                    <coordinates>                        0.14257,50.83438,295 0.14843,50.81143,284 0.12778,50.82297,295 0.14257,50.83438,295 
                     </coordinates>
                 </LineString>
             </Placemark>
