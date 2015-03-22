@@ -6,3 +6,4 @@ formatter/.libs
 bin/php
 bin/phpize
 bin/php-config
+test/php.log

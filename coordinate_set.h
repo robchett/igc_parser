@@ -57,9 +57,8 @@ zend_class_entry *coordinate_set_ce;
 static zend_function_entry coordinate_set_methods[];
 zend_object_handlers coordinate_set_handlers;
 
-zend_object_value create_coordinate_set_object(zend_class_entry *class_type TSRMLS_DC);
+zend_object* create_coordinate_set_object(zend_class_entry *class_type TSRMLS_DC);
 void free_coordinate_set_object(coordinate_set_object *intern TSRMLS_DC);
-static zend_object_value coordinate_set_object_clone(zval *object TSRMLS_DC);
 
 coordinate_object *match_b_record(char *line);
 int set_graph_values(coordinate_set_object *intern);

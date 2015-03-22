@@ -73,7 +73,7 @@ static zend_always_inline void zend_objects_store_del_ref_by_handle(zend_object_
 	zend_objects_store_del_ref_by_handle_ex(handle, NULL TSRMLS_CC);
 }
 ZEND_API zend_uint zend_objects_store_get_refcount(zval *object TSRMLS_DC);
-ZEND_API zend_object_value zend_objects_store_clone_obj(zval *object TSRMLS_DC);
+ZEND_API zend_object* zend_objects_store_clone_obj(zval *object TSRMLS_DC);
 ZEND_API void *zend_object_store_get_object(const zval *object TSRMLS_DC);
 ZEND_API void *zend_object_store_get_object_by_handle(zend_object_handle handle TSRMLS_DC);
 /* See comment in zend_objects_API.c before you use this */

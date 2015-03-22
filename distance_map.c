@@ -12,43 +12,30 @@ void init_distance_map(TSRMLS_D) {
     INIT_CLASS_ENTRY(ce, "distance_map", distance_map_methods);
     distance_map_ce = zend_register_internal_class(&ce TSRMLS_CC);
     distance_map_ce->create_object = create_distance_map_object;
-
-    memcpy(&distance_map_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    distance_map_handlers.clone_obj = clone_distance_map_object;
 }
 
-zend_object_value create_distance_map_object(zend_class_entry *class_type TSRMLS_DC) {
-    zend_object_value retval;
+zend_object* create_distance_map_object(zend_class_entry *class_type TSRMLS_DC) {
+    distance_map_object* retval;
+    zend_object_handlers handlers;
 
-    distance_map_object *intern = emalloc(sizeof(distance_map_object));
-    memset(intern, 0, sizeof(distance_map_object));
+    distance_map_object *intern = ecalloc(1, sizeof(distance_map_object) + zend_object_properties_size(class_type));
 
     // create a table for class properties
     zend_object_std_init(&intern->std, class_type TSRMLS_CC);
     object_properties_init(&intern->std, class_type);
 
     // create a destructor for this struct
-    retval.handle = zend_objects_store_put(intern, (zend_objects_store_dtor_t) zend_objects_destroy_object, (zend_objects_free_object_storage_t)free_distance_map_object, NULL TSRMLS_CC);
-    retval.handlers = zend_get_std_object_handlers();
+    zend_objects_store_put(&intern->std);
 
-    return retval;
+    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    //handlers.offset = XtOffsetof(distance_map_object, std);
+    //handlers.free_obj = free_distance_map_object;
+
+    return &retval->std;
 }
 
-static zend_object_value clone_distance_map_object(zval *object TSRMLS_DC) {
-    distance_map_object *old_object = zend_object_store_get_object(object TSRMLS_CC);
-    zend_object_value new_object_val = create_distance_map_object(Z_OBJCE_P(object) TSRMLS_CC);
-    distance_map_object *new_object = zend_object_store_get_object_by_handle(new_object_val.handle TSRMLS_CC);
-
-    zend_objects_clone_members(
-        &new_object->std, new_object_val,
-        &old_object->std, Z_OBJ_HANDLE_P(object) TSRMLS_CC
-    );
-
-    // new_object->coordinate_set = old_object->coordinate_set;
-    // if (new_object->coordinate_set) {
-    //  Z_ADDREF_P(new_object->coordinate_set);
-    // }
-    return new_object_val;
+inline distance_map_object* fetch_distance_map_object(zend_object* obj) {
+    return (distance_map_object*) ((char*) obj - XtOffsetOf(distance_map_object, std));
 }
 
 
@@ -81,8 +68,8 @@ PHP_METHOD(distance_map, __construct) {
         return;
     }
 
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
-    coordinate_set_object *coordinate_set_object = zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_set_object *coordinate_set_object = fetch_distance_map_object(coordinate_set_zval TSRMLS_CC);
     create_distance_map(intern, coordinate_set_object);
 }
 
@@ -186,7 +173,7 @@ void close_gap(distance_map_object *intern, triangle_score *score) {
 }
 
 PHP_METHOD(distance_map, score_triangle) {
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     unsigned long maximum_distance = 0;
     triangle_score scores = {.x = 0, .y = 0, .z = 0, .row = 0, .col = 0, .prev = NULL, .next = NULL};
     triangle_score *best_score = & scores;
@@ -237,7 +224,7 @@ PHP_METHOD(distance_map, score_triangle) {
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);
-        task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 4;
         return_intern->type = TRIANGLE;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);
@@ -255,7 +242,7 @@ PHP_METHOD(distance_map, score_triangle) {
 }
 
 PHP_METHOD(distance_map, score_out_and_return) {
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     long distance, maximum_distance = 0;
     long indexes[] = {0, 0, 0};
     long row, col, x;
@@ -284,7 +271,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);
-        task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 3;
         return_intern->type = OUT_AND_RETURN;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);
@@ -301,7 +288,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
 }
 
 PHP_METHOD(distance_map, score_open_distance_3tp) {
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     unsigned long bestBack[intern->size], bestFwrd[intern->size];
     long bestBack_index[intern->size], bestFwrd_index[intern->size];
     long i;
@@ -344,7 +331,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);
-        task_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 5;
         return_intern->gap = NULL;
         return_intern->type = OPEN_DISTANCE;
@@ -360,7 +347,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
 }
 
 PHP_METHOD(distance_map, get_precise) {
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     unsigned long offset1;
     unsigned long offset2;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &offset1, &offset2) != SUCCESS) {
@@ -393,7 +380,7 @@ PHP_METHOD(distance_map, get) {
         offset2 = temp;
     }
 
-    distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     RETURN_DOUBLE((double)MAP(intern, offset1, offset2) / 1000000);
 }
 

@@ -45,7 +45,7 @@ typedef struct coordinate_object {
 zend_class_entry *coordinate_ce;
 static zend_function_entry coordinate_methods[];
 
-zend_object_value create_coordinate_object(zend_class_entry *class_type TSRMLS_DC);
+zend_object* create_coordinate_object(zend_class_entry *class_type TSRMLS_DC);
 void free_coordinate_object(coordinate_object *intern TSRMLS_DC);
 void _free_coordinate_object(coordinate_object *intern);
 

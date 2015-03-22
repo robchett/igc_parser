@@ -1281,7 +1281,7 @@
 /* */
 /* #undef HAVE_ORALDAP_12 */
 
-/* Whether struct _zend_object_value is packed */
+/* Whether struct _zend_object* is packed */
 #define HAVE_PACKED_OBJECT_VALUE 0
 
 /* */

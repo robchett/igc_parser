@@ -54,7 +54,7 @@ typedef unsigned int zend_object_handle;
 typedef struct _zend_object_handlers zend_object_handlers;
 typedef struct _zval_struct zval;
 
-typedef struct _zend_object_value {
+typedef struct _zend_object* {
 	zend_object_handle handle;
 	const zend_object_handlers *handlers;
 } zend_object_value;

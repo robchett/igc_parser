@@ -28,7 +28,7 @@ typedef struct task_object {
 zend_class_entry *task_ce;
 static zend_function_entry task_methods[];
 
-zend_object_value create_task_object(zend_class_entry *class_type TSRMLS_DC);
+zend_object* create_task_object(zend_class_entry *class_type TSRMLS_DC);
 void free_task_object(task_object *intern TSRMLS_DC);
 double get_task_distance(task_object *task);
 int get_task_time(task_object *task);

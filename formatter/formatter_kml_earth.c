@@ -14,19 +14,20 @@ void init_formatter_kml_earth(TSRMLS_D) {
     formatter_kml_earth_ce->create_object = create_formatter_kml_earth_object;
 }
 
-zend_object_value create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) {
-    zend_object_value retval;
+zend_object* create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) {
+    formatter_object* retval;
+    zend_object_handlers handlers;
 
-    formatter_object *intern = emalloc(sizeof(formatter_object));
-    memset(intern, 0, sizeof(formatter_object));
+    formatter_object *intern = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
 
     zend_object_std_init(&intern->std, class_type TSRMLS_CC);
     object_properties_init(&intern->std, class_type);
 
-    retval.handle = zend_objects_store_put(intern, (zend_objects_store_dtor_t) zend_objects_destroy_object,  (zend_objects_free_object_storage_t)free_formatter_kml_earth_object, NULL TSRMLS_CC);
-    retval.handlers = zend_get_std_object_handlers();
+    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    //handlers.offset = XtOffsetof(formatter_object, std);
+    //handlers.free_obj = free_formatter_kml_earth_object;
 
-    return retval;
+    return &retval->std;
 }
 
 void free_formatter_kml_earth_object(formatter_object *intern TSRMLS_DC) {
@@ -49,7 +50,7 @@ PHP_METHOD(formatter_kml_earth, __construct) {
     zval *task_zval = NULL;
     char *name;
     long length;
-    formatter_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    formatter_object *intern = fetch_formatter_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     intern->set = NULL;
     intern->open_distance = NULL;
     intern->triangle = NULL;
@@ -68,11 +69,11 @@ PHP_METHOD(formatter_kml_earth, __construct) {
         return;
     }
 
-    intern->set = (coordinate_set_object *)zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
-    intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *)zend_object_store_get_object(od_zval TSRMLS_CC) : NULL;
-    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *)zend_object_store_get_object(or_zval TSRMLS_CC) : NULL;
-    intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *)zend_object_store_get_object(tr_zval TSRMLS_CC) : NULL;
-    intern->task = is_object_of_type(task_zval, task_ce) ? (task_object *)zend_object_store_get_object(task_zval TSRMLS_CC) : NULL;
+    intern->set = (coordinate_set_object *) fetch_coordinate_set_object (Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
+    intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *) fetch_task_object(Z_OBJ_P(od_zval) TSRMLS_CC) : NULL;
+    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *)fetch_task_object(Z_OBJ_P(or_zval) TSRMLS_CC) : NULL;
+    intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *)fetch_task_object(Z_OBJ_P(tr_zval) TSRMLS_CC) : NULL;
+    intern->task = is_object_of_type(task_zval, task_ce) ? (task_object *)fetch_task_object(Z_OBJ_P(task_zval) TSRMLS_CC) : NULL;
     intern->name = name;
 }
 
@@ -305,8 +306,8 @@ char *get_task_ft_earth(formatter_object *intern) {
 }
 
 PHP_METHOD(formatter_kml_earth, output) {
-    formatter_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
-    RETURN_STRING(formatter_kml_earth_output(intern), 1);
+    formatter_object *intern = zend_object_store_get_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    RETURN_STRING(formatter_kml_earth_output(intern));
 }
 
 char *formatter_kml_earth_output(formatter_object *intern) {

@@ -14,19 +14,24 @@ void init_task(TSRMLS_D) {
     task_ce->create_object = create_task_object;
 }
 
-zend_object_value create_task_object(zend_class_entry *class_type TSRMLS_DC) {
-    zend_object_value retval;
+zend_object* create_task_object(zend_class_entry *class_type TSRMLS_DC) {
+    task_object* retval;
+    zend_object_handlers handlers;
 
-    task_object *intern = emalloc(sizeof(task_object));
-    memset(intern, 0, sizeof(task_object));
+    task_object *intern = ecalloc(1, sizeof(task_object) + zend_object_properties_size(class_type));
 
     zend_object_std_init(&intern->std, class_type TSRMLS_CC);
     object_properties_init(&intern->std, class_type);
 
-    retval.handle = zend_objects_store_put(intern, (zend_objects_store_dtor_t) zend_objects_destroy_object,  (zend_objects_free_object_storage_t)free_task_object, NULL TSRMLS_CC);
-    retval.handlers = zend_get_std_object_handlers();
+    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    //handlers.offset = XtOffsetof(task_object, std);
+    //handlers.free_obj = free_task_object;
 
-    return retval;
+    return &retval->std;
+}
+
+inline task_object* fetch_task_object(zend_object* obj) {
+    return (task_object*) ((char*) obj - XtOffsetOf(task_object, std));
 }
 
 void free_task_object(task_object *intern TSRMLS_DC) {
@@ -46,7 +51,7 @@ static zend_function_entry task_methods[] = {
 
 PHP_METHOD(task, __construct) {
     zval *coordinate_zval_1 = NULL, *coordinate_zval_2 = NULL, *coordinate_zval_3 = NULL, *coordinate_zval_4 = NULL, *coordinate_zval_5 = NULL;
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
 
     if (
         zend_parse_parameters(
@@ -63,11 +68,11 @@ PHP_METHOD(task, __construct) {
     }
 
     coordinate_object *coordinate_1, *coordinate_2, *coordinate_3, *coordinate_4, *coordinate_5;
-    coordinate_1 = coordinate_zval_1 ? zend_object_store_get_object(coordinate_zval_1 TSRMLS_CC) : NULL;
-    coordinate_2 = coordinate_zval_2 ? zend_object_store_get_object(coordinate_zval_2 TSRMLS_CC) : NULL;
-    coordinate_3 = coordinate_zval_3 ? zend_object_store_get_object(coordinate_zval_3 TSRMLS_CC) : NULL;
-    coordinate_4 = coordinate_zval_4 ? zend_object_store_get_object(coordinate_zval_4 TSRMLS_CC) : NULL;
-    coordinate_5 = coordinate_zval_5 ? zend_object_store_get_object(coordinate_zval_5 TSRMLS_CC) : NULL;
+    coordinate_1 = coordinate_zval_1 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_1) TSRMLS_CC) : NULL;
+    coordinate_2 = coordinate_zval_2 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_2) TSRMLS_CC) : NULL;
+    coordinate_3 = coordinate_zval_3 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_3) TSRMLS_CC) : NULL;
+    coordinate_4 = coordinate_zval_4 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_4) TSRMLS_CC) : NULL;
+    coordinate_5 = coordinate_zval_5 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_5) TSRMLS_CC) : NULL;
 
     if (coordinate_4 && coordinate_1 && !coordinate_5 && coordinate_1->lat == coordinate_4->lat) {
         intern->type = TRIANGLE;
@@ -117,14 +122,14 @@ PHP_METHOD(task, __construct) {
 }
 
 PHP_METHOD(task, completes_task) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     zval *coordinate_set_zval = NULL;
 
     if (zend_parse_parameters( ZEND_NUM_ARGS() TSRMLS_CC, "O", &coordinate_set_zval, coordinate_set_ce) == FAILURE) {
         return;
     }
 
-    coordinate_set_object *set = zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
+    coordinate_set_object *set = ferch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
     RETURN_BOOL(completes_task(set, intern));
 }
 
@@ -150,7 +155,7 @@ start:
 }
 
 PHP_METHOD(task, get_coordinate_ids) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
 
     int i = 0;
     char coordinates[intern->size * 6];
@@ -165,21 +170,21 @@ PHP_METHOD(task, get_coordinate_ids) {
     }
     coordinates[(intern->size * 6) - 1] = '\0';
 
-    RETURN_STRING(coordinates, 1);
+    RETURN_STRING(coordinates);
 }
 
 PHP_METHOD(task, get_gap_ids) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     if (intern->gap) {
         char coordinate[12];
         sprintf(coordinate, "%5d,%5d", intern->gap[0]->id + 1, intern->gap[1]->id + 1);
-        RETURN_STRING(coordinate, 0);
+        RETURN_STRING(coordinate);
     }
     RETURN_NULL();
 }
 
 PHP_METHOD(task, get_gridref) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
 
     int i = 0;
     int end = intern->size;
@@ -193,11 +198,11 @@ PHP_METHOD(task, get_gridref) {
         efree(gridref);
     }
 
-    RETURN_STRING(coordinates, 1);
+    RETURN_STRING(coordinates);
 }
 
 PHP_METHOD(task, get_duration) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     RETURN_DOUBLE(get_task_time(intern));
 }
 
@@ -226,6 +231,6 @@ double get_task_distance(task_object *task) {
 }
 
 PHP_METHOD(task, get_distance) {
-    task_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    task_object *intern = fetch_task_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     RETURN_DOUBLE(get_task_distance(intern));
 }

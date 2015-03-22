@@ -27,9 +27,8 @@ zend_class_entry *distance_map_ce;
 zend_object_handlers distance_map_handlers;
 static zend_function_entry distance_map_methods[];
 
-zend_object_value create_distance_map_object(zend_class_entry *class_type TSRMLS_DC);
+zend_object* create_distance_map_object(zend_class_entry *class_type TSRMLS_DC);
 void free_distance_map_object(distance_map_object *intern TSRMLS_DC);
-static zend_object_value clone_distance_map_object(zval *object TSRMLS_DC);
 
 void close_gap(distance_map_object *intern, triangle_score *score);
 
