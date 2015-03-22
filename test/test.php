@@ -18,12 +18,10 @@ $classes = [
         '__construct',
         'set',
         'get',
-        'get_id',
         'count',
         'trim',
         'set_section',
         'repair',
-        'stats',
         'has_height_data',
         'set_graph_values',
         'set_ranges',
@@ -61,15 +59,6 @@ $classes = [
     'formatter_js' => [
         'output'
     ],
-    'statistics_set' => [
-        'height',
-        'speed',
-        'climb',
-    ],
-    'statistic' => [
-        'min',
-        'max',
-    ]
 ];
 
 $pass = true;
@@ -105,7 +94,7 @@ $tests = [
     '52.3033'               => $coordinate_1->lat(),
     '-0.79195'              => $coordinate_1->lng(),
     '1'                     => $coordinate_1->ele(),
-    '094.023977'            => $coordinate_1->get_bearing_to($coordinate_2),
+    '94.0239771393205'      => $coordinate_1->get_bearing_to($coordinate_2),
     '10.407709313555'       => $coordinate_1->get_distance_to($coordinate_2),
     '10.441137'             => $coordinate_1->get_distance_to($coordinate_2, true),
     '52.3033'               => $set->first()->lat(),
@@ -125,41 +114,45 @@ echo pass("Looping successful");
 
 echo PHP_EOL;
 
-score_track('igc/1/test.igc', [
+//score_track('0/test.igc', [
+//    'OD: 014.50 -> 140,346,642,771,813,',
+//    'OR: 007.88 -> 352,642,771,',
+//    'TR: 009.23 -> 191,257,345,446,755,'
+//]);
+score_track('1/test.igc', [
      'OD: 014.50 -> 140,346,642,771,813,',
-     'OR: 007.88 -> 352,642,771, // GPSDUMP INVALID',
-     'TR: 009.23 -> 257,345,441,257,'
+     'OR: 007.88 -> 352,642,771,',
+     'TR: 009.23 -> 191,257,345,446,755,'
 ]);
-// score_track('igc/2/test.igc', [
-//    'OD: 028.92 -> 3,126,975,1014,1597,',
-//    'OR: 002.68 -> 892,975,1013, // GPSDUMP INVALID',
-//    'TR: 002.80 -> 121,293,431,121,'
-// ]);
-// score_track('igc/3/test.igc', [
-//    'OD: 060.30 -> 1,581,1293,1719,1963,',
-//    'OR: 030.08 -> 414,1293,1875,',
-//    'TR: 053.07 -> 581,1286,1592,581,'
-// ]);
-score_track('igc/4/test.igc', [
-   'OD: 121.63 -> 333,599,885,2108,4901,',
-   'OR: 003.25 -> 599,884,958,',
-   'TR: 003.71 -> 67,487,965,67,'
+score_track('2/test.igc', [
+   'OD: 028.92 -> 3,126,975,1014,1597,',
+   'OR: 002.68 -> 892,975,1013,',
+   'TR: 002.80 -> 2,121,293,431,436,'
 ]);
-die();
-score_track('igc/5/test.igc', [
+score_track('3/test.igc', [
    'OD: 060.30 -> 1,581,1293,1719,1963,',
    'OR: 030.08 -> 414,1293,1875,',
-   'TR: 053.07 -> 581,1286,1592,581,'
+   'TR: 053.07 -> 409,581,1286,1592,1862,'
 ]);
-score_track('igc/6/test.igc', [
+score_track('4/test.igc', [
+   'OD: 121.63 -> 333,599,885,2108,4901,',
+   'OR: 003.25 -> 599,884,958,',
+   'TR: 003.71 -> 12,67,487,965,1000,'
+]);
+score_track('5/test.igc', [
+   'OD: 060.30 -> 1,581,1293,1719,1963,',
+   'OR: 030.08 -> 414,1293,1875,',
+   'TR: 053.07 -> 409,581,1286,1592,1862,'
+]);
+score_track('6/test.igc', [
    'OD: 308.32 -> 201,943,2113,4110,4414,',
    'OR: 001.64 -> 4398,4414,4423,',
-   'TR: 001.38 -> 4200,4214,4230,4200,'
+   'TR: 001.38 -> 4199,4200,4214,4230,4231,'
 ]);
-score_track('igc/7/test.igc', [
+score_track('7/test.igc', [
    'OD: 110.27 -> 11,206,4025,5300,7613,',
    'OR: 105.24 -> 615,4025,7614,',
-   'TR: 033.63 -> 2636,3429,5166,2636,'
+   'TR: 033.63 -> 1841,2636,3429,5166,6657,'
 ]);
 
 ini_set('memory_limit', '512M');
@@ -183,17 +176,16 @@ function score_track($file, $answers = []) {
     _log('Points', $set_2->count() . " (" . $intial . ")");
     _log('Parts',  $set_2->part_count());
     
-    // action('Simplifing file', $set_2->simplify());
-    // _log('Points', $set_2->count() . " (" . $intial . ")");
+    action('Simplifing file', $set_2->simplify());
+    _log('Points', $set_2->count() . " (" . $intial . ")");
     
-    // action('Trimming file', $set_2->trim());
-    // _log('Points', $set_2->count() . " (" . $intial . ")");
-    // _log('Parts',  $set_2->part_count());
+    action('Trimming file', $set_2->trim());
+    _log('Points', $set_2->count() . " (" . $intial . ")");
+    _log('Parts',  $set_2->part_count());
     
     action('Repairing track', $set_2->repair());
     action('Graphing track',$set_2->set_graph_values());
     action('Ranging track', $set_2->set_ranges());
-
     if($set_2->part_count() > 1) {
        action('Setting section', $set_2->set_section(1));
     }
@@ -203,9 +195,14 @@ function score_track($file, $answers = []) {
 
     action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
 
+    //echo $map_2->get_precise(352,642) + $map_2->get_precise(642,771) - $map_2->get_precise(352,771);
+
     echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
     echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
     echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
+
+    // printf("%f, %f", $set_2->get(403)->lat(), $set_2->get(403)->lng());
+    // printf("%f, %f", $set_2->get(1847)->lat(), $set_2->get(1847)->lng());
 
     _log('Coordinates', $od->get_gridref());
     _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
