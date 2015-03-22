@@ -3,3 +3,6 @@ geometry.sublime-project
 .idea
 formatter/.libs
 .idea/workspace.xml
+bin/php
+bin/phpize
+bin/php-config
