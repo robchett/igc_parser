@@ -18,6 +18,11 @@ typedef struct distance_map_object {
     unsigned long maximum_distance;
 } distance_map_object;
 
+typedef struct triangle_score {
+    unsigned long x,y,z,row,col;
+    struct triangle_score *prev, *next;
+} triangle_score;
+
 zend_class_entry *distance_map_ce;
 zend_object_handlers distance_map_handlers;
 static zend_function_entry distance_map_methods[];
@@ -25,6 +30,10 @@ static zend_function_entry distance_map_methods[];
 zend_object_value create_distance_map_object(zend_class_entry *class_type TSRMLS_DC);
 void free_distance_map_object(distance_map_object *intern TSRMLS_DC);
 static zend_object_value clone_distance_map_object(zval *object TSRMLS_DC);
+
+void close_gap(distance_map_object *intern, triangle_score *score);
+
+unsigned long score_triangle(distance_map_object *intern, triangle_score *trianlge, int include_gap);
 
 unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index);
 unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);

@@ -54,7 +54,7 @@ void _free_coordinate_object(coordinate_object *intern);
 #define toRAD * M_PI / 180
 #define toDEG * 180 / M_PI
 
-double get_distance(coordinate_object *point1, coordinate_object *point2);
+double get_distance(coordinate_object *point1, coordinate_object *point2, int debug);
 double get_distance_precise(coordinate_object *point1, coordinate_object *point2);
 double get_bearing(coordinate_object *point1, coordinate_object *point2);
 char *coordinate_to_kml(coordinate_object *coordinate);

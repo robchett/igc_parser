@@ -4,6 +4,7 @@
 #include "coordinate_set.h"
 #include "task.h"
 #include "distance_map.h"
+#include "geometry.h"
 
 void init_distance_map(TSRMLS_D) {
     zend_class_entry ce;
@@ -85,6 +86,14 @@ PHP_METHOD(distance_map, __construct) {
     create_distance_map(intern, coordinate_set_object);
 }
 
+unsigned long score_triangle(distance_map_object *intern, triangle_score *score, int include_gap) {
+    unsigned long res = (MAP(intern, score->x, score->y) + MAP(intern, score->y, score->z) + MAP(intern, score->x, score->z));
+    if (include_gap) {
+        res -= MAP(intern, score->row, score->col);
+    }
+    return res;
+}
+
 int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
     map->coordinate_set = set;
 
@@ -101,7 +110,7 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
         j = i + 1;
         coordinate_object *coordinate2 = coordinate1->next;
         while (coordinate2) {
-            map->distances[i][j - i - 1] = floor(get_distance(coordinate1, coordinate2) * 1000000);
+            map->distances[i][j - i - 1] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
             j++;
             coordinate2 = coordinate2->next;
         }
@@ -117,62 +126,60 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
     return 1;
 }
 
-inline unsigned long check_y(long x, long y, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, unsigned long *best_score, long (*indexes)[5]) {
+inline triangle_score *check_y(long x, long y, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, triangle_score *score) {
     long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
-    long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z)));
-    if (distance > *best_score && min > distance * 0.28) {
-        unsigned long minleg = *_minleg;
-        unsigned long newleg = fmax(distance * 0.28, minleg);
-        *best_score = distance;
-        (*indexes)[0] = row;
-        (*indexes)[1] = x;
-        (*indexes)[2] = y;
-        (*indexes)[3] = z;
-        (*indexes)[4] = col;
-        *_minleg = newleg;
-        return *_minleg;
-    } else {
-        return (unsigned long) fmin(*best_score - distance, (distance * 0.28) - min);
-    }
-    return 0;
+    long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z))); 
+    if (distance > score_triangle(intern, score, 0) && min > distance * 0.28) {
+        // if ( x == 66 && y == 486 && z == 964 ) {        
+        //     warn("Triangle ---> x: %d, y:%d, z:%d, distance: %d", x,y,z, distance);
+        // } else if (distance > 3724097) {
+        //     note("Triangle ---> x: %d, y:%d, z:%d, distance: %d", x,y,z, distance);
+        // }
+        triangle_score *new_score = emalloc(sizeof(triangle_score));
+        new_score->x = x;
+        new_score->y = y;
+        new_score->z = z;
+        new_score->row = row;
+        new_score->col = col;
+        new_score->prev = score;
+        new_score->next = NULL;
+        score->next = new_score;
+        // warn("New set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
+        // warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
+        return new_score;
+    } 
+    return score;
 }
 
-inline int scan_between(long x, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, unsigned long *best_score, long (*indexes)[5]) {
+inline triangle_score *scan_between(long x, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, triangle_score *score) {
     long y = 0;
     unsigned long skip;
-    for (y = floor((x + z) / 2); y <= (z - 1); ++y) {
-        skip_up(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
-        skip_up(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
-        skip = check_y(x, y, z, row, col, intern, _minleg, best_score, indexes);
-        if (skip) {
-            skip_up(y, skip, 0, intern->maximum_distance); // Possibly risky
-        }
+    for (y = floor((x + z) / 2); y <= (z - 1); ++y) {        
+        // skip_up(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
+        // skip_up(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
+        score = check_y(x, y, z, row, col, intern, _minleg, score);
     }
     y = floor((x + z) / 2);
     for (; y >= (x + 1); --y) {
-        skip_down(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
-        skip_down(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
-        skip = check_y(x, y, z, row, col, intern, _minleg, best_score, indexes);
-        if (skip) {
-            skip_down(y, skip, 0, intern->maximum_distance); // Possibly risky
-        }
+        // skip_down(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
+        // skip_down(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
+        score = check_y(x, y, z, row, col, intern, _minleg, score);
     }
-    return 0;
+    return score;
 }
 
-
-void close_gap(distance_map_object *intern, long *start, long *end, long range_bottom, long range_top) {
+void close_gap(distance_map_object *intern, triangle_score *score) {
     long i, j;
     unsigned long best;
-    i = *start;
-    j = *end;
+    i = score->row;
+    j = score->col;
     best = MAP(intern, i, j);
-    for (i = *start; i <= range_bottom; i++) {
-        for (j = *end; j >= range_top; j--) {
+    for (i = score->row; i <= score->x; i++) {
+        for (j = score->col; j >= score->z; j--) {
             if (MAP(intern, i, j) < best) {
                 best = MAP(intern, i, j);
-                *start = i;
-                *end = j;
+                score->row = i;
+                score->col = j;
             }
         }
     }
@@ -181,27 +188,27 @@ void close_gap(distance_map_object *intern, long *start, long *end, long range_b
 PHP_METHOD(distance_map, score_triangle) {
     distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     unsigned long maximum_distance = 0;
-    long indexes[] = {0, 0, 0, 0, 0};
+    triangle_score scores = {.x = 0, .y = 0, .z = 0, .row = 0, .col = 0, .prev = NULL, .next = NULL};
+    triangle_score *best_score = & scores;
     long closest_end = 0;
-    long best_score = 0;
     long const minleg = 800000;
     long _minleg = 800000;
     long row, col, x, y, z = 0;
     for (row = 0; row < intern->size; ++row) {
         for (col = intern->size - 1; col > row && col > closest_end; --col) {
             skip_down(col, MAP(intern, row, col), minleg, intern->maximum_distance);
-            x = row + ((col - row) / 3);
+            x = row + ((col - row) / 2);
             for (x; x <= col - 2; ++x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
                     skip_down(z, _minleg, MAP(intern, x, z), intern->maximum_distance);
-                    scan_between(x, z, row, col, intern, &_minleg, &best_score, &indexes);
+                    best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }
-            x = row + ((col - row) / 3);
+            x = row + ((col - row) / 2);
             for (x; x >= row; --x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
                     skip_down(z, _minleg, MAP(intern, x, z), intern->maximum_distance);
-                    scan_between(x, z, row, col, intern, &_minleg, &best_score, &indexes);
+                    best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }
             closest_end = col;
@@ -209,8 +216,23 @@ PHP_METHOD(distance_map, score_triangle) {
         }
     }
 
-    if (best_score && indexes[4]) {
-        close_gap(intern, &indexes[0], &indexes[3], indexes[1], indexes[2]);
+    triangle_score *current_score = best_score;
+
+    int i = 0;
+    if (best_score->z) { 
+        while (current_score && i <= 13) {
+            i++;
+            unsigned long pre_score = score_triangle(intern, current_score, 0);
+            close_gap(intern, current_score);
+            warn("calc change: %d -> %d", pre_score, score_triangle(intern, current_score, 1));
+            if (score_triangle(intern, current_score, 1) > score_triangle(intern, best_score, 1)) {
+                best_score = current_score;
+            }
+            current_score = current_score->prev;
+        }
+
+        warn("Bob ends");
+        warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
         zval *ret;
         MAKE_STD_ZVAL(ret);
@@ -219,30 +241,17 @@ PHP_METHOD(distance_map, score_triangle) {
         return_intern->size = 4;
         return_intern->type = TRIANGLE;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);
-        return_intern->coordinate[0] = get_coordinate(intern, indexes[1]);
-        return_intern->coordinate[1] = get_coordinate(intern, indexes[2]);
-        return_intern->coordinate[2] = get_coordinate(intern, indexes[3]);
-        return_intern->coordinate[3] = get_coordinate(intern, indexes[1]);
+        return_intern->coordinate[0] = get_coordinate(intern, best_score->x);
+        return_intern->coordinate[1] = get_coordinate(intern, best_score->y);
+        return_intern->coordinate[2] = get_coordinate(intern, best_score->z);
+        return_intern->coordinate[3] = get_coordinate(intern, best_score->x);
 
         return_intern->gap = emalloc(sizeof(coordinate_object *) * 2);
-        return_intern->gap[0] = get_coordinate(intern, indexes[0]);
-        return_intern->gap[1] = get_coordinate(intern, indexes[4]);
+        return_intern->gap[0] = get_coordinate(intern, best_score->row);
+        return_intern->gap[1] = get_coordinate(intern, best_score->col);
         RETURN_ZVAL(ret, 0, 1);
     }
     RETURN_NULL();
-}
-
-int push_task_to_stack(long *indexes, long **stack, int size) {
-    if (size >= 10) {
-        size--;
-        int i = size;
-        efree(stack[i]);
-        for (i; i > 0; i--) {
-            stack[i] = stack[i - 1];
-        }
-    }
-    stack[0] = indexes;
-    return size++;
 }
 
 PHP_METHOD(distance_map, score_out_and_return) {
@@ -272,7 +281,6 @@ PHP_METHOD(distance_map, score_out_and_return) {
     }
 
     if (maximum_distance) {
-
         zval *ret;
         MAKE_STD_ZVAL(ret);
         object_init_ex(ret, task_ce);
@@ -370,6 +378,7 @@ PHP_METHOD(distance_map, get_precise) {
     double distance = get_distance_precise(point1, point2);
     RETURN_DOUBLE(distance);
 }
+
 PHP_METHOD(distance_map, get) {
 
     long offset1;

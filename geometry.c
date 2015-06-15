@@ -40,6 +40,8 @@ PHP_MINIT_FUNCTION(geometry) {
     init_formatter_js(TSRMLS_C);
     init_formatter_kml_split(TSRMLS_C);
     init_formatter_kml_earth(TSRMLS_C);
+    init_statistic(TSRMLS_C);
+    init_statistics_set(TSRMLS_C);
 }
 
 #ifdef COMPILE_DL_GEOMETRY

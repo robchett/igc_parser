@@ -213,7 +213,8 @@ double get_task_distance(task_object *task) {
     for (i; i < end; i++) {
         coordinate_object *point1 = task->coordinate[i];
         coordinate_object *point2 = task->coordinate[i + 1];
-        distance += get_distance_precise(point1, point2);
+        double part = get_distance_precise(point1, point2);
+        distance += part;
     }
 
     if (task->gap) {

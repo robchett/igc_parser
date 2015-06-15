@@ -90,6 +90,8 @@ PHP_METHOD(coordinate, __construct) {
     coordinate_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     intern->lat = lat;
     intern->lng = lng;
+    intern->sin_lat = sin(lat toRAD);
+    intern->cos_lat = cos(lat toRAD);
     intern->ele = ele;
     intern->id = 0;
     intern->timestamp = timestamp;
@@ -186,7 +188,7 @@ PHP_METHOD(coordinate, get_bearing_to) {
 PHP_METHOD(coordinate, get_distance_to) {
     zval *_point = 0;
     int precise = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|b", &_point, &precise) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "O|b", &_point, coordinate_ce, &precise) == FAILURE) {
         return;
     }
 
@@ -196,17 +198,15 @@ PHP_METHOD(coordinate, get_distance_to) {
     if (precise) {
         RETURN_DOUBLE(get_distance_precise(point1, point2));
     } else {
-        RETURN_DOUBLE(get_distance(point1, point2));
+        RETURN_DOUBLE(get_distance(point1, point2, 1));
     }
 }
 
 double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {
-    double lat1 = obj1->lat toRAD, lng1 = obj1->lng toRAD;
-    double lat2 = obj2->lat toRAD, lng2 = obj2->lng toRAD;
-    double delta_rad = (lng2 - lng1) toRAD;
+    double delta_rad = (obj2->lng - obj1->lng) toRAD;
 
-    double y = sin(delta_rad) * cos(lat2) ;
-    double x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(delta_rad);
+    double y = sin(delta_rad) * obj2->cos_lat;
+    double x = obj1->cos_lat * obj2->sin_lat - obj1->sin_lat * obj2->cos_lat * cos(delta_rad);
     double res = atan2(y, x) toDEG;
     if (res < 0) {
         res += 360;
@@ -214,13 +214,14 @@ double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {
     return res;
 }
 
-double get_distance(coordinate_object *point1, coordinate_object *point2) {
+double get_distance(coordinate_object *point1, coordinate_object *point2, int debug) {
+    double res = 0;
     if (point1->lat != point2->lat || point1->lng != point2->lng) {
         double delta_rad = (point1->lng - point2->lng) toRAD;
-        double res = (point1->sin_lat * point2->sin_lat) + point1->cos_lat * point2->cos_lat * cos(delta_rad);
-        return acos(res) * 6371;
+        res = (point1->sin_lat * point2->sin_lat) + point1->cos_lat * point2->cos_lat * cos(delta_rad);
+        res = acos(res) * 6371;
     }
-    return 0;
+    return res;
 }
 
 double get_distance_precise(coordinate_object *obj1, coordinate_object *obj2) {
