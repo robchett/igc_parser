@@ -61,7 +61,7 @@ PHP_METHOD(formatter_js, __construct) {
         return;
     }
 
-    intern->set = (coordinate_set_object *) fetch_coodinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
+    intern->set = (coordinate_set_object *) fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
     intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *) fetch_task_object(Z_OBJ_P(od_zval) TSRMLS_CC) : NULL;
     intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *) fetch_task_object(Z_OBJ_P(or_zval) TSRMLS_CC) : NULL;
     intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *) fetch_task_object(Z_OBJ_P(tr_zval) TSRMLS_CC) : NULL;

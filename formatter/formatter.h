@@ -14,4 +14,8 @@ typedef struct formatter_object {
     task_object *task;
 } formatter_object;
 
+inline formatter_object* fetch_formatter_object(zend_object* obj) {
+    return (formatter_object*) ((char*) obj - XtOffsetOf(formatter_object, std));
+}
+
 #endif

@@ -306,7 +306,7 @@ char *get_task_ft_earth(formatter_object *intern) {
 }
 
 PHP_METHOD(formatter_kml_earth, output) {
-    formatter_object *intern = zend_object_store_get_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_object *intern = fetch_formatter_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     RETURN_STRING(formatter_kml_earth_output(intern));
 }
 

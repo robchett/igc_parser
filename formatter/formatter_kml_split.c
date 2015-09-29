@@ -46,12 +46,12 @@ static zend_function_entry formatter_kml_split_methods[] = {
 
 PHP_METHOD(formatter_kml_split, __construct) {
     zval *coordinate_set_zval;
-    formatter_split_object *intern = zend_object_store_get_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_split_object *intern = fetch_formatter_split_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     if (zend_parse_parameters( ZEND_NUM_ARGS() TSRMLS_CC, "O", &coordinate_set_zval, coordinate_set_ce ) == FAILURE) {
         return;
     }
 
-    intern->set = (coordinate_set_object *)zend_object_store_get_object(coordinate_set_zval TSRMLS_CC);
+    intern->set = (coordinate_set_object *)fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
 }
 
 
@@ -75,7 +75,7 @@ char *get_linestring_subset(coordinate_subset *intern) {
 }
 
 PHP_METHOD(formatter_kml_split, output) {
-    formatter_split_object *intern = zend_object_store_get_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_split_object *intern = fetch_formatter_split_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     RETURN_STRING(formatter_kml_split_output(intern));
 }
 
