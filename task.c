@@ -2,6 +2,7 @@
 #include <math.h>
 #include "string_manip.h"
 #include "coordinate.h"
+#include "coordinate_set.h"
 #include "geometry.h"
 #include "helmert.h"
 #include "task.h"
@@ -30,7 +31,7 @@ zend_object* create_task_object(zend_class_entry *class_type TSRMLS_DC) {
     return &retval->std;
 }
 
-inline task_object* fetch_task_object(zend_object* obj) {
+task_object* fetch_task_object(zend_object* obj) {
     return (task_object*) ((char*) obj - XtOffsetOf(task_object, std));
 }
 
@@ -68,11 +69,11 @@ PHP_METHOD(task, __construct) {
     }
 
     coordinate_object *coordinate_1, *coordinate_2, *coordinate_3, *coordinate_4, *coordinate_5;
-    coordinate_1 = coordinate_zval_1 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_1) TSRMLS_CC) : NULL;
-    coordinate_2 = coordinate_zval_2 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_2) TSRMLS_CC) : NULL;
-    coordinate_3 = coordinate_zval_3 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_3) TSRMLS_CC) : NULL;
-    coordinate_4 = coordinate_zval_4 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_4) TSRMLS_CC) : NULL;
-    coordinate_5 = coordinate_zval_5 ? ferch_coordinate_object(Z_OBJ_P(coordinate_zval_5) TSRMLS_CC) : NULL;
+    coordinate_1 = coordinate_zval_1 ? fetch_coordinate_object(Z_OBJ_P(coordinate_zval_1) TSRMLS_CC) : NULL;
+    coordinate_2 = coordinate_zval_2 ? fetch_coordinate_object(Z_OBJ_P(coordinate_zval_2) TSRMLS_CC) : NULL;
+    coordinate_3 = coordinate_zval_3 ? fetch_coordinate_object(Z_OBJ_P(coordinate_zval_3) TSRMLS_CC) : NULL;
+    coordinate_4 = coordinate_zval_4 ? fetch_coordinate_object(Z_OBJ_P(coordinate_zval_4) TSRMLS_CC) : NULL;
+    coordinate_5 = coordinate_zval_5 ? fetch_coordinate_object(Z_OBJ_P(coordinate_zval_5) TSRMLS_CC) : NULL;
 
     if (coordinate_4 && coordinate_1 && !coordinate_5 && coordinate_1->lat == coordinate_4->lat) {
         intern->type = TRIANGLE;
@@ -129,7 +130,7 @@ PHP_METHOD(task, completes_task) {
         return;
     }
 
-    coordinate_set_object *set = ferch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
+    coordinate_set_object *set = fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
     RETURN_BOOL(completes_task(set, intern));
 }
 

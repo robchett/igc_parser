@@ -74,4 +74,6 @@ void clone_coordinate_object(coordinate_object *source, coordinate_object *dest)
 void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
 void coordinate_object_set_section(coordinate_set_object *intern, long index);
+coordinate_set_object* fetch_coordinate_set_object(zend_object* obj);
+
 #endif

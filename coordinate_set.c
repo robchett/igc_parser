@@ -35,7 +35,7 @@ zend_object* create_coordinate_set_object(zend_class_entry *class_type TSRMLS_DC
     return &retval->std;
 }
 
-inline coordinate_set_object* fetch_coordinate_set_object(zend_object* obj) {
+coordinate_set_object* fetch_coordinate_set_object(zend_object* obj) {
     return (coordinate_set_object*) ((char*) obj - XtOffsetOf(coordinate_set_object, std));
 }
 
@@ -132,10 +132,9 @@ void _clone_coordinate_object(coordinate_object *coordinate, coordinate_object *
 
 PHP_METHOD (coordinate_set, first) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    zval *ret;
-    MAKE_STD_ZVAL(ret);
+    zval *ret = emalloc(sizeof(zval));
     object_init_ex(ret, coordinate_ce);
-    coordinate_object *return_intern = fetch_coordinate_set_object(Z_OBJ_P(ret) TSRMLS_CC);
+    coordinate_object *return_intern = fetch_coordinate_object(Z_OBJ_P(ret) TSRMLS_CC);
     if (intern->first) {
         _clone_coordinate_object(intern->first, return_intern);
         RETURN_ZVAL(ret, 1, 0);
@@ -145,8 +144,7 @@ PHP_METHOD (coordinate_set, first) {
 
 PHP_METHOD (coordinate_set, last) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    zval *ret;
-    MAKE_STD_ZVAL(ret);
+    zval *ret = emalloc(sizeof(zval));
     object_init_ex(ret, coordinate_ce);
     coordinate_object *return_intern = fetch_coordinate_object(Z_OBJ_P(ret) TSRMLS_CC);
     if (intern->last) {
@@ -164,10 +162,9 @@ PHP_METHOD (coordinate_set, get) {
 
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     if (offset < intern->length) {
-        zval *ret;
-        MAKE_STD_ZVAL(ret);
+        zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, coordinate_ce);
-        coordinate_object *return_intern = fetch_coordinate_object(ret TSRMLS_CC);
+        coordinate_object *return_intern = fetch_coordinate_object(Z_OBJ_P(ret) TSRMLS_CC);
         coordinate_object *coordinate = intern->first;
         int i = 0;
         while (coordinate && ++i < offset) {
@@ -185,12 +182,11 @@ PHP_METHOD (coordinate_set, get_id) {
         return;
     }
 
-    coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
+    coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     if (offset < intern->length) {
-        zval *ret;
-        MAKE_STD_ZVAL(ret);
+        zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, coordinate_ce);
-        coordinate_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);
+        coordinate_object *return_intern = fetch_coordinate_object(Z_OBJ_P(ret) TSRMLS_CC);
         coordinate_object *coordinate = intern->first;
         int i = 0;
         while (coordinate && coordinate->id != offset) {
@@ -332,11 +328,10 @@ PHP_METHOD (coordinate_set, repair) {
 }
 
 PHP_METHOD (coordinate_set, stats) {
-    coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
-    zval *ret;
-    MAKE_STD_ZVAL(ret);
+    coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    zval *ret = emalloc(sizeof(zval));
     object_init_ex(ret, statistics_set_ce);
-    statistics_set_object *return_intern = zend_object_store_get_object(ret TSRMLS_CC);
+    statistics_set_object *return_intern = fetch_statistics_set_object(Z_OBJ_P(ret) TSRMLS_CC);
     return_intern->height_max = intern->max_ele;
     //return_intern->height_max_t = intern->max_ele_t;
     return_intern->height_min = intern->min_ele;

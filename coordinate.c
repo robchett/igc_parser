@@ -31,7 +31,7 @@ zend_object* create_coordinate_object(zend_class_entry *class_type TSRMLS_DC) {
     return &retval->std;
 }
 
-inline coordinate_object* fetch_coordinate_object(zend_object* obj) {
+coordinate_object* fetch_coordinate_object(zend_object* obj) {
     return (coordinate_object*) ((char*) obj - XtOffsetOf(coordinate_object, std));
 }
 

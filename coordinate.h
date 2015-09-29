@@ -49,8 +49,6 @@ zend_object* create_coordinate_object(zend_class_entry *class_type TSRMLS_DC);
 void free_coordinate_object(coordinate_object *intern TSRMLS_DC);
 void _free_coordinate_object(coordinate_object *intern);
 
-#endif
-
 #define toRAD * M_PI / 180
 #define toDEG * 180 / M_PI
 
@@ -58,3 +56,6 @@ double get_distance(coordinate_object *point1, coordinate_object *point2, int de
 double get_distance_precise(coordinate_object *point1, coordinate_object *point2);
 double get_bearing(coordinate_object *point1, coordinate_object *point2);
 char *coordinate_to_kml(coordinate_object *coordinate);
+coordinate_object* fetch_coordinate_object(zend_object* obj);
+
+#endif

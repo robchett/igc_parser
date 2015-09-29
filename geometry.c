@@ -3,6 +3,7 @@
 #endif
 
 #include <php.h>
+#include "include/json/jansson.h"
 #include "coordinate.h"
 #include "coordinate_set.h"
 #include "task.h"
@@ -12,6 +13,8 @@
 #include "formatter/formatter_kml_split.h"
 #include "formatter/formatter_js.h"
 #include "distance_map.h"
+#include "statistics/element.h"
+#include "statistics/group.h"
 
 static zend_function_entry geometry_functions[] = {
     {NULL, NULL, NULL}

@@ -69,7 +69,7 @@ PHP_METHOD(distance_map, __construct) {
     }
 
     distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    coordinate_set_object *coordinate_set_object = fetch_distance_map_object(coordinate_set_zval TSRMLS_CC);
+    coordinate_set_object *coordinate_set_object = fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
     create_distance_map(intern, coordinate_set_object);
 }
 
@@ -221,10 +221,9 @@ PHP_METHOD(distance_map, score_triangle) {
         warn("Bob ends");
         warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
-        zval *ret;
-        MAKE_STD_ZVAL(ret);
+        zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
         return_intern->size = 4;
         return_intern->type = TRIANGLE;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);
@@ -268,10 +267,9 @@ PHP_METHOD(distance_map, score_out_and_return) {
     }
 
     if (maximum_distance) {
-        zval *ret;
-        MAKE_STD_ZVAL(ret);
+        zval *ret = emalloc(sizeof(task_object));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
         return_intern->size = 3;
         return_intern->type = OUT_AND_RETURN;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);
@@ -328,10 +326,9 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
     }
 
     if (best_score) {
-        zval *ret;
-        MAKE_STD_ZVAL(ret);
+        zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
         return_intern->size = 5;
         return_intern->gap = NULL;
         return_intern->type = OPEN_DISTANCE;
