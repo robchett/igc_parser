@@ -198,7 +198,7 @@ PHP_METHOD(coordinate, get_distance_to) {
     if (precise) {
         RETURN_DOUBLE(get_distance_precise(point1, point2));
     } else {
-        RETURN_DOUBLE(get_distance(point1, point2, 1));
+        RETURN_DOUBLE(get_distance(point1, point2));
     }
 }
 
@@ -214,7 +214,7 @@ double get_bearing(coordinate_object *obj1, coordinate_object *obj2) {
     return res;
 }
 
-double get_distance(coordinate_object *point1, coordinate_object *point2, int debug) {
+double get_distance(coordinate_object *point1, coordinate_object *point2) {
     double res = 0;
     if (point1->lat != point2->lat || point1->lng != point2->lng) {
         double delta_rad = (point1->lng - point2->lng) toRAD;

@@ -435,7 +435,7 @@ int set_graph_values(coordinate_set_object *intern) {
     if (intern->first) {
         coordinate_object *current = intern->first->next;
         while (current && current->next) {
-            double distance = get_distance(current->next, current->prev, 0);
+            double distance = get_distance(current->next, current->prev);
             if (current->next->timestamp != current->prev->timestamp) {
                 current->climb_rate = current->next->ele - current->prev->ele / (current->next->timestamp - current->prev->timestamp);
                 current->speed = distance / (current->next->timestamp - current->prev->timestamp);
