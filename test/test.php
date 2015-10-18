@@ -177,16 +177,21 @@ score_track(true, 'igc/9/test.igc', [
    'TR: 033.63 -> 2636,3429,5166,2636,'
 ]);
 // Repair test
-score_track(false, 'igc/10/test.igc', [
+score_track(true, 'igc/10/test.igc', [
    'OD: 110.27 -> 11,206,4025,5300,7613,',
    'OR: 105.24 -> 615,4025,7614,',
    'TR: 033.63 -> 2636,3429,5166,2636,'
 ], false, [3, 4]);
+score_track(false, 'igc/11/test.igc', [
+   'OD: 110.27 -> 11,206,4025,5300,7613,',
+   'OR: 105.24 -> 615,4025,7614,',
+   'TR: 033.63 -> 2636,3429,5166,2636,'
+]);
 
 ini_set('memory_limit', '512M');
 function score_track($skip, $file, $answers = [], $task = null, $section = false) {
     global $cwd;
-    if (!$skip) {
+    if (1 || !$skip) {
         $file = $cwd . '/' . $file;
         $time = microtime(true);
         echo "------------------------" . PHP_EOL;
