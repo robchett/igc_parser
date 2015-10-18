@@ -7,4 +7,4 @@ bin/php
 bin/phpize
 bin/php-config
 .libs
-.lo
+*.lo
