@@ -87,6 +87,9 @@ PHP_METHOD(distance_map, __construct) {
 }
 
 unsigned long score_triangle(distance_map_object *intern, triangle_score *score, int include_gap) {
+    if (!score) {
+        return 0;
+    }
     unsigned long res = (MAP(intern, score->x, score->y) + MAP(intern, score->y, score->z) + MAP(intern, score->x, score->z));
     if (include_gap) {
         res -= MAP(intern, score->row, score->col);
@@ -130,11 +133,6 @@ inline triangle_score *check_y(long x, long y, long z, long row, long col, dista
     long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
     long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z))); 
     if (distance > score_triangle(intern, score, 0) && min > distance * 0.28) {
-        // if ( x == 66 && y == 486 && z == 964 ) {        
-        //     warn("Triangle ---> x: %d, y:%d, z:%d, distance: %d", x,y,z, distance);
-        // } else if (distance > 3724097) {
-        //     note("Triangle ---> x: %d, y:%d, z:%d, distance: %d", x,y,z, distance);
-        // }
         triangle_score *new_score = emalloc(sizeof(triangle_score));
         new_score->x = x;
         new_score->y = y;
@@ -143,9 +141,13 @@ inline triangle_score *check_y(long x, long y, long z, long row, long col, dista
         new_score->col = col;
         new_score->prev = score;
         new_score->next = NULL;
-        score->next = new_score;
-        // warn("New set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
-        // warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
+        if (score) {
+            score->next = new_score;
+            warn("New set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
+            warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
+        } else {
+            warn("First set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
+        }  
         return new_score;
     } 
     return score;
@@ -188,8 +190,7 @@ void close_gap(distance_map_object *intern, triangle_score *score) {
 PHP_METHOD(distance_map, score_triangle) {
     distance_map_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     unsigned long maximum_distance = 0;
-    triangle_score scores = {.x = 0, .y = 0, .z = 0, .row = 0, .col = 0, .prev = NULL, .next = NULL};
-    triangle_score *best_score = & scores;
+    triangle_score *best_score = NULL;
     long closest_end = 0;
     long const minleg = 800000;
     long _minleg = 800000;
@@ -218,11 +219,9 @@ PHP_METHOD(distance_map, score_triangle) {
 
     triangle_score *current_score = best_score;
 
-    int i = 0;
-    if (best_score->z) { 
-        while (current_score && i <= 13) {
-            i++;
-            unsigned long pre_score = score_triangle(intern, current_score, 0);
+    if (best_score && best_score->z) {
+        while (current_score) {
+            unsigned long pre_score = score_triangle(intern, current_score, 1);
             close_gap(intern, current_score);
             warn("calc change: %d -> %d", pre_score, score_triangle(intern, current_score, 1));
             if (score_triangle(intern, current_score, 1) > score_triangle(intern, best_score, 1)) {
