@@ -285,22 +285,22 @@ int parse_igc(coordinate_set_object *intern, char *string) {
                 intern->subset_count ++;
             } else {
                 intern->last->next = coordinate;
-                if (!intern->last /*|| coordinate->timestamp - intern->last->timestamp > 60*/) {
-                create_subset(intern, coordinate);
-                intern->subset_count ++;
-            } else {
-                intern->last_subset->length++;
+                if (!intern->last || coordinate->timestamp - intern->last->timestamp > 60 || get_distance(coordinate, intern->last) > 5) {
+                    create_subset(intern, coordinate);
+                    intern->subset_count ++;
+                } else {
+                    intern->last_subset->length++;
+                }
             }
+            intern->last = coordinate;
+            intern->last_subset->last = coordinate;
+            coordinate->coordinate_set = intern;
+            coordinate->coordinate_subset = intern->last_subset;
         }
-        intern->last = coordinate;
-        intern->last_subset->last = coordinate;
-        coordinate->coordinate_set = intern;
-        coordinate->coordinate_subset = intern->last_subset;
+        if (nextLine) *nextLine = '\n';
+        curLine = nextLine ? (nextLine + 1) : NULL;
     }
-    if (nextLine) *nextLine = '\n';
-    curLine = nextLine ? (nextLine + 1) : NULL;
-}
-return b_records;
+    return b_records;
 }
 
 int has_height_data(coordinate_set_object *coordinate_set) {
@@ -372,7 +372,7 @@ PHP_METHOD (coordinate_set, part_length) {
     coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     coordinate_subset *set = intern->first_subset;
     int i = 0;
-    while (++i < offset && set) {
+    while (i++ < offset && set) {
         set = set->next;
     }
     if (set) {
@@ -389,7 +389,7 @@ PHP_METHOD (coordinate_set, part_duration) {
     coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
     coordinate_subset *set = intern->first_subset;
     int i = 0;
-    while (++i < offset && set) {
+    while (i++ < offset && set) {
         set = set->next;
     }
     if (set) {
@@ -412,7 +412,7 @@ void coordinate_object_set_section(coordinate_set_object *intern, long index) {
     coordinate_subset *current = intern->first_subset;
     coordinate_subset *tmp;
     int i = 0;
-    while (++i < index && current) {
+    while (i++ < index && current) {
         tmp = current->next;
         free_subset(intern, current);
         current = tmp;
