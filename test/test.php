@@ -125,116 +125,140 @@ echo pass("Looping successful");
 
 echo PHP_EOL;
 
-score_track('igc/1/test.igc', [
-     'OD: 014.50 -> 140,346,642,771,813,',
-     'OR: 007.88 -> 352,642,771, // GPSDUMP INVALID',
-     'TR: 009.23 -> 257,345,441,257,'
+score_track(true, 'igc/1/test.igc', [
+    'OD: 014.50 -> 140,346,642,771,813,',
+    'OR: 007.88 -> 352,642,771, // GPSDUMP INVALID',
+    'TR: 009.23 -> 257,345,441,257,', 
+    ],
+    new task(
+        new coordinate(52.3033, -0.79195, 1),
+        new coordinate(52.296616666666665, -0.6392833333333333, 3),
+        new coordinate(52.19661, -0.62928333, 3, 19)
+    )
+);
+score_track(true, 'igc/2/test.igc', [
+   'OD: 028.92 -> 3,126,975,1014,1597,',
+   'OR: 002.68 -> 892,975,1013, // GPSDUMP INVALID',
+   'TR: 002.80 -> 121,293,431,121,'
 ]);
-// score_track('igc/2/test.igc', [
-//    'OD: 028.92 -> 3,126,975,1014,1597,',
-//    'OR: 002.68 -> 892,975,1013, // GPSDUMP INVALID',
-//    'TR: 002.80 -> 121,293,431,121,'
-// ]);
-// score_track('igc/3/test.igc', [
-//    'OD: 060.30 -> 1,581,1293,1719,1963,',
-//    'OR: 030.08 -> 414,1293,1875,',
-//    'TR: 053.07 -> 581,1286,1592,581,'
-// ]);
-score_track('igc/4/test.igc', [
-   'OD: 121.63 -> 333,599,885,2108,4901,',
-   'OR: 003.25 -> 599,884,958,',
-   'TR: 003.71 -> 67,487,965,67,'
-]);
-die();
-score_track('igc/5/test.igc', [
+score_track(true, 'igc/3/test.igc', [
    'OD: 060.30 -> 1,581,1293,1719,1963,',
    'OR: 030.08 -> 414,1293,1875,',
    'TR: 053.07 -> 581,1286,1592,581,'
 ]);
-score_track('igc/6/test.igc', [
-   'OD: 308.32 -> 201,943,2113,4110,4414,',
-   'OR: 001.64 -> 4398,4414,4423,',
-   'TR: 001.38 -> 4200,4214,4230,4200,'
+score_track(true, 'igc/4/test.igc', [
+  'OD: 121.63 -> 333,599,885,2108,4901,',
+  'OR: 003.25 -> 599,884,958,',
+  'TR: 003.71 -> 67,487,965,67,'
 ]);
-score_track('igc/7/test.igc', [
+score_track(true, 'igc/5/test.igc', [
+  'OD: 060.30 -> 1,581,1293,1719,1963,',
+  'OR: 030.08 -> 414,1293,1875,',
+  'TR: 053.07 -> 581,1286,1592,581,'
+]);
+score_track(true, 'igc/6/test.igc', [
+  'OD: 308.32 -> 201,943,2113,4110,4414,',
+  'OR: 001.64 -> 4398,4414,4423,',
+  'TR: 001.38 -> 4200,4214,4230,4200,'
+]);
+score_track(true, 'igc/7/test.igc', [
+  'OD: 110.27 -> 11,206,4025,5300,7613,',
+  'OR: 105.24 -> 615,4025,7614,',
+  'TR: 033.63 -> 2636,3429,5166,2636,'
+]);
+score_track(true, 'igc/8/test.igc', [
+   'OD: 110.27 -> 11,206,4025,5300,7613,',
+   'OR: 105.24 -> 615,4025,7614,',
+   'TR: 033.63 -> 2636,3429,5166,2636,'
+]);
+score_track(true, 'igc/9/test.igc', [
+   'OD: 110.27 -> 11,206,4025,5300,7613,',
+   'OR: 105.24 -> 615,4025,7614,',
+   'TR: 033.63 -> 2636,3429,5166,2636,'
+]);
+// Repair test
+score_track(false, 'igc/10/test.igc', [
    'OD: 110.27 -> 11,206,4025,5300,7613,',
    'OR: 105.24 -> 615,4025,7614,',
    'TR: 033.63 -> 2636,3429,5166,2636,'
 ]);
 
 ini_set('memory_limit', '512M');
-function score_track($file, $answers = []) {
-    global $coordinate_1, $coordinate_2, $coordinate_3, $cwd;
-    $file = $cwd . '/' . $file;
-    $time = microtime(true);
-    echo "------------------------" . PHP_EOL;
-    _log("Memory", memory_get_usage(true));
-    _log("Track", $file);
+function score_track($skip, $file, $answers = [], $task = null) {
+    global $cwd;
+    if (!$skip) {
+        $file = $cwd . '/' . $file;
+        $time = microtime(true);
+        echo "------------------------" . PHP_EOL;
+        _log("Memory", memory_get_usage(true));
+        _log("Track", $file);
 
-    _log('Creating set:');
-    $set_2 = new coordinate_set();
+        _log('Creating set:');
+        $set_2 = new coordinate_set();
 
-    action('Parsing file', $set_2->parse_igc(file_get_contents($file)));
-    _log("Date", $set_2->date());
+        action('Parsing file', $set_2->parse_igc(file_get_contents($file)));
+        _log("Date", $set_2->date());
 
-    _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
-    $intial = $set_2->count();
+        _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
+        $intial = $set_2->count();
 
-    _log('Points', $set_2->count() . " (" . $intial . ")");
-    _log('Parts',  $set_2->part_count());
-    
-    // action('Simplifing file', $set_2->simplify());
-    // _log('Points', $set_2->count() . " (" . $intial . ")");
-    
-    // action('Trimming file', $set_2->trim());
-    // _log('Points', $set_2->count() . " (" . $intial . ")");
-    // _log('Parts',  $set_2->part_count());
-    
-    action('Repairing track', $set_2->repair());
-    action('Graphing track',$set_2->set_graph_values());
-    action('Ranging track', $set_2->set_ranges());
+        _log('Points', $set_2->count() . " (" . $intial . ")");
+        _log('Parts',  $set_2->part_count());
+        
+        // action('Simplifing file', $set_2->simplify());
+        // _log('Points', $set_2->count() . " (" . $intial . ")");
+        
+        action('Trimming file', $set_2->trim());
+        _log('Points', $set_2->count() . " (" . $intial . ")");
+        _log('Parts',  $set_2->part_count());
+        
+        action('Repairing track', $set_2->repair());
+        action('Graphing track',$set_2->set_graph_values());
+        action('Ranging track', $set_2->set_ranges());
 
-    if($set_2->part_count() > 1) {
-       action('Setting section', $set_2->set_section(1));
+        if($set_2->part_count() > 1) {
+           action('Setting section', $set_2->set_section(1));
+        }
+
+        _log('Points', $set_2->count() . " (" . $intial . ")");
+        _log('Parts',  $set_2->part_count());
+
+        action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
+
+        echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
+        echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
+        echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
+
+        _log('Coordinates', $od->get_gridref());
+        _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
+
+        if ($task) {
+            _log('Checking task:');
+            echo pass_fail('Valid task is found' . PHP_EOL, $od->completes_task($set_2) == true);
+            echo pass_fail('Invalid task not found' . PHP_EOL, $task->completes_task($set_2) == false);
+        }
+
+        _log('Outputting kml');
+        $formatter = new formatter_kml($set_2, $file, $od, $or, $tr, $od);
+        file_put_contents(str_replace('.igc', '.kml', $file), $formatter->output());
+
+        _log('Outputting js');
+        $formatter = new formatter_js($set_2, 10);
+        file_put_contents(str_replace('.igc', '.js', $file), $formatter->output());
+
+        _log('Outputting kml (Split)');
+        $formatter = new formatter_kml_split($set_2);
+        file_put_contents(str_replace('.igc', '_split.kml', $file), $formatter->output());
+
+        _log('Outputting KML (Earth)');
+        $formatter = new formatter_kml_earth($set_2, $file, $od, $or, $tr);
+        file_put_contents(str_replace('.igc', '_earth.kml', $file), $formatter->output());
+
+        unset($set_2);
+        unset($formatter);
+
+        _log("Memory", memory_get_usage(true));
     }
-
-    _log('Points', $set_2->count() . " (" . $intial . ")");
-    _log('Parts',  $set_2->part_count());
-
-    action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
-
-    echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
-    echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
-    echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
-
-    _log('Coordinates', $od->get_gridref());
-    _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
-
-    $task = new task($coordinate_1, $coordinate_2, $coordinate_3);
-    _log('Checking task:');
-    echo pass_fail('Valid task is found' . PHP_EOL, $od->completes_task($set_2) == true);
-    echo pass_fail('Invalid task not found' . PHP_EOL, $task->completes_task($set_2) == false);
-
-    _log('Outputting kml');
-    $formatter = new formatter_kml($set_2, $file, $od, $or, $tr, $od);
-    file_put_contents(str_replace('.igc', '.kml', $file), $formatter->output());
-
-    _log('Outputting js');
-    $formatter = new formatter_js($set_2, 10);
-    file_put_contents(str_replace('.igc', '.js', $file), $formatter->output());
-
-    _log('Outputting kml (Split)');
-    $formatter = new formatter_kml_split($set_2);
-    file_put_contents(str_replace('.igc', '_split.kml', $file), $formatter->output());
-
-    _log('Outputting KML (Earth)');
-    $formatter = new formatter_kml_earth($set_2, $file, $od, $or, $tr);
-    file_put_contents(str_replace('.igc', '_earth.kml', $file), $formatter->output());
-
-    unset($set_2);
-    unset($formatter);
-
-    _log("Memory", memory_get_usage(true));
 }
 
 function get_time() {

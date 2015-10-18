@@ -8,3 +8,4 @@ bin/phpize
 bin/php-config
 .libs
 *.lo
+php.log
