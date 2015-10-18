@@ -246,6 +246,7 @@ void free_subset(coordinate_set_object *parser, coordinate_subset *set) {
     if (set == parser->last_subset) {
         parser->last_subset = set->prev;
     }
+    parser->subset_count --;
     efree(set);
 }
 
@@ -399,28 +400,35 @@ PHP_METHOD (coordinate_set, part_duration) {
 }
 
 PHP_METHOD (coordinate_set, set_section) {
-    long offset;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &offset) != SUCCESS) {
+    long start, end = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l|l", &start, &end) != SUCCESS) {
         return;
     }
+    if (!end) end = start;
     coordinate_set_object *intern = zend_object_store_get_object(getThis() TSRMLS_CC);
-    coordinate_object_set_section(intern, offset);
+    coordinate_object_set_section(intern, start, end);
     RETURN_NULL();
 }
 
-void coordinate_object_set_section(coordinate_set_object *intern, long index) {
+void coordinate_object_set_section(coordinate_set_object *intern, long start_index, long end_index) {
+    warn("Setting subset: %d, %d", start_index, end_index);
     coordinate_subset *current = intern->first_subset;
     coordinate_subset *tmp;
     int i = 0;
-    while (i++ < index && current) {
+    while (i++ < start_index && current) {
         tmp = current->next;
         free_subset(intern, current);
         current = tmp;
     }
+    i = 0;
+    long diff = end_index - start_index;
     if (current != NULL) {
         intern->first = current->first;
-        intern->last = current->last;
         intern->first_subset = current;
+        while (i++ < diff && current) {
+            current = current->next;
+        }
+        intern->last = current->last;
         intern->last_subset = current;
         current = current->next;
         while (current) {
@@ -492,7 +500,6 @@ PHP_METHOD (coordinate_set, trim) {
             i += set->length;
             free_subset(intern, set);
             set = tmp;
-            intern->subset_count --;
         } else {
             break;
         }
@@ -504,7 +511,6 @@ PHP_METHOD (coordinate_set, trim) {
             i += set->length;
             free_subset(intern, set);
             set = tmp;
-            intern->subset_count --;
         } else {
             break;
         }

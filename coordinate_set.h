@@ -74,5 +74,5 @@ int has_height_data(coordinate_set_object *coordinate_set);
 void clone_coordinate_object(coordinate_object *source, coordinate_object *dest);
 void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
-void coordinate_object_set_section(coordinate_set_object *intern, long index);
+void coordinate_object_set_section(coordinate_set_object *intern, long start, long end);
 #endif

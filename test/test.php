@@ -181,7 +181,7 @@ score_track(false, 'igc/10/test.igc', [
    'OD: 110.27 -> 11,206,4025,5300,7613,',
    'OR: 105.24 -> 615,4025,7614,',
    'TR: 033.63 -> 2636,3429,5166,2636,'
-], false, 3);
+], false, [3, 4]);
 
 ini_set('memory_limit', '512M');
 function score_track($skip, $file, $answers = [], $task = null, $section = false) {
@@ -221,7 +221,11 @@ function score_track($skip, $file, $answers = [], $task = null, $section = false
                 _log('Section: ' . $i, 'Duration: ' . $set_2->part_duration($i) . '; Points: ' . $set_2->part_length($i));
             }
             if ($section !== false) {
-                action('Setting section', $set_2->set_section($section));
+                if (is_array($section)) {
+                    action('Setting section', $set_2->set_section($section[0], $section[1]));
+                } else {
+                    action('Setting section', $set_2->set_section($section));
+                }
             }
         }
 
