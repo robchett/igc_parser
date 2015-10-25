@@ -38,8 +38,8 @@ unsigned long score_triangle(distance_map_object *intern, triangle_score *trianl
 unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index);
 unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);
 
-unsigned long skip_up(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs, int debug);
-unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs, int debug);
+unsigned long skip_up(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs);
+unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs);
 
 coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);
