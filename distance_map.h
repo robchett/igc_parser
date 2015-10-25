@@ -15,7 +15,6 @@ typedef struct distance_map_object {
     coordinate_set_object *coordinate_set;
     unsigned long **distances;
     unsigned long size;
-    unsigned long maximum_distance;
 } distance_map_object;
 
 typedef struct triangle_score {

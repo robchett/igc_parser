@@ -120,12 +120,6 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
         i++;
         coordinate1 = coordinate1->next;
     }
-    map->maximum_distance = 0;
-    for (i = 0; i < real_size - 2; i++) {
-        if (MAP(map, i, i + 1) > map->maximum_distance) {
-            map->maximum_distance = MAP(map, i, i + 1);
-        }
-    }
     return 1;
 }
 
