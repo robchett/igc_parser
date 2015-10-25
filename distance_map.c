@@ -143,10 +143,10 @@ inline triangle_score *check_y(long x, long y, long z, long row, long col, dista
         new_score->next = NULL;
         if (score) {
             score->next = new_score;
-            warn("New set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
-            warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
+            // warn("New set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
+            // warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
         } else {
-            warn("First set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
+            // warn("First set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
         }  
         return new_score;
     } 
@@ -157,14 +157,18 @@ inline triangle_score *scan_between(long x, long z, long row, long col, distance
     long y = 0;
     unsigned long skip;
     for (y = floor((x + z) / 2); y <= (z - 1); ++y) {        
-        // skip_up(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
-        // skip_up(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
+        // if ( 
+        //     skip_up(intern, &y, MAP(intern, x, y), *_minleg, 2) ||
+        //     skip_up(intern, &y, MAP(intern, y, z), *_minleg, 2)
+        // ) continue;
         score = check_y(x, y, z, row, col, intern, _minleg, score);
     }
     y = floor((x + z) / 2);
     for (; y >= (x + 1); --y) {
-        // skip_down(y, *_minleg, MAP(intern, x, y), intern->maximum_distance);
-        // skip_down(y, *_minleg, MAP(intern, y, z), intern->maximum_distance);
+        // if (
+        //     skip_down(intern, &y, MAP(intern, x, y), *_minleg, 2) ||
+        //     skip_down(intern, &y, MAP(intern, y, z), *_minleg, 2)
+        // ) continue;
         score = check_y(x, y, z, row, col, intern, _minleg, score);
     }
     return score;
@@ -197,18 +201,18 @@ PHP_METHOD(distance_map, score_triangle) {
     long row, col, x, y, z = 0;
     for (row = 0; row < intern->size; ++row) {
         for (col = intern->size - 1; col > row && col > closest_end; --col) {
-            skip_down(col, MAP(intern, row, col), minleg, intern->maximum_distance);
+            if (skip_down(intern, &col, minleg, MAP(intern, row, col), 1, 0)) continue;
             x = row + ((col - row) / 2);
             for (x; x <= col - 2; ++x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    skip_down(z, _minleg, MAP(intern, x, z), intern->maximum_distance);
+                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 2, 0)) continue;
                     best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }
             x = row + ((col - row) / 2);
             for (x; x >= row; --x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    skip_down(z, _minleg, MAP(intern, x, z), intern->maximum_distance);
+                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 2, 0)) continue;
                     best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }
@@ -220,17 +224,21 @@ PHP_METHOD(distance_map, score_triangle) {
     triangle_score *current_score = best_score;
 
     if (best_score && best_score->z) {
+        long i = 0;
         while (current_score) {
-            unsigned long pre_score = score_triangle(intern, current_score, 1);
+            i++;
+            if (score_triangle(intern, current_score, 0) + minleg < score_triangle(intern, best_score, 0)) break; 
+            // Break if the current iteration could not possible beat the best;
+            unsigned long pre_score = score_triangle(intern, current_score, 0);
             close_gap(intern, current_score);
-            warn("calc change: %d -> %d", pre_score, score_triangle(intern, current_score, 1));
+            //warn("calc change: %d -> %d", pre_score, score_triangle(intern, current_score, 1));
             if (score_triangle(intern, current_score, 1) > score_triangle(intern, best_score, 1)) {
                 best_score = current_score;
             }
             current_score = current_score->prev;
         }
 
-        warn("Bob ends");
+        warn("Optimising tringle done: %d sets checked", i);
         warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
         zval *ret;
@@ -261,7 +269,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
     long const minLeg = 800000;
     for (row = 0; row < intern->size; ++row) {
         for (col = intern->size - 1; col > row + 2; --col) {
-            skip_down(col, MAP(intern, row, col), minLeg, intern->maximum_distance);
+            if(skip_down(intern, &col, minLeg, MAP(intern, row, col), 1, 0)) continue;
             if (MAP(intern, row, col) < minLeg) {
                 for (x = row + 1; x < col; x++) {
                     distance = MAP(intern, row, x) + MAP(intern, x, col) - MAP(intern, row, col);
@@ -272,7 +280,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
                         indexes[1] = x;
                         indexes[2] = col;
                     } else {
-                        skip_up(x, distance, maximum_distance, intern->maximum_distance);
+                        skip_up(intern, &x, maximum_distance, distance, 2, 0);
                     }
                 }
             }
@@ -434,4 +442,42 @@ unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long p
     }
     *index = best_index;
     return best_score;
+}
+
+inline unsigned long skip_up(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs, int debug) {
+    unsigned long cnt = 0, dist;
+    while (*index < map->size - 1) {
+        dist = MAP(map, *index, (*index + 1)) * effected_legs;
+        if (debug) {
+        note("Skipping(u) point %d, distance: %d/%d + %d", *index, current, required, dist);
+        }
+        if (current > required + dist) {
+            current -= dist;
+            *index += 1;
+            cnt++;
+        } else {
+            break;
+        }  
+    }
+    //warn("Skipped(u) %d points, distance: %d", cnt, required);
+    return cnt;
+}
+
+inline unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs, int debug) {
+    unsigned long cnt = 0, dist;
+    while (*index > 1) {
+        dist = MAP(map, (*index - 1), *index) * effected_legs;
+        if (debug) {
+            note("Skipping(d) point %d, distance: %d/%d + %d", *index, current, required, dist);
+        }
+        if (current > required + dist) {
+            current -= dist;
+            *index -= 1;
+            cnt++;
+        } else {
+            break;
+        }
+    }
+    //warn("Skipped(d) %d points, distance: %d", cnt, required);
+    return cnt;
 }
