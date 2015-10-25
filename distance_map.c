@@ -199,14 +199,14 @@ PHP_METHOD(distance_map, score_triangle) {
             x = row + ((col - row) / 2);
             for (x; x <= col - 2; ++x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 2)) continue;
+                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 3)) continue;
                     best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }
             x = row + ((col - row) / 2);
             for (x; x >= row; --x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 2)) continue;
+                    if (skip_down(intern, &z, MAP(intern, x, z), _minleg, 3)) continue;
                     best_score = scan_between(x, z, row, col, intern, &_minleg, best_score);
                 }
             }

@@ -35,7 +35,8 @@ typedef struct coordinate_set_object {
     zend_object std;
 
     coordinate_object *first, *last;
-    unsigned long length;
+    coordinate_object *real_first, *real_last;
+    unsigned long length, real_length;
     long offset;
 
     // Date

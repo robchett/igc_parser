@@ -126,9 +126,9 @@ echo pass("Looping successful");
 echo PHP_EOL;
 
 score_track(true, 'igc/1/test.igc', [
-    'OD: 014.50 -> 140,346,642,771,813,',
-    'OR: 007.88 -> 352,642,771, // GPSDUMP INVALID',
-    'TR: 009.23 -> 257,345,441,257,', 
+    'OD' => [140, 346, 642, 771, 813],
+    'OR' => [352, 642, 771],  // GPSDUMP INVALID
+    'TR' => [257, 345, 441, 257], 
     ],
     new task(
         new coordinate(52.3033, -0.79195, 1),
@@ -137,55 +137,55 @@ score_track(true, 'igc/1/test.igc', [
     )
 );
 score_track(true, 'igc/2/test.igc', [
-   'OD: 028.92 -> 3,126,975,1014,1597,',
-   'OR: 002.68 -> 892,975,1013, // GPSDUMP INVALID',
-   'TR: 002.80 -> 121,293,431,121,'
+   'OD' => [3, 126, 975, 1014, 1597],
+   'OR' => [892, 975, 1013,],  // GPSDUMP INVALID
+   'TR' => [121, 293, 431, 121]
 ]);
 score_track(true, 'igc/3/test.igc', [
-   'OD: 060.30 -> 1,581,1293,1719,1963,',
-   'OR: 030.08 -> 414,1293,1875,',
-   'TR: 053.07 -> 581,1286,1592,581,'
+   'OD' => [1, 581, 1293, 1719, 1963],
+   'OR' => [414, 1293, 1875, ],
+   'TR' => [581, 1286, 1592, 581]
 ]);
 score_track(true, 'igc/4/test.igc', [
-  'OD: 121.63 -> 333,599,885,2108,4901,',
-  'OR: 003.25 -> 599,884,958,',
-  'TR: 003.71 -> 67,487,965,67,'
+  'OD' => [333, 599, 885, 2108, 4901],
+  'OR' => [599, 884, 958, ],
+  'TR' => [67, 487, 965, 67]
 ]);
 score_track(true, 'igc/5/test.igc', [
-  'OD: 060.30 -> 1,581,1293,1719,1963,',
-  'OR: 030.08 -> 414,1293,1875,',
-  'TR: 053.07 -> 581,1286,1592,581,'
+  'OD' => [1, 581, 1293, 1719, 1963],
+  'OR' => [414, 1293, 1875, ],
+  'TR' => [581, 1286, 1592, 581]
 ]);
 score_track(true, 'igc/6/test.igc', [
-  'OD: 308.32 -> 201,943,2113,4110,4414,',
-  'OR: 001.64 -> 4398,4414,4423,',
-  'TR: 001.38 -> 4200,4214,4230,4200,'
+  'OD' => [201, 943, 2113, 4110, 4414],
+  'OR' => [4398, 4414, 4423, ],
+  'TR' => [4200, 4214, 4230, 4200]
 ]);
 score_track(true, 'igc/7/test.igc', [
-  'OD: 110.27 -> 11,206,4025,5300,7613,',
-  'OR: 105.24 -> 615,4025,7614,',
-  'TR: 033.63 -> 2636,3429,5166,2636,'
+  'OD' => [11, 206, 4025, 5300, 7613],
+  'OR' => [615, 4025, 7614, ],
+  'TR' => [2636, 3429, 5166, 2636]
 ]);
 score_track(true, 'igc/8/test.igc', [
-   'OD: 110.27 -> 11,206,4025,5300,7613,',
-   'OR: 105.24 -> 615,4025,7614,',
-   'TR: 033.63 -> 2636,3429,5166,2636,'
+   'OD' => [11, 206, 4025, 5300, 7613],
+   'OR' => [615, 4025, 7614, ],
+   'TR' => [2636, 3429, 5166, 2636]
 ]);
 score_track(true, 'igc/9/test.igc', [
-   'OD: 110.27 -> 11,206,4025,5300,7613,',
-   'OR: 105.24 -> 615,4025,7614,',
-   'TR: 033.63 -> 2636,3429,5166,2636,'
+   'OD' => [11, 206, 4025, 5300, 7613],
+   'OR' => [615, 4025, 7614, ],
+   'TR' => [2636, 3429, 5166, 2636]
 ]);
 // Repair test
 score_track(true, 'igc/10/test.igc', [
-   'OD: 110.27 -> 11,206,4025,5300,7613,',
-   'OR: 105.24 -> 615,4025,7614,',
-   'TR: 033.63 -> 2636,3429,5166,2636,'
+   'OD' => [11, 206, 4025, 5300, 7613],
+   'OR' => [615, 4025, 7614, ],
+   'TR' => [2636, 3429, 5166, 2636]
 ], false, [3, 4]);
 score_track(false, 'igc/11/test.igc', [
-   'OD: 110.27 -> 11,206,4025,5300,7613,',
-   'OR: 105.24 -> 615,4025,7614,',
-   'TR: 033.63 -> 2636,3429,5166,2636,'
+   'OD' => [11, 206, 4025, 5300, 7613],
+   'OR' => [615, 4025, 7614, ],
+   'TR' => [2636, 3429, 5166, 2636]
 ]);
 
 ini_set('memory_limit', '512M');
@@ -239,9 +239,9 @@ function score_track($skip, $file, $answers = [], $task = null, $section = false
 
         action('Building map', ($map_2 = new distance_map($set_2)) ? "Ok" : "Fail");
 
-        echo get_score($map_2, $od = $map_2->score_open_distance_3tp(), $answers[0], 'OD');
-        echo get_score($map_2, $or = $map_2->score_out_and_return(), $answers[1], 'OR');
-        echo get_score($map_2, $tr = $map_2->score_triangle(), $answers[2], 'TR');
+        echo get_score($set_2, $map_2, $od = $map_2->score_open_distance_3tp(), $answers, 'OD');
+        echo get_score($set_2, $map_2, $or = $map_2->score_out_and_return(), $answers, 'OR');
+        echo get_score($set_2, $map_2, $tr = $map_2->score_triangle(), $answers, 'TR');
 
         _log('Coordinates', $od->get_gridref());
         _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
@@ -284,29 +284,65 @@ function get_time() {
     return ' (' . round($delta * 1000, 5) . 'ms)';
 }
 
-function get_score($map_2, $od, $correct, $type) {
-    if($od) {
-        $distance = $od->get_distance();
-        $string = sprintf('%s: %06.2f -> %s', $type, $distance, $od->get_coordinate_ids());
-        if ($string != $correct) {
-            return fail($string . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
+function get_score($set_2, $map_2, $score, $results, $type) {
+    if($score) {
+        $distance = $score->get_distance();
+        $coordinates = array_filter(explode(',', $score->get_coordinate_ids()));
+        if ($coordinates != $results[$type]) {
+            $res = red('[FAIL] ');
+            foreach ($coordinates as $key => $value) {
+                $res .= ($results[$type][$key] == $value) ? green($value . ',') : red($value . ','); 
+            }
+            $dist = 0;
+            $res = str_pad($res, 64 + 11 * count($coordinates));
+            $valid = true;
+            $gap = 0;
+            if ($type == 'OR') {
+                $dist -= $set_2->get_id($results[$type][0])->get_distance_to($set_2->get_id($results[$type][2]));
+                $valid = $gap > -0.8;
+            } else if ($type == 'TR') {
+                $dist -= $set_2->get_id($results[$type][0])->get_distance_to($set_2->get_id($results[$type][3]));
+                $valid = $gap > -0.8;
+            }
+            if ($valid) {
+                foreach ($results[$type] as $key => $value) {
+                    if (isset($results[$type][$key + 1])) {
+                        $dist += $set_2->get_id($value)->get_distance_to($set_2->get_id($results[$type][$key + 1]));
+                    }
+                }
+                $diff = $distance - $dist;
+                $res .= ($diff > 0 ? green('Diff: ' . $diff) : red('Diff: ' . $diff));
+            } else {
+                $res .= 'GPSDump Invalid';                
+            }
+            $res .= PHP_EOL . red(str_pad(str_repeat('=', 6) . ' ' . implode(",", $results[$type]), 52));
+        } else {
+            $res = green(str_pad('[PASS] ' . implode(",", $coordinates), 52));
         }
-        return pass(str_pad($string, 45)) . ' @ ' . get_time() . PHP_EOL;;
     } else {
-        return fail('No match' . PHP_EOL .  str_pad(str_repeat('=', 6) . ' ' . $correct, 52)) . ' @ ' .  get_time() . PHP_EOL;;
+        $res . red(str_pad('[FAIL] No match'), 52);
     }
+    return $res . ' @ ' . get_time() . PHP_EOL;
 }
 
 function pass_fail($string, $bool) {
     return $bool ? pass($string) : fail($string);
 }
 
+function red($string) {
+    return "\033[0;31m" . $string . "\033[0m";
+}
+
+function green($string) {
+    return "\033[0;32m" . $string . "\033[0m";
+}
+
 function fail($string) {
-    return "\033[0;31m[FAIL] " . $string . "\033[0m";
+    return red('[FAIL] ' . $string);
 }
 
 function pass($string) {
-    return "\033[0;32m[PASS] " . $string . "\033[0m";
+    return green('[PASS] ' . $string);
 }
 
 function _log($action, $result = '') {
