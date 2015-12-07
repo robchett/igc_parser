@@ -47,6 +47,12 @@ void free_coordinate_set_object(coordinate_set_object *intern TSRMLS_DC) {
         free_subset(intern, subset);
         subset = tmp;
     }
+    coordinate_object *tmp2, *current2 = intern->real_first;
+    while (current2) {
+        tmp2 = current2->next;
+        _free_coordinate_object(current2);
+        current2 = tmp2;
+    }
     efree(intern);
 }
 
@@ -77,8 +83,10 @@ static zend_function_entry coordinate_set_methods[] = {
 PHP_METHOD (coordinate_set, __construct) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     intern->length = 0;
+    intern->length = intern->real_length = 0;
     intern->first_subset = intern->last_subset = NULL;
     intern->first = intern->last = NULL;
+    intern->real_first = intern->real_last = NULL;
     intern->subset_count = 0;
 }
 
@@ -107,14 +115,15 @@ PHP_METHOD (coordinate_set, set) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     coordinate_object *coordinate_intern = fetch_coordinate_object(Z_OBJ_P(coordinate) TSRMLS_CC);
     coordinate_intern->id = intern->length++;
+    intern->real_length++;
     if (intern->last) {
         intern->last->next = coordinate_intern;
     }
     if (!intern->first) {
-        intern->first = coordinate_intern;
+        intern->first = intern->real_first = coordinate_intern;
     }
     coordinate_intern->prev = intern->last;
-    intern->last = coordinate_intern;
+    intern->last = intern->real_last = coordinate_intern;
 
     RETURN_BOOL(1);
 }
@@ -160,12 +169,13 @@ PHP_METHOD (coordinate_set, get) {
         return;
     }
 
-    coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    if (offset < intern->length) {
-        zval *ret = emalloc(sizeof(zval));
+    coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
+    if (offset < intern->real_length) {
+        zval *ret;
+        MAKE_STD_ZVAL(ret);
         object_init_ex(ret, coordinate_ce);
-        coordinate_object *return_intern = fetch_coordinate_object(Z_OBJ_P(ret) TSRMLS_CC);
-        coordinate_object *coordinate = intern->first;
+        coordinate_object *return_intern = fetch_coordinate_set_object(ret TSRMLS_CC);
+        coordinate_object *coordinate = intern->real_first;
         int i = 0;
         while (coordinate && ++i < offset) {
             coordinate = coordinate->next;
@@ -218,12 +228,12 @@ PHP_METHOD (coordinate_set, parse_igc) {
 }
 
 void free_subset(coordinate_set_object *parser, coordinate_subset *set) {
-    coordinate_object *tmp, *current = set->first;
-    while (set->length) {
-        tmp = current->next;
-        _free_coordinate_object(current);
-        current = tmp;
-    }
+    //coordinate_object *tmp, *current = set->first;
+    // while (set->length) {
+    //     tmp = current->next;
+    //     _free_coordinate_object(current);
+    //     current = tmp;
+    // }
     if (set->prev) {
         set->prev->next = set->next;
     }
@@ -236,6 +246,7 @@ void free_subset(coordinate_set_object *parser, coordinate_subset *set) {
     if (set == parser->last_subset) {
         parser->last_subset = set->prev;
     }
+    parser->subset_count --;
     efree(set);
 }
 
@@ -268,29 +279,30 @@ int parse_igc(coordinate_set_object *intern, char *string) {
         } else if (is_b_record(curLine)) {
             coordinate_object *coordinate = parse_igc_coordiante(curLine);
             coordinate->id = intern->length++;
+            intern->real_length++;
             coordinate->prev = intern->last;
             if (!intern->first) {
                 create_subset(intern, coordinate);
-                intern->first = coordinate;
+                intern->first = intern->real_first = coordinate;
                 intern->subset_count ++;
             } else {
                 intern->last->next = coordinate;
-                if (!intern->last /*|| coordinate->timestamp - intern->last->timestamp > 60*/) {
-                create_subset(intern, coordinate);
-                intern->subset_count ++;
-            } else {
-                intern->last_subset->length++;
+                if (!intern->last || coordinate->timestamp - intern->last->timestamp > 60 || get_distance(coordinate, intern->last) > 5) {
+                    create_subset(intern, coordinate);
+                    intern->subset_count ++;
+                } else {
+                    intern->last_subset->length++;
+                }
             }
+            intern->last = intern->real_last = coordinate;
+            intern->last_subset->last = coordinate;
+            coordinate->coordinate_set = intern;
+            coordinate->coordinate_subset = intern->last_subset;
         }
-        intern->last = coordinate;
-        intern->last_subset->last = coordinate;
-        coordinate->coordinate_set = intern;
-        coordinate->coordinate_subset = intern->last_subset;
+        if (nextLine) *nextLine = '\n';
+        curLine = nextLine ? (nextLine + 1) : NULL;
     }
-    if (nextLine) *nextLine = '\n';
-    curLine = nextLine ? (nextLine + 1) : NULL;
-}
-return b_records;
+    return b_records;
 }
 
 int has_height_data(coordinate_set_object *coordinate_set) {
@@ -361,7 +373,7 @@ PHP_METHOD (coordinate_set, part_length) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     coordinate_subset *set = intern->first_subset;
     int i = 0;
-    while (++i < offset && set) {
+    while (i++ < offset && set) {
         set = set->next;
     }
     if (set) {
@@ -378,7 +390,7 @@ PHP_METHOD (coordinate_set, part_duration) {
     coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
     coordinate_subset *set = intern->first_subset;
     int i = 0;
-    while (++i < offset && set) {
+    while (i++ < offset && set) {
         set = set->next;
     }
     if (set) {
@@ -388,28 +400,35 @@ PHP_METHOD (coordinate_set, part_duration) {
 }
 
 PHP_METHOD (coordinate_set, set_section) {
-    long offset;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &offset) != SUCCESS) {
+    long start, end = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l|l", &start, &end) != SUCCESS) {
         return;
     }
-    coordinate_set_object *intern = fetch_coordinate_set_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    coordinate_object_set_section(intern, offset);
+    if (!end) end = start;
+    coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
+    coordinate_object_set_section(intern, start, end);
     RETURN_NULL();
 }
 
-void coordinate_object_set_section(coordinate_set_object *intern, long index) {
+void coordinate_object_set_section(coordinate_set_object *intern, long start_index, long end_index) {
+    warn("Setting subset: %d, %d", start_index, end_index);
     coordinate_subset *current = intern->first_subset;
     coordinate_subset *tmp;
     int i = 0;
-    while (++i < index && current) {
+    while (i++ < start_index && current) {
         tmp = current->next;
         free_subset(intern, current);
         current = tmp;
     }
+    i = 0;
+    long diff = end_index - start_index;
     if (current != NULL) {
         intern->first = current->first;
-        intern->last = current->last;
         intern->first_subset = current;
+        while (i++ < diff && current) {
+            current = current->next;
+        }
+        intern->last = current->last;
         intern->last_subset = current;
         current = current->next;
         while (current) {
@@ -424,7 +443,7 @@ int set_graph_values(coordinate_set_object *intern) {
     if (intern->first) {
         coordinate_object *current = intern->first->next;
         while (current && current->next) {
-            double distance = get_distance(current->next, current->prev, 0);
+            double distance = get_distance(current->next, current->prev);
             if (current->next->timestamp != current->prev->timestamp) {
                 current->climb_rate = current->next->ele - current->prev->ele / (current->next->timestamp - current->prev->timestamp);
                 current->speed = distance / (current->next->timestamp - current->prev->timestamp);
@@ -481,7 +500,6 @@ PHP_METHOD (coordinate_set, trim) {
             i += set->length;
             free_subset(intern, set);
             set = tmp;
-            intern->subset_count --;
         } else {
             break;
         }
@@ -493,7 +511,6 @@ PHP_METHOD (coordinate_set, trim) {
             i += set->length;
             free_subset(intern, set);
             set = tmp;
-            intern->subset_count --;
         } else {
             break;
         }

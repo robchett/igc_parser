@@ -9,3 +9,4 @@ bin/php-config
 test/php.log
 *.lo
 *.o
+.libs

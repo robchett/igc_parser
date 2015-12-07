@@ -15,7 +15,6 @@ typedef struct distance_map_object {
     coordinate_set_object *coordinate_set;
     unsigned long **distances;
     unsigned long size;
-    unsigned long maximum_distance;
 } distance_map_object;
 
 typedef struct triangle_score {
@@ -36,10 +35,16 @@ unsigned long score_triangle(distance_map_object *intern, triangle_score *trianl
 
 unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index);
 unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index);
-#define MAP(map, from, to) (from >= to ? 0 : map->distances[from][to - from - 1])
+
+unsigned long skip_up(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs);
+unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs);
+
 coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);
-#endif
 
-#define skip_up(index, required, distance, maximum_distance) if (required > distance) { index += floor((required - distance) / maximum_distance); continue; }
-#define skip_down(index, required, distance, maximum_distance) if (required > distance) { index -= floor((required - distance) / maximum_distance); continue; }
+	#ifdef DEBUG_LEVEL
+	#define MAP(map, from, to) (from >= to ? errn("Map points in wrong order") : map->distances[from][to - from - 1])
+	#else 
+	#define MAP(map, from, to) map->distances[from][to - from - 1]
+	#endif
+#endif

@@ -35,7 +35,8 @@ typedef struct coordinate_set_object {
     zend_object std;
 
     coordinate_object *first, *last;
-    unsigned long length;
+    coordinate_object *real_first, *real_last;
+    unsigned long length, real_length;
     long offset;
 
     // Date
@@ -73,7 +74,6 @@ int has_height_data(coordinate_set_object *coordinate_set);
 void clone_coordinate_object(coordinate_object *source, coordinate_object *dest);
 void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
-void coordinate_object_set_section(coordinate_set_object *intern, long index);
 coordinate_set_object* fetch_coordinate_set_object(zend_object* obj);
-
+void coordinate_object_set_section(coordinate_set_object *intern, long start, long end);
 #endif
