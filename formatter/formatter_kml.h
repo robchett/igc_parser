@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_formatter_kml_H
-#define GEOMETRY_formatter_kml_H
+#pragma once
 
 #include "formatter.h"
 
@@ -22,4 +21,3 @@ char *formatter_kml_output_split(formatter_object *intern);
 
 #define toRAD * M_PI / 180
 #define toDEG * 180 / M_PI
-#endif

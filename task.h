@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_TASK_H
-#define GEOMETRY_TASK_H
+#pragma once
 
 #include "coordinate_set.h"
 
@@ -34,5 +33,3 @@ double get_task_distance(task_object *task);
 int get_task_time(task_object *task);
 int completes_task(coordinate_set_object *set, task_object *task);
 task_object* fetch_task_object(zval* obj);
-
-#endif

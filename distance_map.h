@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_DISTANCE_MAP_H
-#define GEOMETRY_DISTANCE_MAP_H
+#pragma once
 
 void init_distance_map(TSRMLS_D);
 
@@ -42,9 +41,8 @@ unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned
 coordinate_object *get_coordinate(distance_map_object *map, unsigned long index);
 int create_distance_map(distance_map_object *map, coordinate_set_object *set);
 
-	#ifdef DEBUG_LEVEL
-       #define MAP(map, from, to) (from >= to ? errn("Map points in wrong order") : map->distances[from][to - from - 1])
-    #else 
-       #define MAP(map, from, to) map->distances[from][to - from - 1]
-	#endif
+#ifdef DEBUG_LEVEL
+     #define MAP(map, from, to) (from >= to ? errn("Map points in wrong order") : map->distances[from][to - from - 1])
+  #else 
+     #define MAP(map, from, to) map->distances[from][to - from - 1]
 #endif

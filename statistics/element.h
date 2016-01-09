@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_STATISTICS_ELEMENT_H
-#define GEOMETRY_STATISTICS_ELEMENT_H
+#pragma once
 
 void init_statistic(TSRMLS_D);
 
@@ -20,5 +19,3 @@ zend_object* create_statistic_object(zend_class_entry *class_type TSRMLS_DC);
 void free_statistic_object(statistic_object *intern TSRMLS_DC);
 static zend_object statistic_object_clone(zval *object TSRMLS_DC);
 statistic_object* fetch_statistics_object(zval* obj);
-
-#endif

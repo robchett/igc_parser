@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_LATLNG_H
-#define GEOMETRY_LATLNG_H
+#pragma once
 
 void init_coordinate(TSRMLS_D);
 
@@ -57,5 +56,3 @@ double get_distance_precise(coordinate_object *point1, coordinate_object *point2
 double get_bearing(coordinate_object *point1, coordinate_object *point2);
 char *coordinate_to_kml(coordinate_object *coordinate);
 coordinate_object* fetch_coordinate_object(zval* obj);
-
-#endif

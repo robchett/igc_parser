@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_helmert_H
-#define GEOMETRY_helmert_H
+#pragma once
 
 typedef struct helmert_ellipsoid {
     double a;
@@ -25,6 +24,3 @@ static helmert_transform wsg84_osgb36_to_transform;
 void osgb36_to_wgs84(coordinate_object *point);
 void wgs84_to_osgb36(coordinate_object *point);
 void helmert_trans(coordinate_object *point, const helmert_ellipsoid source_ellipse, const helmert_ellipsoid target_ellipse, const helmert_transform transform);
-
-#endif
-

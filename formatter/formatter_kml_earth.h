@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_formatter_kml_earth_H
-#define GEOMETRY_formatter_kml_earth_H
+#pragma once
 
 #include "formatter.h"
 
@@ -25,4 +24,3 @@ char *get_colour_by_time(coordinate_set_object *set);
 char *get_kml_styles_earth();
 #define toRAD * M_PI / 180
 #define toDEG * 180 / M_PI
-#endif

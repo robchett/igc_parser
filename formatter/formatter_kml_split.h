@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_formatter_kml_split_H
-#define GEOMETRY_formatter_kml_split_H
+#pragma once
 
 #include "formatter.h"
 
@@ -22,5 +21,3 @@ zend_object* create_formatter_kml_split_object(zend_class_entry *class_type TSRM
 void free_formatter_kml_split_object(formatter_split_object *intern TSRMLS_DC);
 
 char *formatter_kml_split_output(formatter_split_object *intern);
-
-#endif

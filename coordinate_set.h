@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_LATLNG_COLLECTION_H
-#define GEOMETRY_LATLNG_COLLECTION_H
+#pragma once
 
 void init_coordinate_set(TSRMLS_D);
 
@@ -76,4 +75,3 @@ void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
 coordinate_set_object* fetch_coordinate_set_object(zval* obj);
 void coordinate_object_set_section(coordinate_set_object *intern, long start, long end);
-#endif

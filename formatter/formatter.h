@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_formatter_H
-#define GEOMETRY_formatter_H
+#pragma once
 
 #include "../task.h"
 
@@ -19,5 +18,3 @@ typedef struct formatter_object {
 inline formatter_object* fetch_formatter_object(zval* obj) {
     return (formatter_object*) ((char*) Z_OBJ_P(obj) - XtOffsetOf(formatter_object, std));
 }
-
-#endif
