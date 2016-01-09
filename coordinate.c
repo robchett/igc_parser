@@ -89,8 +89,8 @@ static zend_function_entry coordinate_methods[] = {
 
 PHP_METHOD(coordinate, __construct) {
     double lat = 0, lng = 0;
-    long ele = 0;
-    long timestamp = 0;
+    int64_t ele = 0;
+    int64_t timestamp = 0;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ddll", &lat, &lng, &ele, &timestamp) == FAILURE) {
         return;
@@ -155,7 +155,7 @@ PHP_METHOD(coordinate, ele) {
 }
 
 PHP_METHOD(coordinate, set_ele) {
-    long val = 0;
+    int64_t val = 0;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &val) == FAILURE) {
         return;
     }
@@ -196,7 +196,7 @@ PHP_METHOD(coordinate, get_bearing_to) {
 
 PHP_METHOD(coordinate, get_distance_to) {
     zval *_point = 0;
-    int precise = 0;
+    int16_t precise = 0;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "O|b", &_point, coordinate_ce, &precise) == FAILURE) {
         return;
     }

@@ -60,11 +60,11 @@ typedef struct json_t {
 #else
 #define JSON_INTEGER_FORMAT "lld"
 #endif
-typedef long long json_int_t;
+typedef int64_t int64_t json_int_t;
 #else
 #define JSON_INTEGER_FORMAT "ld"
-typedef long json_int_t;
-#endif /* JSON_INTEGER_IS_LONG_LONG */
+typedef int64_t json_int_t;
+#endif /* JSON_INTEGER_IS_LONG_int64_t */
 #endif
 
 #define json_typeof(json)      ((json)->type)
@@ -120,9 +120,9 @@ void json_decref(json_t *json)
 #define JSON_ERROR_SOURCE_LENGTH   80
 
 typedef struct {
-    int line;
-    int column;
-    int position;
+    int16_t line;
+    int16_t column;
+    int16_t position;
     char source[JSON_ERROR_SOURCE_LENGTH];
     char text[JSON_ERROR_TEXT_LENGTH];
 } json_error_t;
@@ -270,7 +270,7 @@ json_t *json_load_callback(json_load_callback_t callback, void *data, size_t fla
 #define JSON_ESCAPE_SLASH       0x400
 #define JSON_REAL_PRECISION(n)  (((n) & 0x1F) << 11)
 
-typedef int (*json_dump_callback_t)(const char *buffer, size_t size, void *data);
+typedef int16_t (*json_dump_callback_t)(const char *buffer, size_t size, void *data);
 
 char *json_dumps(const json_t *json, size_t flags);
 int json_dumpf(const json_t *json, FILE *output, size_t flags);

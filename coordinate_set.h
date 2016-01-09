@@ -26,7 +26,7 @@ PHP_METHOD(coordinate_set, part_length);
 
 typedef struct coordinate_subset {
     coordinate_object *first, *last;
-    long length;
+    int64_t length;
     struct coordinate_subset *next, *prev;
 } coordinate_subset;
 
@@ -35,22 +35,22 @@ typedef struct coordinate_set_object {
 
     coordinate_object *first, *last;
     coordinate_object *real_first, *real_last;
-    unsigned long length, real_length;
-    long offset;
+    uint64_t length, real_length;
+    int64_t offset;
 
     // Date
-    long day;
-    long month;
-    long year;
+    int64_t day;
+    int64_t month;
+    int64_t year;
 
     // Graph limits
-    long max_ele, max_ele_t, min_ele, min_ele_t;
-    long max_alt, max_alt_t, min_alt, min_alt_t;
+    int64_t max_ele, max_ele_t, min_ele, min_ele_t;
+    int64_t max_alt, max_alt_t, min_alt, min_alt_t;
     double max_climb_rate, min_climb_rate, max_speed;
 
     // Subset
     coordinate_subset *first_subset, *last_subset;
-    long subset_count;
+    int64_t subset_count;
 } coordinate_set_object;
 
 zend_class_entry *coordinate_set_ce;
@@ -74,4 +74,4 @@ void clone_coordinate_object(coordinate_object *source, coordinate_object *dest)
 void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
 coordinate_set_object* fetch_coordinate_set_object(zval* obj);
-void coordinate_object_set_section(coordinate_set_object *intern, long start, long end);
+void coordinate_object_set_section(coordinate_set_object *intern, int64_t start, int64_t end);

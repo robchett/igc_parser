@@ -64,7 +64,7 @@ char *get_linestring_subset(coordinate_subset *intern) {
     <altitudeMode>absolute</altitudeMode>\n\
     <coordinates>");
     coordinate_object *coordinate = intern->first;
-    int i = 0;
+    int16_t i = 0;
     while (coordinate && coordinate != intern->last) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
@@ -123,7 +123,7 @@ char *formatter_kml_split_output(formatter_split_object *intern) {
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>", NULL);
     coordinate_subset *subset = intern->set->first_subset;
-    int i = 0;
+    int16_t i = 0;
     while (subset) {
         char *linestring = get_linestring_subset(subset);
         output = vstrcat(output, "\

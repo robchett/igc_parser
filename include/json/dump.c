@@ -30,12 +30,12 @@ struct object_key {
     const char *key;
 };
 
-static int dump_to_strbuffer(const char *buffer, size_t size, void *data)
+static int16_t dump_to_strbuffer(const char *buffer, size_t size, void *data)
 {
     return strbuffer_append_bytes((strbuffer_t *)data, buffer, size);
 }
 
-static int dump_to_file(const char *buffer, size_t size, void *data)
+static int16_t dump_to_file(const char *buffer, size_t size, void *data)
 {
     FILE *dest = (FILE *)data;
     if(fwrite(buffer, size, 1, dest) != 1)
@@ -46,11 +46,11 @@ static int dump_to_file(const char *buffer, size_t size, void *data)
 /* 32 spaces (the maximum indentation size) */
 static const char whitespace[] = "                                ";
 
-static int dump_indent(size_t flags, int depth, int space, json_dump_callback_t dump, void *data)
+static int16_t dump_indent(size_t flags, int16_t depth, int16_t space, json_dump_callback_t dump, void *data)
 {
     if(FLAGS_TO_INDENT(flags) > 0)
     {
-        int i, ws_count = FLAGS_TO_INDENT(flags);
+        int16_t i, ws_count = FLAGS_TO_INDENT(flags);
 
         if(dump("\n", 1, data))
             return -1;
@@ -68,7 +68,7 @@ static int dump_indent(size_t flags, int depth, int space, json_dump_callback_t 
     return 0;
 }
 
-static int dump_string(const char *str, size_t len, json_dump_callback_t dump, void *data, size_t flags)
+static int16_t dump_string(const char *str, size_t len, json_dump_callback_t dump, void *data, size_t flags)
 {
     const char *pos, *end, *lim;
     int32_t codepoint;
@@ -82,7 +82,7 @@ static int dump_string(const char *str, size_t len, json_dump_callback_t dump, v
     {
         const char *text;
         char seq[13];
-        int length;
+        int16_t length;
 
         while(end < lim)
         {
@@ -161,13 +161,13 @@ static int dump_string(const char *str, size_t len, json_dump_callback_t dump, v
     return dump("\"", 1, data);
 }
 
-static int object_key_compare_keys(const void *key1, const void *key2)
+static int16_t object_key_compare_keys(const void *key1, const void *key2)
 {
     return strcmp(((const struct object_key *)key1)->key,
                   ((const struct object_key *)key2)->key);
 }
 
-static int object_key_compare_serials(const void *key1, const void *key2)
+static int16_t object_key_compare_serials(const void *key1, const void *key2)
 {
     size_t a = ((const struct object_key *)key1)->serial;
     size_t b = ((const struct object_key *)key2)->serial;
@@ -175,7 +175,7 @@ static int object_key_compare_serials(const void *key1, const void *key2)
     return a < b ? -1 : a == b ? 0 : 1;
 }
 
-static int do_dump(const json_t *json, size_t flags, int depth,
+static int16_t do_dump(const json_t *json, size_t flags, int16_t depth,
                    json_dump_callback_t dump, void *data)
 {
     if(!json)
@@ -194,7 +194,7 @@ static int do_dump(const json_t *json, size_t flags, int depth,
         case JSON_INTEGER:
         {
             char buffer[MAX_INTEGER_STR_LENGTH];
-            int size;
+            int16_t size;
 
             size = snprintf(buffer, MAX_INTEGER_STR_LENGTH,
                             "%" JSON_INTEGER_FORMAT,
@@ -208,7 +208,7 @@ static int do_dump(const json_t *json, size_t flags, int depth,
         case JSON_REAL:
         {
             char buffer[MAX_REAL_STR_LENGTH];
-            int size;
+            int16_t size;
             double value = json_real_value(json);
 
             size = jsonp_dtostr(buffer, MAX_REAL_STR_LENGTH, value,
@@ -224,8 +224,8 @@ static int do_dump(const json_t *json, size_t flags, int depth,
 
         case JSON_ARRAY:
         {
-            int i;
-            int n;
+            int16_t i;
+            int16_t n;
             json_array_t *array;
 
             /* detect circular references */
@@ -276,7 +276,7 @@ static int do_dump(const json_t *json, size_t flags, int depth,
             json_object_t *object;
             void *iter;
             const char *separator;
-            int separator_length;
+            int16_t separator_length;
 
             if(flags & JSON_COMPACT) {
                 separator = ":";
@@ -308,7 +308,7 @@ static int do_dump(const json_t *json, size_t flags, int depth,
             {
                 struct object_key *keys;
                 size_t size, i;
-                int (*cmp_func)(const void *, const void *);
+                int16_t (*cmp_func)(const void *, const void *);
 
                 size = json_object_size(json);
                 keys = jsonp_malloc(size * sizeof(struct object_key));
@@ -439,7 +439,7 @@ int json_dumpf(const json_t *json, FILE *output, size_t flags)
 
 int json_dump_file(const json_t *json, const char *path, size_t flags)
 {
-    int result;
+    int16_t result;
 
     FILE *output = fopen(path, "w");
     if(!output)

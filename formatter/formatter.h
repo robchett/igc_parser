@@ -6,7 +6,7 @@ typedef struct formatter_object {
     zend_object std;
 
     char *name;
-    int id;
+    int16_t id;
 
     coordinate_set_object *set;
     task_object *open_distance;

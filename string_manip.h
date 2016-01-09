@@ -1,7 +1,7 @@
 #pragma once
 
-char *itos(long input);
-char *fitos(long input, char *format);
+char *itos(int64_t input);
+char *fitos(int64_t input, char *format);
 char *dtos(double input);
 char *fdtos(double input, char *format);
 

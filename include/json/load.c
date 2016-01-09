@@ -45,23 +45,23 @@
 /* Read one byte from stream, convert to unsigned char, then int, and
    return. return EOF on end of file. This corresponds to the
    behaviour of fgetc(). */
-typedef int (*get_func)(void *data);
+typedef int16_t (*get_func)(void *data);
 
 typedef struct {
     get_func get;
     void *data;
     char buffer[5];
     size_t buffer_pos;
-    int state;
-    int line;
-    int column, last_column;
+    int16_t state;
+    int16_t line;
+    int16_t column, last_column;
     size_t position;
 } stream_t;
 
 typedef struct {
     stream_t stream;
     strbuffer_t saved_text;
-    int token;
+    int16_t token;
     union {
         struct {
             char *val;
@@ -84,7 +84,7 @@ static void error_set(json_error_t *error, const lex_t *lex,
     char msg_text[JSON_ERROR_TEXT_LENGTH];
     char msg_with_context[JSON_ERROR_TEXT_LENGTH];
 
-    int line = -1, col = -1;
+    int16_t line = -1, col = -1;
     size_t pos = 0;
     const char *result = msg_text;
 
@@ -148,9 +148,9 @@ stream_init(stream_t *stream, get_func get, void *data)
     stream->position = 0;
 }
 
-static int stream_get(stream_t *stream, json_error_t *error)
+static int16_t stream_get(stream_t *stream, json_error_t *error)
 {
-    int c;
+    int16_t c;
 
     if(stream->state != STREAM_STATE_OK)
         return stream->state;
@@ -169,7 +169,7 @@ static int stream_get(stream_t *stream, json_error_t *error)
         if(0x80 <= c && c <= 0xFF)
         {
             /* multi-byte UTF-8 sequence */
-            int i, count;
+            int16_t i, count;
 
             count = utf8_check_first(c);
             if(!count)
@@ -211,7 +211,7 @@ out:
     return STREAM_STATE_ERROR;
 }
 
-static void stream_unget(stream_t *stream, int c)
+static void stream_unget(stream_t *stream, int16_t c)
 {
     if(c == STREAM_STATE_EOF || c == STREAM_STATE_ERROR)
         return;
@@ -230,30 +230,30 @@ static void stream_unget(stream_t *stream, int c)
 }
 
 
-static int lex_get(lex_t *lex, json_error_t *error)
+static int16_t lex_get(lex_t *lex, json_error_t *error)
 {
     return stream_get(&lex->stream, error);
 }
 
-static void lex_save(lex_t *lex, int c)
+static void lex_save(lex_t *lex, int16_t c)
 {
     strbuffer_append_byte(&lex->saved_text, c);
 }
 
-static int lex_get_save(lex_t *lex, json_error_t *error)
+static int16_t lex_get_save(lex_t *lex, json_error_t *error)
 {
-    int c = stream_get(&lex->stream, error);
+    int16_t c = stream_get(&lex->stream, error);
     if(c != STREAM_STATE_EOF && c != STREAM_STATE_ERROR)
         lex_save(lex, c);
     return c;
 }
 
-static void lex_unget(lex_t *lex, int c)
+static void lex_unget(lex_t *lex, int16_t c)
 {
     stream_unget(&lex->stream, c);
 }
 
-static void lex_unget_unsave(lex_t *lex, int c)
+static void lex_unget_unsave(lex_t *lex, int16_t c)
 {
     if(c != STREAM_STATE_EOF && c != STREAM_STATE_ERROR) {
         /* Since we treat warnings as errors, when assertions are turned
@@ -292,7 +292,7 @@ static void lex_free_string(lex_t *lex)
 /* assumes that str points to 'u' plus at least 4 valid hex digits */
 static int32_t decode_unicode_escape(const char *str)
 {
-    int i;
+    int16_t i;
     int32_t value = 0;
 
     assert(str[0] == 'u');
@@ -315,10 +315,10 @@ static int32_t decode_unicode_escape(const char *str)
 
 static void lex_scan_string(lex_t *lex, json_error_t *error)
 {
-    int c;
+    int16_t c;
     const char *p;
     char *t;
-    int i;
+    int16_t i;
 
     lex->value.string.val = NULL;
     lex->token = TOKEN_INVALID;
@@ -479,7 +479,7 @@ out:
 #endif
 #endif
 
-static int lex_scan_number(lex_t *lex, int c, json_error_t *error)
+static int16_t lex_scan_number(lex_t *lex, int16_t c, json_error_t *error)
 {
     const char *saved_text;
     char *end;
@@ -574,9 +574,9 @@ out:
     return -1;
 }
 
-static int lex_scan(lex_t *lex, json_error_t *error)
+static int16_t lex_scan(lex_t *lex, json_error_t *error)
 {
-    int c;
+    int16_t c;
 
     strbuffer_clear(&lex->saved_text);
 
@@ -654,7 +654,7 @@ static char *lex_steal_string(lex_t *lex, size_t *out_len)
     return result;
 }
 
-static int lex_init(lex_t *lex, get_func get, void *data)
+static int16_t lex_init(lex_t *lex, get_func get, void *data)
 {
     stream_init(&lex->stream, get, data);
     if(strbuffer_init(&lex->saved_text))
@@ -909,10 +909,10 @@ static json_t *parse_json(lex_t *lex, size_t flags, json_error_t *error)
 typedef struct
 {
     const char *data;
-    int pos;
+    int16_t pos;
 } string_data_t;
 
-static int string_get(void *data)
+static int16_t string_get(void *data)
 {
     char c;
     string_data_t *stream = (string_data_t *)data;
@@ -958,7 +958,7 @@ typedef struct
     size_t pos;
 } buffer_data_t;
 
-static int buffer_get(void *data)
+static int16_t buffer_get(void *data)
 {
     char c;
     buffer_data_t *stream = data;
@@ -1060,7 +1060,7 @@ typedef struct
     void *arg;
 } callback_data_t;
 
-static int callback_get(void *data)
+static int16_t callback_get(void *data)
 {
     char c;
     callback_data_t *stream = data;

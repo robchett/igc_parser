@@ -52,7 +52,7 @@ static JSON_INLINE void list_remove(list_t *list)
     list->next->prev = list->prev;
 }
 
-static JSON_INLINE int bucket_is_empty(hashtable_t *hashtable, bucket_t *bucket)
+static JSON_INLINE int16_t bucket_is_empty(hashtable_t *hashtable, bucket_t *bucket)
 {
     return bucket->first == &hashtable->list && bucket->first == bucket->last;
 }
@@ -98,7 +98,7 @@ static pair_t *hashtable_find_pair(hashtable_t *hashtable, bucket_t *bucket,
 }
 
 /* returns 0 on success, -1 if key was not found */
-static int hashtable_do_del(hashtable_t *hashtable,
+static int16_t hashtable_do_del(hashtable_t *hashtable,
                             const char *key, size_t hash)
 {
     pair_t *pair;
@@ -144,7 +144,7 @@ static void hashtable_do_clear(hashtable_t *hashtable)
     }
 }
 
-static int hashtable_do_rehash(hashtable_t *hashtable)
+static int16_t hashtable_do_rehash(hashtable_t *hashtable)
 {
     list_t *list, *next;
     pair_t *pair;
@@ -237,7 +237,7 @@ int hashtable_set(hashtable_t *hashtable,
 
         size_t len = strlen(key);
         if(len >= (size_t)-1 - offsetof(pair_t, key)) {
-            /* Avoid an overflow if the key is very long */
+            /* Avoid an overflow if the key is very int64_t */
             return -1;
         }
 

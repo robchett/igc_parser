@@ -28,10 +28,10 @@ typedef struct coordinate_object {
     double lat, lng;
     double sin_lat, cos_lat, cos_lng;
 
-    long ele;
-    long alt;
-    long timestamp;
-    long id;
+    int64_t ele;
+    int64_t alt;
+    int64_t timestamp;
+    int64_t id;
     double climb_rate;
     double speed;
     double bearing;

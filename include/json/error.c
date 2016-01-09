@@ -33,7 +33,7 @@ void jsonp_error_set_source(json_error_t *error, const char *source)
     }
 }
 
-void jsonp_error_set(json_error_t *error, int line, int column,
+void jsonp_error_set(json_error_t *error, int16_t line, int16_t column,
                      size_t position, const char *msg, ...)
 {
     va_list ap;
@@ -43,7 +43,7 @@ void jsonp_error_set(json_error_t *error, int line, int column,
     va_end(ap);
 }
 
-void jsonp_error_vset(json_error_t *error, int line, int column,
+void jsonp_error_vset(json_error_t *error, int16_t line, int16_t column,
                       size_t position, const char *msg, va_list ap)
 {
     if(!error)

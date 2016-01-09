@@ -12,8 +12,8 @@
 #include "utf.h"
 
 typedef struct {
-    int line;
-    int column;
+    int16_t line;
+    int16_t column;
     size_t pos;
     char token;
 } token_t;
@@ -26,8 +26,8 @@ typedef struct {
     token_t next_token;
     json_error_t *error;
     size_t flags;
-    int line;
-    int column;
+    int16_t line;
+    int16_t column;
     size_t pos;
 } scanner_t;
 
@@ -125,7 +125,7 @@ static json_t *pack(scanner_t *s, va_list *ap);
 /* ours will be set to 1 if jsonp_free() must be called for the result
    afterwards */
 static char *read_string(scanner_t *s, va_list *ap,
-                         const char *purpose, size_t *out_len, int *ours)
+                         const char *purpose, size_t *out_len, int16_t *ours)
 {
     char t;
     strbuffer_t strbuff;
@@ -212,7 +212,7 @@ static json_t *pack_object(scanner_t *s, va_list *ap)
     while(token(s) != '}') {
         char *key;
         size_t len;
-        int ours;
+        int16_t ours;
         json_t *value;
 
         if(!token(s)) {
@@ -304,7 +304,7 @@ static json_t *pack(scanner_t *s, va_list *ap)
         {
             char *str;
             size_t len;
-            int ours;
+            int16_t ours;
 
             str = read_string(s, ap, "string", &len, &ours);
             if(!str)
@@ -322,7 +322,7 @@ static json_t *pack(scanner_t *s, va_list *ap)
         case 'b': /* boolean */
             return va_arg(*ap, int) ? json_true() : json_false();
 
-        case 'i': /* integer from int */
+        case 'i': /* integer from int16_t */
             return json_integer(va_arg(*ap, int));
 
         case 'I': /* integer from json_int_t */
@@ -344,13 +344,13 @@ static json_t *pack(scanner_t *s, va_list *ap)
     }
 }
 
-static int unpack(scanner_t *s, json_t *root, va_list *ap);
+static int16_t unpack(scanner_t *s, json_t *root, va_list *ap);
 
-static int unpack_object(scanner_t *s, json_t *root, va_list *ap)
+static int16_t unpack_object(scanner_t *s, json_t *root, va_list *ap)
 {
-    int ret = -1;
-    int strict = 0;
-    int gotopt = 0;
+    int16_t ret = -1;
+    int16_t strict = 0;
+    int16_t gotopt = 0;
 
     /* Use a set (emulated by a hashtable) to check that all object
        keys are accessed. Checking that the correct number of keys
@@ -374,7 +374,7 @@ static int unpack_object(scanner_t *s, json_t *root, va_list *ap)
     while(token(s) != '}') {
         const char *key;
         json_t *value;
-        int opt = 0;
+        int16_t opt = 0;
 
         if(strict != 0) {
             set_error(s, "<format>", "Expected '}' after '%c', got '%c'",
@@ -437,7 +437,7 @@ static int unpack_object(scanner_t *s, json_t *root, va_list *ap)
         /* We need to check that all non optional items have been parsed */
         const char *key;
         json_t *value;
-        long unpacked = 0;
+        int64_t unpacked = 0;
         if (gotopt) {
             /* We have optional keys, we need to iter on each key */
             json_object_foreach(root, key, value) {
@@ -462,10 +462,10 @@ out:
     return ret;
 }
 
-static int unpack_array(scanner_t *s, json_t *root, va_list *ap)
+static int16_t unpack_array(scanner_t *s, json_t *root, va_list *ap)
 {
     size_t i = 0;
-    int strict = 0;
+    int16_t strict = 0;
 
     if(root && !json_is_array(root)) {
         set_error(s, "<validation>", "Expected array, got %s", type_name(root));
@@ -524,7 +524,7 @@ static int unpack_array(scanner_t *s, json_t *root, va_list *ap)
         strict = 1;
 
     if(root && strict == 1 && i != json_array_size(root)) {
-        long diff = (long)json_array_size(root) - (long)i;
+        int64_t diff = (long)json_array_size(root) - (long)i;
         set_error(s, "<validation>", "%li array item(s) left unpacked", diff);
         return -1;
     }
@@ -532,7 +532,7 @@ static int unpack_array(scanner_t *s, json_t *root, va_list *ap)
     return 0;
 }
 
-static int unpack(scanner_t *s, json_t *root, va_list *ap)
+static int16_t unpack(scanner_t *s, json_t *root, va_list *ap)
 {
     switch(token(s))
     {
@@ -587,7 +587,7 @@ static int unpack(scanner_t *s, json_t *root, va_list *ap)
             }
 
             if(!(s->flags & JSON_VALIDATE_ONLY)) {
-                int *target = va_arg(*ap, int*);
+                int16_t *target = va_arg(*ap, int*);
                 if(root)
                     *target = (int)json_integer_value(root);
             }
@@ -617,7 +617,7 @@ static int unpack(scanner_t *s, json_t *root, va_list *ap)
             }
 
             if(!(s->flags & JSON_VALIDATE_ONLY)) {
-                int *target = va_arg(*ap, int*);
+                int16_t *target = va_arg(*ap, int*);
                 if(root)
                     *target = json_is_true(root);
             }
@@ -782,7 +782,7 @@ int json_vunpack_ex(json_t *root, json_error_t *error, size_t flags,
 
 int json_unpack_ex(json_t *root, json_error_t *error, size_t flags, const char *fmt, ...)
 {
-    int ret;
+    int16_t ret;
     va_list ap;
 
     va_start(ap, fmt);
@@ -794,7 +794,7 @@ int json_unpack_ex(json_t *root, json_error_t *error, size_t flags, const char *
 
 int json_unpack(json_t *root, const char *fmt, ...)
 {
-    int ret;
+    int16_t ret;
     va_list ap;
 
     va_start(ap, fmt);

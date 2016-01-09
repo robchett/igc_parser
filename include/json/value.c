@@ -30,11 +30,11 @@
 /* Work around nonstandard isnan() and isinf() implementations */
 #ifndef isnan
 #ifndef __sun
-static JSON_INLINE int isnan(double x) { return x != x; }
+static JSON_INLINE int16_t isnan(double x) { return x != x; }
 #endif
 #endif
 #ifndef isinf
-static JSON_INLINE int isinf(double x) { return !isnan(x) && isnan(x - x); }
+static JSON_INLINE int16_t isinf(double x) { return !isnan(x) && isnan(x - x); }
 #endif
 
 static JSON_INLINE void json_init(json_t *json, json_type type)
@@ -275,7 +275,7 @@ void *json_object_key_to_iter(const char *key)
     return hashtable_key_to_iter(key);
 }
 
-static int json_object_equal(json_t *object1, json_t *object2)
+static int16_t json_object_equal(json_t *object1, json_t *object2)
 {
     const char *key;
     json_t *value1, *value2;
@@ -432,7 +432,7 @@ static void array_copy(json_t **dest, size_t dpos,
 
 static json_t **json_array_grow(json_array_t *array,
                                 size_t amount,
-                                int copy)
+                                int16_t copy)
 {
     size_t new_size;
     json_t **old_table, **new_table;
@@ -584,7 +584,7 @@ int json_array_extend(json_t *json, json_t *other_json)
     return 0;
 }
 
-static int json_array_equal(json_t *array1, json_t *array2)
+static int16_t json_array_equal(json_t *array1, json_t *array2)
 {
     size_t i, size;
 
@@ -638,7 +638,7 @@ static json_t *json_array_deep_copy(const json_t *array)
 
 /*** string ***/
 
-static json_t *string_create(const char *value, size_t len, int own)
+static json_t *string_create(const char *value, size_t len, int16_t own)
 {
     char *v;
     json_string_t *string;
@@ -768,7 +768,7 @@ static void json_delete_string(json_string_t *string)
     jsonp_free(string);
 }
 
-static int json_string_equal(json_t *string1, json_t *string2)
+static int16_t json_string_equal(json_t *string1, json_t *string2)
 {
     json_string_t *s1, *s2;
 
@@ -828,7 +828,7 @@ static void json_delete_integer(json_integer_t *integer)
     jsonp_free(integer);
 }
 
-static int json_integer_equal(json_t *integer1, json_t *integer2)
+static int16_t json_integer_equal(json_t *integer1, json_t *integer2)
 {
     return json_integer_value(integer1) == json_integer_value(integer2);
 }
@@ -880,7 +880,7 @@ static void json_delete_real(json_real_t *real)
     jsonp_free(real);
 }
 
-static int json_real_equal(json_t *real1, json_t *real2)
+static int16_t json_real_equal(json_t *real1, json_t *real2)
 {
     return json_real_value(real1) == json_real_value(real2);
 }

@@ -19,7 +19,7 @@
 #define JANSSON_CONFIG_H
 
 #define JSON_INLINE
-#define JSON_INTEGER_IS_LONG_LONG 1
+#define JSON_INTEGER_IS_LONG_int64_t 1
 #define JSON_HAVE_LOCALECONV 0
 
 #endif

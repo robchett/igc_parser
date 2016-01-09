@@ -59,15 +59,15 @@ static uint32_t buf_to_uint32(char *data) {
 
 /* /dev/urandom */
 #if !defined(_WIN32) && defined(USE_URANDOM)
-static int seed_from_urandom(uint32_t *seed) {
+static int16_t seed_from_urandom(uint32_t *seed) {
     /* Use unbuffered I/O if we have open(), close() and read(). Otherwise
        fall back to fopen() */
 
     char data[sizeof(uint32_t)];
-    int ok;
+    int16_t ok;
 
 #if defined(HAVE_OPEN) && defined(HAVE_CLOSE) && defined(HAVE_READ)
-    int urandom;
+    int16_t urandom;
     urandom = open("/dev/urandom", O_RDONLY);
     if (urandom == -1)
         return 1;
@@ -101,7 +101,7 @@ typedef BOOL (WINAPI *CRYPTACQUIRECONTEXTA)(HCRYPTPROV *phProv, LPCSTR pszContai
 typedef BOOL (WINAPI *CRYPTGENRANDOM)(HCRYPTPROV hProv, DWORD dwLen, BYTE *pbBuffer);
 typedef BOOL (WINAPI *CRYPTRELEASECONTEXT)(HCRYPTPROV hProv, DWORD dwFlags);
 
-static int seed_from_windows_cryptoapi(uint32_t *seed)
+static int16_t seed_from_windows_cryptoapi(uint32_t *seed)
 {
     HINSTANCE hAdvAPI32 = NULL;
     CRYPTACQUIRECONTEXTA pCryptAcquireContext = NULL;
@@ -109,7 +109,7 @@ static int seed_from_windows_cryptoapi(uint32_t *seed)
     CRYPTRELEASECONTEXT pCryptReleaseContext = NULL;
     HCRYPTPROV hCryptProv = 0;
     BYTE data[sizeof(uint32_t)];
-    int ok;
+    int16_t ok;
 
     hAdvAPI32 = GetModuleHandle(TEXT("advapi32.dll"));
     if(hAdvAPI32 == NULL)
@@ -142,7 +142,7 @@ static int seed_from_windows_cryptoapi(uint32_t *seed)
 #endif
 
 /* gettimeofday() and getpid() */
-static int seed_from_timestamp_and_pid(uint32_t *seed) {
+static int16_t seed_from_timestamp_and_pid(uint32_t *seed) {
 #ifdef HAVE_GETTIMEOFDAY
     /* XOR of seconds and microseconds */
     struct timeval tv;
@@ -165,7 +165,7 @@ static int seed_from_timestamp_and_pid(uint32_t *seed) {
 
 static uint32_t generate_seed() {
     uint32_t seed;
-    int done = 0;
+    int16_t done = 0;
 
 #if !defined(_WIN32) && defined(USE_URANDOM)
     if (!done && seed_from_urandom(&seed) == 0)
@@ -243,7 +243,7 @@ void json_object_seed(size_t seed) {
     }
 }
 #elif defined(_WIN32)
-static long seed_initialized = 0;
+static int64_t seed_initialized = 0;
 void json_object_seed(size_t seed) {
     uint32_t new_seed = (uint32_t)seed;
 

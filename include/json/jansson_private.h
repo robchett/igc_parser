@@ -35,7 +35,7 @@ typedef struct {
     json_t json;
     hashtable_t hashtable;
     size_t serial;
-    int visited;
+    int16_t visited;
 } json_object_t;
 
 typedef struct {
@@ -43,7 +43,7 @@ typedef struct {
     size_t size;
     size_t entries;
     json_t **table;
-    int visited;
+    int16_t visited;
 } json_array_t;
 
 typedef struct {
@@ -74,14 +74,14 @@ json_t *jsonp_stringn_nocheck_own(const char *value, size_t len);
 /* Error message formatting */
 void jsonp_error_init(json_error_t *error, const char *source);
 void jsonp_error_set_source(json_error_t *error, const char *source);
-void jsonp_error_set(json_error_t *error, int line, int column,
+void jsonp_error_set(json_error_t *error, int16_t line, int16_t column,
                      size_t position, const char *msg, ...);
-void jsonp_error_vset(json_error_t *error, int line, int column,
+void jsonp_error_vset(json_error_t *error, int16_t line, int16_t column,
                       size_t position, const char *msg, va_list ap);
 
 /* Locale independent string<->double conversions */
 int jsonp_strtod(strbuffer_t *strbuffer, double *out);
-int jsonp_dtostr(char *buffer, size_t size, double value, int prec);
+int jsonp_dtostr(char *buffer, size_t size, double value, int16_t prec);
 
 /* Wrappers for custom memory functions */
 void* jsonp_malloc(size_t size);

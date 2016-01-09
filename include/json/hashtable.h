@@ -120,7 +120,7 @@ void hashtable_clear(hashtable_t *hashtable);
  * The hashtable items are not iterated over in any particular order.
  *
  * There's no need to free the iterator in any way. The iterator is
- * valid as long as the item that is referenced by the iterator is not
+ * valid as int64_t as the item that is referenced by the iterator is not
  * deleted. Other values may be added or deleted. In particular,
  * hashtable_iter_next() may be called on an iterator, and after that
  * the key/value pair pointed by the old iterator may be deleted.

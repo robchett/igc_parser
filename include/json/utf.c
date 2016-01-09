@@ -58,7 +58,7 @@ size_t utf8_check_first(char byte)
         return 0;
     }
     else if(u == 0xC0 || u == 0xC1) {
-        /* overlong encoding of an ASCII byte */
+        /* overint64_t encoding of an ASCII byte */
         return 0;
     }
     else if(0xC2 <= u && u <= 0xDF) {
@@ -127,7 +127,7 @@ size_t utf8_check_full(const char *buffer, size_t size, int32_t *codepoint)
     else if((size == 2 && value < 0x80) ||
             (size == 3 && value < 0x800) ||
             (size == 4 && value < 0x10000)) {
-        /* overlong encoding */
+        /* overint64_t encoding */
         return 0;
     }
 

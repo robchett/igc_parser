@@ -52,7 +52,7 @@ PHP_METHOD(formatter_kml, __construct) {
     zval *tr_zval = NULL;
     zval *task_zval = NULL;
     char *name;
-    long length;
+    int64_t length;
     formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
     intern->set = NULL;
     intern->open_distance = NULL;
@@ -83,7 +83,7 @@ PHP_METHOD(formatter_kml, __construct) {
 char *get_meta_data(formatter_object *intern) {
     char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
     coordinate_object *coordinate = intern->set->first;
-    int i = 0;
+    int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
         buffer = vstrcat(buffer, timestamp, " ", NULL);
@@ -103,7 +103,7 @@ char *get_linestring(formatter_object *intern) {
 	<altitudeMode>absolute</altitudeMode>\n\
 	<coordinates>");
     coordinate_object *coordinate = intern->set->first;
-    int i = 0;
+    int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
@@ -117,7 +117,7 @@ char *get_linestring(formatter_object *intern) {
     return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
 }
 
-char *format_task_point(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {
+char *format_task_point(coordinate_object *coordinate, int16_t index, coordinate_object *prev, double *total_distance) {
     double distance = 0;
     if (prev) {
         distance = get_distance_precise(coordinate, prev);
@@ -135,7 +135,7 @@ char *get_task_generic(task_object *task, char *title, char *colour) {
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
     coordinate_object *prev = NULL;
-    int i;
+    int16_t i;
     for (i = 0; i < task->size; i++) {
         if (task->coordinate[i]) {
             char *line = format_task_point(task->coordinate[i], i + 1, prev, &distance);
@@ -183,7 +183,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total\
     return buffer;
 }
 
-char *get_circle_coordinates(coordinate_object *coordinate, int radius) {
+char *get_circle_coordinates(coordinate_object *coordinate, int16_t radius) {
     double angularDistance = radius / 6378137.0;
     double sin_lat = 0;
     double cos_lat = 0;
@@ -192,7 +192,7 @@ char *get_circle_coordinates(coordinate_object *coordinate, int radius) {
     sincos(coordinate->lat toRAD, &sin_lat, &cos_lat);
     sincos(coordinate->lng toRAD, &sin_lng, &cos_lng);
     char *buffer = create_buffer("");
-    int i = 0;
+    int16_t i = 0;
     for (i = 0; i <= 360; i++) {
         double bearing = i toRAD;
         double lat = asin(sin_lat * cos(angularDistance) + cos_lat * sin(angularDistance) * cos(bearing));
@@ -214,7 +214,7 @@ char *get_defined_task(task_object *task) {
 <Folder>\
     <name>Task</name>");
     char *kml_coordinates = create_buffer("");
-    int i;
+    int16_t i;
     for (i = 0; i < task->size; i++) {
         char *coordinates = get_circle_coordinates(task->coordinate[i], 400);
         char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);

@@ -69,11 +69,11 @@ PHP_METHOD(distance_map, __construct) {
     create_distance_map(intern, coordinate_set_object);
 }
 
-unsigned long score_triangle(distance_map_object *intern, triangle_score *score, int include_gap) {
+uint64_t score_triangle(distance_map_object *intern, triangle_score *score, int16_t include_gap) {
     if (!score) {
         return 0;
     }
-    unsigned long res = (MAP(intern, score->x, score->y) + MAP(intern, score->y, score->z) + MAP(intern, score->x, score->z));
+    uint64_t res = (MAP(intern, score->x, score->y) + MAP(intern, score->y, score->z) + MAP(intern, score->x, score->z));
     if (include_gap) {
         res -= MAP(intern, score->row, score->col);
     }
@@ -83,13 +83,13 @@ unsigned long score_triangle(distance_map_object *intern, triangle_score *score,
 int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
      map->coordinate_set = set;
  
-     long real_size = map->size = set->length;
-     map->distances = (unsigned long **) malloc(sizeof(unsigned long *) * real_size);
-     int i = 0;
+     int64_t real_size = map->size = set->length;
+     map->distances = (uint64_t **) malloc(sizeof(uint64_t *) * real_size);
+     int16_t i = 0;
      for (i; i < real_size; i++) {
-         map->distances[i] = (unsigned long *) malloc((real_size - i  + 1) * sizeof(unsigned long));
+         map->distances[i] = (uint64_t *) malloc((real_size - i  + 1) * sizeof(unsigned long));
      }
-     int j;
+     int16_t j;
      coordinate_object *coordinate1 = set->first;
      i = 0;
      while (coordinate1) {
@@ -107,9 +107,9 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
 
 }
 
-inline triangle_score *check_y(long x, long y, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, triangle_score *score) {
-    long distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
-    long min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z))); 
+inline triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_object *intern, uint64_t *_minleg, triangle_score *score) {
+    int64_t distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
+    int64_t min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z))); 
     if (distance > score_triangle(intern, score, 0) && min > distance * 0.28) {
         triangle_score *new_score = emalloc(sizeof(triangle_score));
         new_score->x = x;
@@ -131,9 +131,9 @@ inline triangle_score *check_y(long x, long y, long z, long row, long col, dista
     return score;
 }
 
-inline triangle_score *scan_between(long x, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, triangle_score *score) {
-    long y = 0;
-    unsigned long skip;
+inline triangle_score *scan_between(int64_t x, int64_t z, int64_t row, int64_t col, distance_map_object *intern, uint64_t *_minleg, triangle_score *score) {
+    int64_t y = 0;
+    uint64_t skip;
     for (y = floor((x + z) / 2); y <= (z - 1); ++y) {        
         if ( 
             skip_up(intern, &y, MAP(intern, x, y), *_minleg, 2) ||
@@ -153,8 +153,8 @@ inline triangle_score *scan_between(long x, long z, long row, long col, distance
 }
 
 void close_gap(distance_map_object *intern, triangle_score *score) {
-    long i, j;
-    unsigned long best;
+    int64_t i, j;
+    uint64_t best;
     i = score->row;
     j = score->col;
     best = MAP(intern, i, j);
@@ -171,12 +171,12 @@ void close_gap(distance_map_object *intern, triangle_score *score) {
 
 PHP_METHOD(distance_map, score_triangle) {
     distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
-    unsigned long maximum_distance = 0;
+    uint64_t maximum_distance = 0;
     triangle_score *best_score = NULL;
-    long closest_end = 0;
-    long const minleg = 800000;
-    long _minleg = 800000;
-    long row, col, x, y, z = 0;
+    int64_t closest_end = 0;
+    int64_t const minleg = 800000;
+    int64_t _minleg = 800000;
+    int64_t row, col, x, y, z = 0;
     for (row = 0; row < intern->size; ++row) {
         for (col = intern->size - 1; col > row && col > closest_end; --col) {
             if (skip_down(intern, &col, minleg, MAP(intern, row, col), 1)) continue;
@@ -202,12 +202,12 @@ PHP_METHOD(distance_map, score_triangle) {
     triangle_score *current_score = best_score;
 
     if (best_score && best_score->z) {
-        long i = 0;
+        int64_t i = 0;
         while (current_score) {
             i++;
             if (score_triangle(intern, current_score, 0) + minleg < score_triangle(intern, best_score, 0)) break; 
             // Break if the current iteration could not possible beat the best;
-            unsigned long pre_score = score_triangle(intern, current_score, 0);
+            uint64_t pre_score = score_triangle(intern, current_score, 0);
             close_gap(intern, current_score);
             //warn("calc change: %d -> %d", pre_score, score_triangle(intern, current_score, 1));
             if (score_triangle(intern, current_score, 1) > score_triangle(intern, best_score, 1)) {
@@ -240,10 +240,10 @@ PHP_METHOD(distance_map, score_triangle) {
 
 PHP_METHOD(distance_map, score_out_and_return) {
     distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
-    long distance, maximum_distance = 0;
-    long indexes[] = {0, 0, 0};
-    long row, col, x;
-    long const minLeg = 800000;
+    int64_t distance, maximum_distance = 0;
+    int64_t indexes[] = {0, 0, 0};
+    int64_t row, col, x;
+    int64_t const minLeg = 800000;
     for (row = 0; row < intern->size; ++row) {
         for (col = intern->size - 1; col > row + 2; --col) {
             if(skip_down(intern, &col, minLeg, MAP(intern, row, col), 1)) continue;
@@ -285,13 +285,13 @@ PHP_METHOD(distance_map, score_out_and_return) {
 
 PHP_METHOD(distance_map, score_open_distance_3tp) {
     distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
-    unsigned long bestBack[intern->size], bestFwrd[intern->size];
-    long bestBack_index[intern->size], bestFwrd_index[intern->size];
-    long i;
+    uint64_t bestBack[intern->size], bestFwrd[intern->size];
+    int64_t bestBack_index[intern->size], bestFwrd_index[intern->size];
+    int64_t i;
     double best_score = 0;
-    long indexes[] = {0, 0, 0, 0, 0};
-    long row, j;
-    long maxF, maxB, midB, endB, midF, endF;
+    int64_t indexes[] = {0, 0, 0, 0, 0};
+    int64_t row, j;
+    int64_t maxF, maxB, midB, endB, midF, endF;
     for (i = 0; i < intern->size; i++) {
         bestBack_index[i] = bestFwrd_index[i] = 0;
         bestBack[i] = maximum_bound_index_back(intern, i, &bestBack_index[i]);
@@ -343,14 +343,14 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
 
 PHP_METHOD(distance_map, get_precise) {
     distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
-    unsigned long offset1;
-    unsigned long offset2;
+    uint64_t offset1;
+    uint64_t offset2;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &offset1, &offset2) != SUCCESS) {
         return;
     }
 
     if (offset1 > offset2) {
-        unsigned long temp = offset1;
+        uint64_t temp = offset1;
         offset1 = offset2;
         offset2 = temp;
     }
@@ -363,14 +363,14 @@ PHP_METHOD(distance_map, get_precise) {
 
 PHP_METHOD(distance_map, get) {
 
-    long offset1;
-    long offset2;
+    int64_t offset1;
+    int64_t offset2;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &offset1, &offset2) != SUCCESS) {
         return;
     }
 
     if (offset1 > offset2) {
-        long temp = offset1;
+        int64_t temp = offset1;
         offset1 = offset2;
         offset2 = temp;
     }
@@ -379,8 +379,8 @@ PHP_METHOD(distance_map, get) {
     RETURN_DOUBLE((double)MAP(intern, offset1, offset2) / 1000000);
 }
 
-coordinate_object *get_coordinate(distance_map_object *map, unsigned long index) {
-    int i = 0;
+coordinate_object *get_coordinate(distance_map_object *map, uint64_t index) {
+    int16_t i = 0;
     coordinate_object *current = map->coordinate_set->first;
     while (i < index) {
         i++;
@@ -391,10 +391,10 @@ coordinate_object *get_coordinate(distance_map_object *map, unsigned long index)
     return current;
 }
 
-unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long point, unsigned long *index) {
-    unsigned long best_index = point;
-    unsigned long i = 0;
-    unsigned long best_score = 0;
+uint64_t maximum_bound_index_back(distance_map_object *map, uint64_t point, uint64_t *index) {
+    uint64_t best_index = point;
+    uint64_t i = 0;
+    uint64_t best_score = 0;
     for (i; i < point; ++i) {
         if (best_score < MAP(map, i, point)) {
             best_index = i;
@@ -405,10 +405,10 @@ unsigned long maximum_bound_index_back(distance_map_object *map, unsigned long p
     return best_score;
 }
 
-unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long point, unsigned long *index) {
-    unsigned long best_index = point;
-    unsigned long i = point;
-    unsigned long best_score = 0;
+uint64_t maximum_bound_index_fwrd(distance_map_object *map, uint64_t point, uint64_t *index) {
+    uint64_t best_index = point;
+    uint64_t i = point;
+    uint64_t best_score = 0;
     for (i; i < map->size; ++i) {
         if (best_score < MAP(map, point, i)) {
             best_index = i;
@@ -419,8 +419,8 @@ unsigned long maximum_bound_index_fwrd(distance_map_object *map, unsigned long p
     return best_score;
 }
 
-inline unsigned long skip_up(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs) {
-    unsigned long cnt = 0, dist;
+inline uint64_t skip_up(distance_map_object *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs) {
+    uint64_t cnt = 0, dist;
     while (*index < map->size - 1) {
         dist = MAP(map, *index, (*index + 1)) * effected_legs;
         if (current > required + dist) {
@@ -435,8 +435,8 @@ inline unsigned long skip_up(distance_map_object *map, unsigned long *index, uns
     return cnt;
 }
 
-inline unsigned long skip_down(distance_map_object *map, unsigned long *index, unsigned long required, unsigned long current, int effected_legs) {
-    unsigned long cnt = 0, dist;
+inline uint64_t skip_down(distance_map_object *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs) {
+    uint64_t cnt = 0, dist;
     while (*index > 1) {
         dist = MAP(map, (*index - 1), *index) * effected_legs;
         if (current > required + dist) {

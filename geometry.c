@@ -103,15 +103,15 @@ char *get_os_grid_ref(coordinate_object *point) {
     return gridref_number_to_letter(E, N);
 }
 
-char *gridref_number_to_letter(long e, long n) {
+char *gridref_number_to_letter(int64_t e, int64_t n) {
     // get the 100km-grid indices
-    long e100k = (long)floor(e / 100000);
-    long n100k = (long)floor(n / 100000);
+    int64_t e100k = (long)floor(e / 100000);
+    int64_t n100k = (long)floor(n / 100000);
 
     if (e100k < 0 || e100k > 8 || n100k < 0 || n100k > 12) { }
 
-    long l1 = (19 - n100k) - (19 - n100k) % 5 + floor((e100k + 10) / 5);
-    long l2 = (19 - n100k) * 5 % 25 + e100k % 5;
+    int64_t l1 = (19 - n100k) - (19 - n100k) % 5 + floor((e100k + 10) / 5);
+    int64_t l2 = (19 - n100k) * 5 % 25 + e100k % 5;
 
     if (l1 > 7) l1++;
     if (l2 > 7) l2++;

@@ -52,7 +52,7 @@ PHP_METHOD(formatter_kml_earth, __construct) {
     zval *tr_zval = NULL;
     zval *task_zval = NULL;
     char *name;
-    long length;
+    int64_t length;
     formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
     intern->set = NULL;
     intern->open_distance = NULL;
@@ -83,7 +83,7 @@ PHP_METHOD(formatter_kml_earth, __construct) {
 char *get_meta_data_earth(formatter_object *intern) {
     char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
     coordinate_object *coordinate = intern->set->first;
-    int i = 0;
+    int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
         buffer = vstrcat(buffer, timestamp, " ", NULL);
@@ -106,7 +106,7 @@ char *get_linestring_earth(formatter_object *intern, char *style, char *altitude
 	<altitudeMode>", altitude_mode, "</altitudeMode>\n\
 	<coordinates>", NULL);
     coordinate_object *coordinate = intern->set->first;
-    int i = 0;
+    int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
@@ -129,7 +129,7 @@ char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_obj
         <extrude>0</extrude>\n\
         <altitudeMode>absolute</altitudeMode>\n\
         <coordinates>\n", NULL);
-    int i = 0;
+    int16_t i = 0;
     while (coordinate != last) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
@@ -146,7 +146,7 @@ char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_obj
 </Placemark>\n", NULL);
 }
 
-char *format_task_point_earth(coordinate_object *coordinate, int index, coordinate_object *prev, double *total_distance) {
+char *format_task_point_earth(coordinate_object *coordinate, int16_t index, coordinate_object *prev, double *total_distance) {
     double distance = 0;
     if (prev && coordinate) {
         distance = get_distance_precise(coordinate, prev);
@@ -164,7 +164,7 @@ char *get_task_generic_earth(task_object *task, char *title, char *colour) {
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
     coordinate_object *prev = NULL;
-    int i;
+    int16_t i;
     for (i = 0; i < task->size; i++) {
         if (task->coordinate[i]) {
             char *line = format_task_point_earth(task->coordinate[i], i + 1, prev, &distance);
@@ -212,7 +212,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total\
     return buffer;
 }
 
-char *get_circle_coordinates_earth(coordinate_object *coordinate, int radius) {
+char *get_circle_coordinates_earth(coordinate_object *coordinate, int16_t radius) {
     double angularDistance = radius / 6378137.0;
     double sin_lat = 0;
     double cos_lat = 0;
@@ -221,7 +221,7 @@ char *get_circle_coordinates_earth(coordinate_object *coordinate, int radius) {
     sincos(coordinate->lat toRAD, &sin_lat, &cos_lat);
     sincos(coordinate->lng toRAD, &sin_lng, &cos_lng);
     char *buffer = create_buffer("");
-    int i = 0;
+    int16_t i = 0;
     for (i = 0; i <= 360; i++) {
         double bearing = i toRAD;
         double lat = asin(sin_lat * cos(angularDistance) + cos_lat * sin(angularDistance) * cos(bearing));
@@ -243,7 +243,7 @@ char *get_defined_task_earth(task_object *task) {
 <Folder>\
     <name>Task</name>");
     char *kml_coordinates = create_buffer("");
-    int i;
+    int16_t i;
     for (i = 0; i < task->size; i++) {
         char *coordinates = get_circle_coordinates_earth(task->coordinate[i], 400);
         char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
@@ -510,7 +510,7 @@ char *get_kml_styles_earth() {
         </PolyStyle>\n\
     </Style>\n");
 
-    int i;
+    int16_t i;
     for (i = 0; i < 16; i++) {
         char *level = itos(i);
         buffer = vstrcat(buffer, "\n\
@@ -535,11 +535,11 @@ char *get_kml_styles_earth() {
 
 char *get_colour_by_height(coordinate_set_object *set) {
     char *buffer = create_buffer("");
-    long min = set->min_ele;
+    int64_t min = set->min_ele;
     double delta = (set->max_ele - set->min_ele ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
-    int last_level, current_level;
+    int16_t last_level, current_level;
     last_level = floor((current->ele - min) / delta);
     while (current) {
         char *level = itos(last_level);
@@ -566,11 +566,11 @@ char *get_colour_by_height(coordinate_set_object *set) {
 
 char *get_colour_by_climb_rate(coordinate_set_object *set) {
     char *buffer = create_buffer("");
-    long min = set->min_climb_rate;
+    int64_t min = set->min_climb_rate;
     double delta = (set->max_climb_rate - set->min_climb_rate ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
-    int last_level, current_level;
+    int16_t last_level, current_level;
     last_level = floor((current->climb_rate - min) / delta);
     while (current) {
         char *level = itos(last_level);
@@ -598,11 +598,11 @@ char *get_colour_by_climb_rate(coordinate_set_object *set) {
 
 char *get_colour_by_speed(coordinate_set_object *set) {
     char *buffer = create_buffer("");
-    long min = 0;
+    int64_t min = 0;
     double delta = (set->max_speed ? : 1) / 16;
     coordinate_object *last, *first, *current;
     first = current = set->first;
-    int last_level, current_level;
+    int16_t last_level, current_level;
     last_level = floor((current->speed - min) / delta);
     while (current) {
         current_level = floor((current->speed - min) / delta);
@@ -627,7 +627,7 @@ char *get_colour_by_speed(coordinate_set_object *set) {
     return buffer;
 }
 
-char *format_timestamp(int year, int month, int day, int ts) {
+char *format_timestamp(int year, int16_t month, int16_t day, int16_t ts) {
     char *buffer = emalloc(sizeof(char) * 20);
     struct tm point_time = {
         .tm_year = year - 1990,
@@ -643,10 +643,10 @@ char *format_timestamp(int year, int month, int day, int ts) {
 
 char *get_colour_by_time(coordinate_set_object *set) {
     char *buffer = create_buffer("");
-    long min = set->first->timestamp;
+    int64_t min = set->first->timestamp;
     double delta = (set->last->timestamp - min ? : 1) / 16;
     coordinate_object *current = set->first;
-    int current_level;
+    int16_t current_level;
     char *point, *next_point;
     char *point_date, *next_point_date;
     if (current) {

@@ -138,7 +138,7 @@ PHP_METHOD(task, completes_task) {
 }
 
 int completes_task(coordinate_set_object *set, task_object *task) {
-    int i = 0, j = 0;
+    int16_t i = 0, j = 0;
     coordinate_object *task_point;
     coordinate_object *track_point = set->first;
 start:
@@ -161,7 +161,7 @@ start:
 PHP_METHOD(task, get_coordinate_ids) {
     task_object *intern = fetch_task_object(getThis() TSRMLS_CC);
 
-    int i = 0;
+    int16_t i = 0;
     char coordinates[intern->size * 6];
     memset(coordinates, 0, intern->size * 6);
 
@@ -190,8 +190,8 @@ PHP_METHOD(task, get_gap_ids) {
 PHP_METHOD(task, get_gridref) {
     task_object *intern = fetch_task_object(getThis() TSRMLS_CC);
 
-    int i = 0;
-    int end = intern->size;
+    int16_t i = 0;
+    int16_t end = intern->size;
 
     char *coordinates = create_buffer("");
 
@@ -215,8 +215,8 @@ int get_task_time(task_object *task) {
 }
 
 double get_task_distance(task_object *task) {
-    int i = 0;
-    int end = task->size - 1;
+    int16_t i = 0;
+    int16_t end = task->size - 1;
 
     double distance = 0;
     for (i; i < end; i++) {

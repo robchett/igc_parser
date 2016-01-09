@@ -50,7 +50,7 @@ PHP_METHOD(formatter_js, __construct) {
     zval *od_zval = NULL;
     zval *or_zval = NULL;
     zval *tr_zval = NULL;
-    long id;
+    int64_t id;
     formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
     if (zend_parse_parameters(
                 ZEND_NUM_ARGS() TSRMLS_CC,

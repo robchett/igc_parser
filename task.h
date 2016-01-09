@@ -20,7 +20,7 @@ typedef struct task_object {
 
     coordinate_object **coordinate;
     coordinate_object **gap;
-    int size;
+    int16_t size;
     task_type type;
 } task_object;
 
