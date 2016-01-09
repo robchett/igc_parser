@@ -232,7 +232,10 @@ function score_track($skip, $file, $answers = [], $task = null, $section = false
         echo get_score($set_2, $map_2, $or = $map_2->score_out_and_return(), $answers, 'OR');
         echo get_score($set_2, $map_2, $tr = $map_2->score_triangle(), $answers, 'TR');
 
-        _log('Coordinates', $od->get_gridref());
+        if ($od) {       
+            _log('Coordinates', $od->get_gridref());
+        }
+
         _log('Duration',  ($set_2->last()->timestamp() - $set_2->first()->timestamp()) . 's');
 
         if ($task) {
@@ -274,6 +277,7 @@ function get_time() {
 }
 
 function get_score($set_2, $map_2, $score, $results, $type) {
+    $res = '';
     if($score) {
         $distance = $score->get_distance();
         $coordinates = array_filter(explode(',', $score->get_coordinate_ids()));
@@ -309,7 +313,7 @@ function get_score($set_2, $map_2, $score, $results, $type) {
             $res = green(str_pad('[PASS] ' . implode(",", $coordinates), 52));
         }
     } else {
-        $res . red(str_pad('[FAIL] No match'), 52);
+        $res . red(str_pad('[FAIL] No match', 52));
     }
     return $res . ' @ ' . get_time() . PHP_EOL;
 }
