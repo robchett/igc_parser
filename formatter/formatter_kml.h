@@ -19,7 +19,6 @@ void free_formatter_kml_object(formatter_object *intern TSRMLS_DC);
 
 char *formatter_kml_output(formatter_object *intern);
 char *formatter_kml_output_split(formatter_object *intern);
-formatter_object* fetch_formatter_object(zend_object* obj);
 
 #define toRAD * M_PI / 180
 #define toDEG * 180 / M_PI

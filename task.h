@@ -33,6 +33,6 @@ void free_task_object(task_object *intern TSRMLS_DC);
 double get_task_distance(task_object *task);
 int get_task_time(task_object *task);
 int completes_task(coordinate_set_object *set, task_object *task);
-task_object* fetch_task_object(zend_object* obj);
+task_object* fetch_task_object(zval* obj);
 
 #endif

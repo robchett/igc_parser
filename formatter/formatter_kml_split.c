@@ -4,26 +4,29 @@
 #include "../coordinate_set.h"
 #include "formatter_kml_split.h"
 
+zend_object_handlers formatter_kml_split_object_handler;
+
 void init_formatter_kml_split(TSRMLS_D) {
     zend_class_entry ce;
 
     INIT_CLASS_ENTRY(ce, "formatter_kml_split", formatter_kml_split_methods);
     formatter_kml_split_ce = zend_register_internal_class(&ce TSRMLS_CC);
     formatter_kml_split_ce->create_object = create_formatter_kml_split_object;
+
+    memcpy(&formatter_kml_split_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    formatter_kml_split_object_handler.free_obj = free_formatter_kml_split_object;
+    formatter_kml_split_object_handler.offset = XtOffsetOf(formatter_split_object, std);
 }
 
 zend_object* create_formatter_kml_split_object(zend_class_entry *class_type TSRMLS_DC) {
-    formatter_split_object* retval;
-    zend_object_handlers handlers;
+    formatter_object* retval;
 
-    formatter_split_object *intern = ecalloc(1, sizeof(formatter_split_object) + zend_object_properties_size(class_type));
+    retval = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
 
-    zend_object_std_init(&intern->std, class_type TSRMLS_CC);
-    object_properties_init(&intern->std, class_type);
+    zend_object_std_init(&retval->std, class_type TSRMLS_CC);
+    object_properties_init(&retval->std, class_type);
 
-    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    //handlers.offset = XtOffsetof(formatter_split_object, std);
-    //handlers.free_obj = free_formatter_kml_split_object;
+    retval->std.handlers = &formatter_kml_split_object_handler;
 
     return &retval->std;
 }
@@ -33,8 +36,8 @@ void free_formatter_kml_split_object(formatter_split_object *intern TSRMLS_DC) {
     efree(intern);
 }
 
-inline formatter_split_object* fetch_formatter_split_object(zend_object* obj) {
-    return (formatter_split_object*) ((char*) obj - XtOffsetOf(formatter_split_object, std));
+inline formatter_split_object* fetch_formatter_split_object(zval* obj) {
+    return (formatter_split_object*) ((char*) Z_OBJ_P(obj) - XtOffsetOf(formatter_split_object, std));
 }
 
 static zend_function_entry formatter_kml_split_methods[] = {
@@ -46,12 +49,12 @@ static zend_function_entry formatter_kml_split_methods[] = {
 
 PHP_METHOD(formatter_kml_split, __construct) {
     zval *coordinate_set_zval;
-    formatter_split_object *intern = fetch_formatter_split_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_split_object *intern = fetch_formatter_split_object(getThis() TSRMLS_CC);
     if (zend_parse_parameters( ZEND_NUM_ARGS() TSRMLS_CC, "O", &coordinate_set_zval, coordinate_set_ce ) == FAILURE) {
         return;
     }
 
-    intern->set = (coordinate_set_object *)fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
+    intern->set = (coordinate_set_object *)fetch_coordinate_set_object(coordinate_set_zval TSRMLS_CC);
 }
 
 
@@ -75,7 +78,7 @@ char *get_linestring_subset(coordinate_subset *intern) {
 }
 
 PHP_METHOD(formatter_kml_split, output) {
-    formatter_split_object *intern = fetch_formatter_split_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_split_object *intern = fetch_formatter_split_object(getThis() TSRMLS_CC);
     RETURN_STRING(formatter_kml_split_output(intern));
 }
 

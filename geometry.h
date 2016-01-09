@@ -4,7 +4,7 @@
 	#define PHP_GEOMETRY_EXTNAME "geometry"
 
 	#define ZEND_DEBUG 0
-	//#define DEBUG_LEVEL 0
+	#define DEBUG_LEVEL 0
 
 	PHP_MINIT_FUNCTION(geometry);
 

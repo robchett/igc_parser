@@ -5,34 +5,35 @@
 #include "geometry.h"
 #include "string_manip.h"
 
+zend_object_handlers coordinate_object_handler;
+
 void init_coordinate(TSRMLS_D) {
     zend_class_entry ce;
 
     INIT_CLASS_ENTRY(ce, "coordinate", coordinate_methods);
     coordinate_ce = zend_register_internal_class(&ce TSRMLS_CC);
     coordinate_ce->create_object = create_coordinate_object;
+
+    memcpy(&coordinate_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    coordinate_object_handler.free_obj = free_coordinate_object;
+    coordinate_object_handler.offset = XtOffsetOf(coordinate_object, std);
 }
 
 zend_object* create_coordinate_object(zend_class_entry *class_type TSRMLS_DC) {
-    coordinate_object* retval;
-    zend_object_handlers handlers;
+    coordinate_object* intern;
 
-    coordinate_object *intern = ecalloc(1, sizeof(coordinate_object) + zend_object_properties_size(class_type));
+    intern = ecalloc(1, sizeof(coordinate_object) + zend_object_properties_size(class_type));
 
     zend_object_std_init(&intern->std, class_type TSRMLS_CC);
     object_properties_init(&intern->std, class_type);
 
-    zend_objects_store_put(&intern->std);
+    intern->std.handlers = &coordinate_object_handler;
 
-    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    //handlers.offset = XtOffsetof(coordinate_object, std);
-    //handlers.free_obj = free_coordinate_object;
-
-    return &retval->std;
+    return &intern->std;
 }
 
-coordinate_object* fetch_coordinate_object(zend_object* obj) {
-    return (coordinate_object*) ((char*) obj - XtOffsetOf(coordinate_object, std));
+coordinate_object* fetch_coordinate_object(zval* obj) {
+    return (coordinate_object*) ((char*) Z_OBJ_P(obj) - XtOffsetOf(coordinate_object, std));
 }
 
 void _free_coordinate_object(coordinate_object *intern) {
@@ -95,7 +96,7 @@ PHP_METHOD(coordinate, __construct) {
         return;
     }
 
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     intern->lat = lat;
     intern->lng = lng;
     intern->sin_lat = sin(lat toRAD);
@@ -106,7 +107,7 @@ PHP_METHOD(coordinate, __construct) {
 }
 
 PHP_METHOD(coordinate, id) {
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     RETURN_LONG(intern->id);
 }
 
@@ -116,7 +117,7 @@ PHP_METHOD(coordinate, lat) {
         return;
     }
 
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     if (as_rad) {
         RETURN_DOUBLE(intern->lat toRAD);
     } else {
@@ -125,12 +126,12 @@ PHP_METHOD(coordinate, lat) {
 }
 
 PHP_METHOD(coordinate, gridref) {
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     RETURN_STRING(get_os_grid_ref(intern));
 }
 
 PHP_METHOD(coordinate, timestamp) {
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     RETURN_LONG(intern->timestamp);
 }
 
@@ -140,7 +141,7 @@ PHP_METHOD(coordinate, lng) {
         return;
     }
 
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     if (as_rad) {
         RETURN_DOUBLE(intern->lng toRAD);
     } else {
@@ -149,7 +150,7 @@ PHP_METHOD(coordinate, lng) {
 }
 
 PHP_METHOD(coordinate, ele) {
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     RETURN_DOUBLE(intern->ele);
 }
 
@@ -158,7 +159,7 @@ PHP_METHOD(coordinate, set_ele) {
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &val) == FAILURE) {
         return;
     }
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     intern->ele = val;
 }
 
@@ -167,7 +168,7 @@ PHP_METHOD(coordinate, set_lng) {
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "d", &val) == FAILURE) {
         return;
     }
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     intern->lng = val;
 }
 
@@ -176,7 +177,7 @@ PHP_METHOD(coordinate, set_lat) {
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "d", &val) == FAILURE) {
         return;
     }
-    coordinate_object *intern = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    coordinate_object *intern = fetch_coordinate_object(getThis() TSRMLS_CC);
     intern->lat = val;
 }
 
@@ -186,8 +187,8 @@ PHP_METHOD(coordinate, get_bearing_to) {
         return;
     }
 
-    coordinate_object *point1 = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    coordinate_object *point2 = fetch_coordinate_object(Z_OBJ_P(_point) TSRMLS_CC);
+    coordinate_object *point1 = fetch_coordinate_object(getThis() TSRMLS_CC);
+    coordinate_object *point2 = fetch_coordinate_object(_point TSRMLS_CC);
 
     RETURN_DOUBLE(get_bearing(point1, point2));
 
@@ -200,8 +201,8 @@ PHP_METHOD(coordinate, get_distance_to) {
         return;
     }
 
-    coordinate_object *point1 = fetch_coordinate_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    coordinate_object *point2 = fetch_coordinate_object(Z_OBJ_P(_point) TSRMLS_CC);
+    coordinate_object *point1 = fetch_coordinate_object(getThis() TSRMLS_CC);
+    coordinate_object *point2 = fetch_coordinate_object(_point TSRMLS_CC);
 
     if (precise) {
         RETURN_DOUBLE(get_distance_precise(point1, point2));

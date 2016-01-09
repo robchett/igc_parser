@@ -1,6 +1,8 @@
 #ifndef GEOMETRY_formatter_kml_split_H
 #define GEOMETRY_formatter_kml_split_H
 
+#include "formatter.h"
+
 typedef struct formatter_split_object {
     zend_object std;
     coordinate_set_object *set;

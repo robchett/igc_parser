@@ -6,46 +6,42 @@
 #include "distance_map.h"
 #include "geometry.h"
 
+
+zend_object_handlers distance_map_object_handler;
+
 void init_distance_map(TSRMLS_D) {
     zend_class_entry ce;
 
     INIT_CLASS_ENTRY(ce, "distance_map", distance_map_methods);
     distance_map_ce = zend_register_internal_class(&ce TSRMLS_CC);
     distance_map_ce->create_object = create_distance_map_object;
+
+    memcpy(&distance_map_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    distance_map_object_handler.free_obj = free_distance_map_object;
+    distance_map_object_handler.offset = XtOffsetOf(distance_map_object, std);
 }
 
 zend_object* create_distance_map_object(zend_class_entry *class_type TSRMLS_DC) {
     distance_map_object* retval;
-    zend_object_handlers handlers;
 
-    distance_map_object *intern = ecalloc(1, sizeof(distance_map_object) + zend_object_properties_size(class_type));
+    retval = ecalloc(1, sizeof(distance_map_object) + zend_object_properties_size(class_type));
 
-    // create a table for class properties
-    zend_object_std_init(&intern->std, class_type TSRMLS_CC);
-    object_properties_init(&intern->std, class_type);
+    zend_object_std_init(&retval->std, class_type TSRMLS_CC);
+    object_properties_init(&retval->std, class_type);
 
-    // create a destructor for this struct
-    zend_objects_store_put(&intern->std);
-
-    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    //handlers.offset = XtOffsetof(distance_map_object, std);
-    //handlers.free_obj = free_distance_map_object;
+    retval->std.handlers = &distance_map_object_handler;
 
     return &retval->std;
 }
 
-inline distance_map_object* fetch_distance_map_object(zend_object* obj) {
-    return (distance_map_object*) ((char*) obj - XtOffsetOf(distance_map_object, std));
+inline distance_map_object* fetch_distance_map_object(zval* obj) {
+    return (distance_map_object*) ((char*) Z_OBJ_P(obj) - XtOffsetOf(distance_map_object, std));
 }
 
 
 void free_distance_map_object(distance_map_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
     if (intern->distances) {
-        int i = 0;
-        for (i = 0; i < intern->size; i++) {
-            efree(intern->distances[i]);
-        }
         efree(intern->distances);
     }
     efree(intern);
@@ -68,8 +64,8 @@ PHP_METHOD(distance_map, __construct) {
         return;
     }
 
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
-    coordinate_set_object *coordinate_set_object = fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
+    coordinate_set_object *coordinate_set_object = fetch_coordinate_set_object(coordinate_set_zval TSRMLS_CC);
     create_distance_map(intern, coordinate_set_object);
 }
 
@@ -85,29 +81,30 @@ unsigned long score_triangle(distance_map_object *intern, triangle_score *score,
 }
 
 int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
-    map->coordinate_set = set;
+     map->coordinate_set = set;
+ 
+     long real_size = map->size = set->length;
+     map->distances = (unsigned long **) malloc(sizeof(unsigned long *) * real_size);
+     int i = 0;
+     for (i; i < real_size; i++) {
+         map->distances[i] = (unsigned long *) malloc((real_size - i  + 1) * sizeof(unsigned long));
+     }
+     int j;
+     coordinate_object *coordinate1 = set->first;
+     i = 0;
+     while (coordinate1) {
+         j = i + 1;
+         coordinate_object *coordinate2 = coordinate1->next;
+         while (coordinate2) {
+             map->distances[i][j - i - 1] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
+             j++;
+             coordinate2 = coordinate2->next;
+         }
+         i++;
+         coordinate1 = coordinate1->next;
+     }
+     return 1;
 
-    long real_size = map->size = set->length;
-    map->distances = (unsigned long **) emalloc(sizeof(unsigned long *) * real_size);
-    int i = 0;
-    for (i; i < real_size; i++) {
-        map->distances[i] = (unsigned long *) emalloc((real_size - i  + 1) * sizeof(unsigned long));
-    }
-    int j;
-    coordinate_object *coordinate1 = set->first;
-    i = 0;
-    while (coordinate1) {
-        j = i + 1;
-        coordinate_object *coordinate2 = coordinate1->next;
-        while (coordinate2) {
-            map->distances[i][j - i - 1] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
-            j++;
-            coordinate2 = coordinate2->next;
-        }
-        i++;
-        coordinate1 = coordinate1->next;
-    }
-    return 1;
 }
 
 inline triangle_score *check_y(long x, long y, long z, long row, long col, distance_map_object *intern, unsigned long *_minleg, triangle_score *score) {
@@ -173,7 +170,7 @@ void close_gap(distance_map_object *intern, triangle_score *score) {
 }
 
 PHP_METHOD(distance_map, score_triangle) {
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
     unsigned long maximum_distance = 0;
     triangle_score *best_score = NULL;
     long closest_end = 0;
@@ -224,7 +221,7 @@ PHP_METHOD(distance_map, score_triangle) {
 
         zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 4;
         return_intern->type = TRIANGLE;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);
@@ -242,7 +239,7 @@ PHP_METHOD(distance_map, score_triangle) {
 }
 
 PHP_METHOD(distance_map, score_out_and_return) {
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
     long distance, maximum_distance = 0;
     long indexes[] = {0, 0, 0};
     long row, col, x;
@@ -270,7 +267,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
     if (maximum_distance) {
         zval *ret = emalloc(sizeof(task_object));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 3;
         return_intern->type = OUT_AND_RETURN;
         return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);
@@ -287,7 +284,7 @@ PHP_METHOD(distance_map, score_out_and_return) {
 }
 
 PHP_METHOD(distance_map, score_open_distance_3tp) {
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
     unsigned long bestBack[intern->size], bestFwrd[intern->size];
     long bestBack_index[intern->size], bestFwrd_index[intern->size];
     long i;
@@ -329,7 +326,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
     if (best_score) {
         zval *ret = emalloc(sizeof(zval));
         object_init_ex(ret, task_ce);
-        task_object *return_intern = fetch_task_object(Z_OBJ_P(ret) TSRMLS_CC);
+        task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 5;
         return_intern->gap = NULL;
         return_intern->type = OPEN_DISTANCE;
@@ -345,7 +342,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
 }
 
 PHP_METHOD(distance_map, get_precise) {
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
     unsigned long offset1;
     unsigned long offset2;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &offset1, &offset2) != SUCCESS) {
@@ -378,7 +375,7 @@ PHP_METHOD(distance_map, get) {
         offset2 = temp;
     }
 
-    distance_map_object *intern = fetch_distance_map_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
     RETURN_DOUBLE((double)MAP(intern, offset1, offset2) / 1000000);
 }
 

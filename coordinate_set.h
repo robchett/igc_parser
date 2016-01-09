@@ -64,7 +64,7 @@ void free_coordinate_set_object(coordinate_set_object *intern TSRMLS_DC);
 coordinate_object *match_b_record(char *line);
 int set_graph_values(coordinate_set_object *intern);
 int parse_igc(coordinate_set_object *intern, char *string);
-coordinate_object *parse_igc_coordiante(char *string);
+void parse_igc_coordinate(char *string, coordinate_object *intern);
 int is_b_record(char *line);
 int is_h_record(char *line);
 int is_valid_subset(coordinate_subset *start);
@@ -74,6 +74,6 @@ int has_height_data(coordinate_set_object *coordinate_set);
 void clone_coordinate_object(coordinate_object *source, coordinate_object *dest);
 void coordinate_object_trim(coordinate_set_object *source);
 void free_subset(coordinate_set_object *parser, coordinate_subset *subset);
-coordinate_set_object* fetch_coordinate_set_object(zend_object* obj);
+coordinate_set_object* fetch_coordinate_set_object(zval* obj);
 void coordinate_object_set_section(coordinate_set_object *intern, long start, long end);
 #endif

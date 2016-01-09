@@ -6,34 +6,31 @@
 #include "../task.h"
 #include "formatter_kml.h"
 
+zend_object_handlers formatter_kml_object_handler;
+
 void init_formatter_kml(TSRMLS_D) {
     zend_class_entry ce;
 
     INIT_CLASS_ENTRY(ce, "formatter_kml", formatter_kml_methods);
     formatter_kml_ce = zend_register_internal_class(&ce TSRMLS_CC);
     formatter_kml_ce->create_object = create_formatter_kml_object;
+
+    memcpy(&formatter_kml_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+    formatter_kml_object_handler.free_obj = free_formatter_kml_object;
+    formatter_kml_object_handler.offset = XtOffsetOf(formatter_object, std);
 }
 
 zend_object* create_formatter_kml_object(zend_class_entry *class_type TSRMLS_DC) {
     formatter_object* retval;
-    zend_object_handlers handlers;
 
-    formatter_object *intern = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
+    retval = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
 
-    zend_object_std_init(&intern->std, class_type TSRMLS_CC);
-    object_properties_init(&intern->std, class_type);
+    zend_object_std_init(&retval->std, class_type TSRMLS_CC);
+    object_properties_init(&retval->std, class_type);
 
-    zend_objects_store_put(&intern->std);
-
-    memcpy(&handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    //handlers.offset = XtOffsetof(formatter_object, std);
-    //handlers.free_obj = free_formatter_kml_object;
+    retval->std.handlers = &formatter_kml_object_handler;
 
     return &retval->std;
-}
-
-inline formatter_object* fetch_formatter_object(zend_object* obj) {
-    return (formatter_object*) ((char*) obj - XtOffsetOf(formatter_object, std));
 }
 
 void free_formatter_kml_object(formatter_object *intern TSRMLS_DC) {
@@ -56,7 +53,7 @@ PHP_METHOD(formatter_kml, __construct) {
     zval *task_zval = NULL;
     char *name;
     long length;
-    formatter_object *intern = fetch_formatter_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
     intern->set = NULL;
     intern->open_distance = NULL;
     intern->triangle = NULL;
@@ -75,11 +72,11 @@ PHP_METHOD(formatter_kml, __construct) {
         return;
     }
 
-    intern->set = fetch_coordinate_set_object(Z_OBJ_P(coordinate_set_zval) TSRMLS_CC);
-    intern->open_distance = is_object_of_type(od_zval, task_ce) ? fetch_task_object(Z_OBJ_P(od_zval) TSRMLS_CC) : NULL;
-    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? fetch_task_object(Z_OBJ_P(or_zval) TSRMLS_CC) : NULL;
-    intern->triangle = is_object_of_type(tr_zval, task_ce) ? fetch_task_object(Z_OBJ_P(tr_zval) TSRMLS_CC) : NULL;
-    intern->task = is_object_of_type(task_zval, task_ce) ? fetch_task_object(Z_OBJ_P(task_zval) TSRMLS_CC) : NULL;
+    intern->set = fetch_coordinate_set_object(coordinate_set_zval TSRMLS_CC);
+    intern->open_distance = is_object_of_type(od_zval, task_ce) ? fetch_task_object(od_zval TSRMLS_CC) : NULL;
+    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? fetch_task_object(or_zval TSRMLS_CC) : NULL;
+    intern->triangle = is_object_of_type(tr_zval, task_ce) ? fetch_task_object(tr_zval TSRMLS_CC) : NULL;
+    intern->task = is_object_of_type(task_zval, task_ce) ? fetch_task_object(task_zval TSRMLS_CC) : NULL;
     intern->name = name;
 }
 
@@ -283,7 +280,7 @@ char *get_task_ft(formatter_object *intern) {
 }
 
 PHP_METHOD(formatter_kml, output) {
-    formatter_object *intern = fetch_formatter_object(Z_OBJ_P(getThis()) TSRMLS_CC);
+    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
     RETURN_STRING(formatter_kml_output(intern));
 }
 
