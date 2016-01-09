@@ -623,8 +623,6 @@ void parse_igc_coordinate(char *line, coordinate_object* intern) {
     strncpy(ele, p, 5);
     ele[5] = 0;
     intern->ele = atoi(ele);
-    return intern;
-
 }
 
 int parse_h_record(coordinate_set_object *parser, char *line) {
