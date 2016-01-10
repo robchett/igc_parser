@@ -33,7 +33,7 @@ zend_object* create_formatter_kml_split_object(zend_class_entry *class_type TSRM
 
 void free_formatter_kml_split_object(formatter_split_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
-    efree(intern);
+    free(intern);
 }
 
 inline formatter_split_object* fetch_formatter_split_object(zval* obj) {
@@ -136,7 +136,7 @@ char *formatter_kml_split_output(formatter_split_object *intern) {
         </Style>\n\
         ", linestring, "\n\
     </Placemark>\n", NULL);
-        efree(linestring);
+        free(linestring);
         subset = subset->next;
     }
 

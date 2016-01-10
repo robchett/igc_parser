@@ -2,14 +2,14 @@
 
 char *fitos(int64_t input, char *format) {
     int64_t length = snprintf(NULL, 0, format, input);
-    char *buffer = emalloc(sizeof(char) * length + 1);
+    char *buffer = malloc(sizeof(char) * length + 1);
     snprintf(buffer, length + 1, format, input);
     return buffer;
 }
 
 char *fdtos(double input, char *format) {
     int64_t length = snprintf(NULL, 0, format, input);
-    char *buffer = emalloc(sizeof(char) * length + 1);
+    char *buffer = malloc(sizeof(char) * length + 1);
     snprintf(buffer, length + 1, format, input);
     return buffer;
 }
@@ -23,7 +23,7 @@ char *dtos(double input) {
 }
 
 char *create_buffer(char *string) {
-    char *buffer = emalloc(sizeof(char) * strlen(string) + 1);
+    char *buffer = malloc(sizeof(char) * strlen(string) + 1);
     strcpy(buffer, string);
     return buffer;
 }

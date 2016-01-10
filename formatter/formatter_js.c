@@ -36,7 +36,7 @@ zend_object* create_formatter_js_object(zend_class_entry *class_type TSRMLS_DC) 
 
 void free_formatter_js_object(formatter_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
-    efree(intern);
+    free(intern);
 }
 
 static zend_function_entry formatter_js_methods[] = {
@@ -97,10 +97,10 @@ json_t *get_bounds(coordinate_set_object *set) {
         "lng", (west + east) / 2
     );
 
-    coordinate_object *se = emalloc(sizeof(coordinate_object));
+    coordinate_object *se = malloc(sizeof(coordinate_object));
     se->lat = south;
     se->lng = east;
-    coordinate_object *nw = emalloc(sizeof(coordinate_object));
+    coordinate_object *nw = malloc(sizeof(coordinate_object));
     nw->lat = north;
     nw->lng = west;
 
@@ -119,7 +119,7 @@ char *get_html_output(formatter_object *intern) {
     char *string = create_buffer("");
     char *id = (intern->id ? itos(intern->id) :  "");
     string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
-    efree(id);
+    free(id);
     return string;
 }
 
@@ -127,7 +127,7 @@ char *get_html_output_earth(formatter_object *intern) {
     char *string = create_buffer("");
     char *id = (intern->id ? itos(intern->id) :  "");
     string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
-    efree(id);
+    free(id);
     return string;
 }
 
@@ -174,10 +174,10 @@ PHP_METHOD(formatter_js, output) {
     // Can I not do this?
     // char *html = get_html_output(intern);
     // json_object_set(inner, "html", json_string(html));
-    // efree(html);
+    // free(html);
     // char *html_earth = get_html_output_earth(intern);
     // json_object_set(inner, "html_earth", json_string(html_earth));
-    // efree(html_earth);
+    // free(html_earth);
 
     json_t *data = json_array();
     json_t *coordinates = json_array();

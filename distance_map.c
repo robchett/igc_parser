@@ -42,9 +42,12 @@ inline distance_map_object* fetch_distance_map_object(zval* obj) {
 void free_distance_map_object(distance_map_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
     if (intern->distances) {
-        efree(intern->distances);
+        for (int64_t i; i < intern->size; i++) {
+            free(intern->distances[i]);
+        }
+        free(intern->distances);
     }
-    efree(intern);
+    free(intern);
 }
 
 static zend_function_entry distance_map_methods[] = {
@@ -84,19 +87,20 @@ int create_distance_map(distance_map_object *map, coordinate_set_object *set) {
      map->coordinate_set = set;
  
      int64_t real_size = map->size = set->length;
-     map->distances = (uint64_t **) malloc(sizeof(uint64_t *) * real_size);
-     int16_t i = 0;
-     for (i; i < real_size; i++) {
-         map->distances[i] = (uint64_t *) malloc((real_size - i  + 1) * sizeof(unsigned long));
+
+     map->distances = malloc(sizeof(uint64_t *) * (real_size));
+     for (int16_t i = 0; i < real_size; i++) {
+        note("%d", i); 
+        map->distances[i] = malloc((real_size - i  + 1) * sizeof(uint64_t));
+
      }
-     int16_t j;
+     int16_t j, i= 0;
      coordinate_object *coordinate1 = set->first;
-     i = 0;
      while (coordinate1) {
-         j = i + 1;
+         j = 0;
          coordinate_object *coordinate2 = coordinate1->next;
          while (coordinate2) {
-             map->distances[i][j - i - 1] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
+             map->distances[i][j] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
              j++;
              coordinate2 = coordinate2->next;
          }
@@ -111,7 +115,7 @@ inline triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int
     int64_t distance = (MAP(intern, x, y) + MAP(intern, y, z) + MAP(intern, x, z));
     int64_t min = fmin(MAP(intern, x, y), fmin(MAP(intern, y, z), MAP(intern, x, z))); 
     if (distance > score_triangle(intern, score, 0) && min > distance * 0.28) {
-        triangle_score *new_score = emalloc(sizeof(triangle_score));
+        triangle_score *new_score = malloc(sizeof(triangle_score));
         new_score->x = x;
         new_score->y = y;
         new_score->z = z;
@@ -219,18 +223,18 @@ PHP_METHOD(distance_map, score_triangle) {
         warn("Optimising tringle done: %d sets checked", i);
         warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
-        zval *ret = emalloc(sizeof(zval));
+        zval *ret = malloc(sizeof(zval));
         object_init_ex(ret, task_ce);
         task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 4;
         return_intern->type = TRIANGLE;
-        return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 4);
+        return_intern->coordinate = malloc(sizeof(coordinate_object *) * 4);
         return_intern->coordinate[0] = get_coordinate(intern, best_score->x);
         return_intern->coordinate[1] = get_coordinate(intern, best_score->y);
         return_intern->coordinate[2] = get_coordinate(intern, best_score->z);
         return_intern->coordinate[3] = get_coordinate(intern, best_score->x);
 
-        return_intern->gap = emalloc(sizeof(coordinate_object *) * 2);
+        return_intern->gap = malloc(sizeof(coordinate_object *) * 2);
         return_intern->gap[0] = get_coordinate(intern, best_score->row);
         return_intern->gap[1] = get_coordinate(intern, best_score->col);
         RETURN_ZVAL(ret, 0, 1);
@@ -240,15 +244,15 @@ PHP_METHOD(distance_map, score_triangle) {
 
 PHP_METHOD(distance_map, score_out_and_return) {
     distance_map_object *intern = fetch_distance_map_object(getThis() TSRMLS_CC);
+    note("%d", intern->size);
     int64_t distance, maximum_distance = 0;
     int64_t indexes[] = {0, 0, 0};
-    int64_t row, col, x;
     int64_t const minLeg = 800000;
-    for (row = 0; row < intern->size; ++row) {
-        for (col = intern->size - 1; col > row + 2; --col) {
+    for (int64_t row = 0; row < intern->size; ++row) {
+        for (int64_t col = (intern->size - 1); col > (row + 2); --col) {
             if(skip_down(intern, &col, minLeg, MAP(intern, row, col), 1)) continue;
             if (MAP(intern, row, col) < minLeg) {
-                for (x = row + 1; x < col; x++) {
+                for (int64_t x = row + 1; x < col; x++) {
                     distance = MAP(intern, row, x) + MAP(intern, x, col) - MAP(intern, row, col);
                     if (distance > maximum_distance) {
                         //printf("%d, %d, %ld\n", row, col, MAP(intern, row, col));
@@ -265,17 +269,17 @@ PHP_METHOD(distance_map, score_out_and_return) {
     }
 
     if (maximum_distance) {
-        zval *ret = emalloc(sizeof(task_object));
+        zval *ret = malloc(sizeof(task_object));
         object_init_ex(ret, task_ce);
         task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 3;
         return_intern->type = OUT_AND_RETURN;
-        return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 3);
+        return_intern->coordinate = malloc(sizeof(coordinate_object *) * 3);
         return_intern->coordinate[0] = get_coordinate(intern, indexes[0]);
         return_intern->coordinate[1] = get_coordinate(intern, indexes[1]);
         return_intern->coordinate[2] = get_coordinate(intern, indexes[2]);
 
-        return_intern->gap = emalloc(sizeof(coordinate_object *) * 2);
+        return_intern->gap = malloc(sizeof(coordinate_object *) * 2);
         return_intern->gap[0] = get_coordinate(intern, indexes[0]);
         return_intern->gap[1] = get_coordinate(intern, indexes[2]);
         RETURN_ZVAL(ret, 0, 1);
@@ -314,7 +318,7 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
             }
         }
         if (maxF + maxB > best_score) {
-            best_score = maxF + maxB;
+            best_score = maxF + maxB;  
             indexes[0] = endB;
             indexes[1] = midB;
             indexes[2] = row;
@@ -324,13 +328,13 @@ PHP_METHOD(distance_map, score_open_distance_3tp) {
     }
 
     if (best_score) {
-        zval *ret = emalloc(sizeof(zval));
+        zval *ret = malloc(sizeof(zval));
         object_init_ex(ret, task_ce);
         task_object *return_intern = fetch_task_object(ret TSRMLS_CC);
         return_intern->size = 5;
         return_intern->gap = NULL;
         return_intern->type = OPEN_DISTANCE;
-        return_intern->coordinate = emalloc(sizeof(coordinate_object *) * 5);
+        return_intern->coordinate = malloc(sizeof(coordinate_object *) * 5);
         return_intern->coordinate[0] = get_coordinate(intern, indexes[0]);
         return_intern->coordinate[1] = get_coordinate(intern, indexes[1]);
         return_intern->coordinate[2] = get_coordinate(intern, indexes[2]);
@@ -393,9 +397,9 @@ coordinate_object *get_coordinate(distance_map_object *map, uint64_t index) {
 
 uint64_t maximum_bound_index_back(distance_map_object *map, uint64_t point, uint64_t *index) {
     uint64_t best_index = point;
-    uint64_t i = 0;
     uint64_t best_score = 0;
-    for (i; i < point; ++i) {
+    for (uint64_t i = 0; i < point; ++i) {
+        //note("(back) %3d -> %3d = %d", i, point, MAP(map, i, point));
         if (best_score < MAP(map, i, point)) {
             best_index = i;
             best_score = MAP(map, i, point);
@@ -407,9 +411,9 @@ uint64_t maximum_bound_index_back(distance_map_object *map, uint64_t point, uint
 
 uint64_t maximum_bound_index_fwrd(distance_map_object *map, uint64_t point, uint64_t *index) {
     uint64_t best_index = point;
-    uint64_t i = point;
     uint64_t best_score = 0;
-    for (i; i < map->size; ++i) {
+    for (uint64_t i = (point + 1); i < map->size; ++i) {
+        //note("(fwrd) %3d -> %3d = %d", i, point, MAP(map, point, i));
         if (best_score < MAP(map, point, i)) {
             best_index = i;
             best_score = MAP(map, point, i);

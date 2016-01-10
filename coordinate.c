@@ -62,7 +62,7 @@ void _free_coordinate_object(coordinate_object *intern) {
         }
         intern->coordinate_subset->length--;
     }
-    efree(intern);
+    free(intern);
 }
 
 void free_coordinate_object(coordinate_object *intern TSRMLS_DC) {
@@ -280,8 +280,8 @@ char *coordinate_to_kml(coordinate_object *coordinate) {
     char *lng = fdtos(coordinate->lng, "%.5f");
     char *ele = fitos(coordinate->ele, "%d");
     buffer = vstrcat(buffer, lng, ",", lat , ",", ele, " " , NULL);
-    efree(lat);
-    efree(lng);
-    efree(ele);
+    free(lat);
+    free(lng);
+    free(ele);
     return buffer;
 }

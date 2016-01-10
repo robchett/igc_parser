@@ -34,7 +34,7 @@ zend_module_entry geometry_module_entry = {
 };
 
 PHP_MINIT_FUNCTION(geometry) {
-    json_set_alloc_funcs(_emalloc, _efree);
+//    json_set_alloc_funcs(_emalloc, _efree);
     init_coordinate(TSRMLS_C);
     init_coordinate_set(TSRMLS_C);
     init_distance_map(TSRMLS_C);
@@ -105,8 +105,8 @@ char *get_os_grid_ref(coordinate_object *point) {
 
 char *gridref_number_to_letter(int64_t e, int64_t n) {
     // get the 100km-grid indices
-    int64_t e100k = (long)floor(e / 100000);
-    int64_t n100k = (long)floor(n / 100000);
+    int64_t e100k = (int64_t)floor(e / 100000);
+    int64_t n100k = (int64_t)floor(n / 100000);
 
     if (e100k < 0 || e100k > 8 || n100k < 0 || n100k > 12) { }
 
@@ -119,7 +119,7 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     // strip 100km-grid indices from easting & northing, and reduce precision
     e = floor((e % 100000) / pow(10, 2));
     n = floor((n % 100000) / pow(10, 2));
-    char * gridref = emalloc(sizeof(char) * 9);
+    char * gridref = malloc(sizeof(char) * 9);
     sprintf(gridref, "%c%c%03d%03d", l1 + 65, l2 + 65, e, n);
     return gridref;
 }

@@ -40,7 +40,7 @@ task_object* fetch_task_object(zval* obj) {
 
 void free_task_object(task_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
-    efree(intern);
+    free(intern);
 }
 
 static zend_function_entry task_methods[] = {
@@ -81,7 +81,7 @@ PHP_METHOD(task, __construct) {
     if (coordinate_4 && coordinate_1 && !coordinate_5 && coordinate_1->lat == coordinate_4->lat) {
         intern->type = TRIANGLE;
         intern->size = 4;
-        intern->coordinate = emalloc(sizeof(coordinate_object) * 4);
+        intern->coordinate = malloc(sizeof(coordinate_object) * 4);
         intern->coordinate[0] = coordinate_1;
         intern->coordinate[1] = coordinate_2;
         intern->coordinate[2] = coordinate_3;
@@ -89,7 +89,7 @@ PHP_METHOD(task, __construct) {
     } else if (coordinate_3 && coordinate_1 && !coordinate_4 && coordinate_1->lat == coordinate_3->lat) {
         intern->type = OUT_AND_RETURN;
         intern->size = 3;
-        intern->coordinate = emalloc(sizeof(coordinate_object) * 3);
+        intern->coordinate = malloc(sizeof(coordinate_object) * 3);
         intern->coordinate[0] = coordinate_1;
         intern->coordinate[1] = coordinate_2;
         intern->coordinate[2] = coordinate_3;
@@ -97,7 +97,7 @@ PHP_METHOD(task, __construct) {
         intern->type = OPEN_DISTANCE;
         if (coordinate_5) {
             intern->size = 5;
-            intern->coordinate = emalloc(sizeof(coordinate_object) * 5);
+            intern->coordinate = malloc(sizeof(coordinate_object) * 5);
             intern->coordinate[0] = coordinate_1;
             intern->coordinate[1] = coordinate_2;
             intern->coordinate[2] = coordinate_3;
@@ -105,20 +105,20 @@ PHP_METHOD(task, __construct) {
             intern->coordinate[4] = coordinate_5;
         } else if (coordinate_4) {
             intern->size = 4;
-            intern->coordinate = emalloc(sizeof(coordinate_object) * 4);
+            intern->coordinate = malloc(sizeof(coordinate_object) * 4);
             intern->coordinate[0] = coordinate_1;
             intern->coordinate[1] = coordinate_2;
             intern->coordinate[2] = coordinate_3;
             intern->coordinate[3] = coordinate_4;
         } else if (coordinate_3) {
             intern->size = 3;
-            intern->coordinate = emalloc(sizeof(coordinate_object) * 3);
+            intern->coordinate = malloc(sizeof(coordinate_object) * 3);
             intern->coordinate[0] = coordinate_1;
             intern->coordinate[1] = coordinate_2;
             intern->coordinate[2] = coordinate_3;
         } else if (coordinate_2) {
             intern->size = 2;
-            intern->coordinate = emalloc(sizeof(coordinate_object) * 2);
+            intern->coordinate = malloc(sizeof(coordinate_object) * 2);
             intern->coordinate[0] = coordinate_1;
             intern->coordinate[1] = coordinate_2;
         }
@@ -199,7 +199,7 @@ PHP_METHOD(task, get_gridref) {
         coordinate_object *point1 = intern->coordinate[i];
         char *gridref = get_os_grid_ref(point1);
         coordinates = vstrcat(coordinates, gridref, ";", NULL);
-        efree(gridref);
+        free(gridref);
     }
 
     RETURN_STRING(coordinates);

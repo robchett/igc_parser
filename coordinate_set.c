@@ -50,7 +50,7 @@ void free_coordinate_set_object(coordinate_set_object *intern TSRMLS_DC) {
         _free_coordinate_object(current2);
         current2 = tmp2;
     }
-    efree(intern);
+    free(intern);
 }
 
 static zend_function_entry coordinate_set_methods[] = {
@@ -90,7 +90,7 @@ PHP_METHOD (coordinate_set, __construct) {
 
 PHP_METHOD (coordinate_set, date) {
     coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
-    char *buffer = emalloc(sizeof(char) * 11);
+    char *buffer = malloc(sizeof(char) * 11);
     sprintf(buffer, "%04d-%02d-%02d", intern->year, intern->month, intern->day);
     RETURN_STRING(buffer);
 }
@@ -138,7 +138,7 @@ void _clone_coordinate_object(coordinate_object *coordinate, coordinate_object *
 
 PHP_METHOD (coordinate_set, first) {
     coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, coordinate_ce);
     coordinate_object *return_intern = fetch_coordinate_object(ret TSRMLS_CC);
     if (intern->first) {
@@ -150,7 +150,7 @@ PHP_METHOD (coordinate_set, first) {
 
 PHP_METHOD (coordinate_set, last) {
     coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, coordinate_ce);
     coordinate_object *return_intern = fetch_coordinate_object(ret TSRMLS_CC);
     if (intern->last) {
@@ -190,7 +190,7 @@ PHP_METHOD (coordinate_set, get_id) {
 
     coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
     if (offset < intern->length) {
-        zval *ret = emalloc(sizeof(zval));
+        zval *ret = malloc(sizeof(zval));
         object_init_ex(ret, coordinate_ce);
         coordinate_object *return_intern = fetch_coordinate_object(ret TSRMLS_CC);
         coordinate_object *coordinate = intern->first;
@@ -243,12 +243,12 @@ void free_subset(coordinate_set_object *parser, coordinate_subset *set) {
         parser->last_subset = set->prev;
     }
     parser->subset_count --;
-    efree(set);
+    free(set);
 }
 
 
 coordinate_subset *create_subset(coordinate_set_object *set, coordinate_object *coordinate) {
-    coordinate_subset *subset = emalloc(sizeof(coordinate_subset));
+    coordinate_subset *subset = malloc(sizeof(coordinate_subset));
     subset->length = 1;
     subset->first = coordinate;
     subset->last = coordinate;
@@ -340,7 +340,7 @@ PHP_METHOD (coordinate_set, repair) {
 
 PHP_METHOD (coordinate_set, stats) {
     coordinate_set_object *intern = fetch_coordinate_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, statistics_set_ce);
     statistics_set_object *return_intern = fetch_statistics_set_object(ret TSRMLS_CC);
     return_intern->height_max = intern->max_ele;

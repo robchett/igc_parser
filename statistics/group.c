@@ -54,7 +54,7 @@ PHP_METHOD (statistics_set, __construct) {
 
 PHP_METHOD (statistics_set, height) {
     statistics_set_object *intern = fetch_statistics_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, statistic_ce);
     statistic_object *return_intern = fetch_statistics_object(ret TSRMLS_CC);
     return_intern->min = intern->height_min;
@@ -64,7 +64,7 @@ PHP_METHOD (statistics_set, height) {
 
 PHP_METHOD (statistics_set, speed) {
     statistics_set_object *intern = fetch_statistics_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, statistic_ce);
     statistic_object *return_intern = fetch_statistics_object(ret TSRMLS_CC);
     return_intern->min = intern->speed_min;
@@ -74,7 +74,7 @@ PHP_METHOD (statistics_set, speed) {
 
 PHP_METHOD (statistics_set, climb) {
     statistics_set_object *intern = fetch_statistics_set_object(getThis() TSRMLS_CC);
-    zval *ret = emalloc(sizeof(zval));
+    zval *ret = malloc(sizeof(zval));
     object_init_ex(ret, statistic_ce);
     statistic_object *return_intern = fetch_statistics_object(ret TSRMLS_CC);
     return_intern->min = intern->climb_min;

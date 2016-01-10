@@ -35,7 +35,7 @@ zend_object* create_formatter_kml_object(zend_class_entry *class_type TSRMLS_DC)
 
 void free_formatter_kml_object(formatter_object *intern TSRMLS_DC) {
     zend_object_std_dtor(&intern->std TSRMLS_CC);
-    efree(intern);
+    free(intern);
 }
 
 static zend_function_entry formatter_kml_methods[] = {
@@ -87,7 +87,7 @@ char *get_meta_data(formatter_object *intern) {
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
         buffer = vstrcat(buffer, timestamp, " ", NULL);
-        efree(timestamp);
+        free(timestamp);
         if (i++ == 15) {
             i = 0;
             buffer = vstrcat(buffer, "\n", NULL);
@@ -107,7 +107,7 @@ char *get_linestring(formatter_object *intern) {
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
-        efree(kml_coordinate);
+        free(kml_coordinate);
         if (i++ == 5) {
             i = 0;
             buffer = vstrcat(buffer, "\n\t\t\t\t", NULL);
@@ -124,9 +124,9 @@ char *format_task_point(coordinate_object *coordinate, int16_t index, coordinate
         *total_distance += distance;
     }
     char *gridref = get_os_grid_ref(coordinate);
-    char *buffer = emalloc(sizeof(char) * 60);
+    char *buffer = malloc(sizeof(char) * 60);
     sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s   %-5.2f      %-5.2f", index,  coordinate->lat,  coordinate->lng,  gridref,  distance,  *total_distance);
-    efree(gridref);
+    free(gridref);
     return buffer;
 }
 
@@ -143,8 +143,8 @@ char *get_task_generic(task_object *task, char *title, char *colour) {
             prev = task->coordinate[i];
             char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
             coordinates = vstrcat(coordinates, kml_coordinate, NULL);
-            efree(kml_coordinate);
-            efree(line);
+            free(kml_coordinate);
+            free(line);
         } else {
             printf("%s -> %d missing\n", title, i);
         }
@@ -178,8 +178,8 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total\
                 </LineString>\n\
             </Placemark>\n\
         </Folder>", NULL);
-    efree(info);
-    efree(coordinates);
+    free(info);
+    free(coordinates);
     return buffer;
 }
 
@@ -202,8 +202,8 @@ char *get_circle_coordinates(coordinate_object *coordinate, int16_t radius) {
         char *lng_string = dtos(lng toDEG);
         char *lat_string = dtos(lat toDEG);
         buffer = vstrcat(buffer, lng_string, ",", lat_string, ",0 ", NULL);
-        efree(lng_string);
-        efree(lat_string);
+        free(lng_string);
+        free(lat_string);
     }
     return buffer;
 }
@@ -219,7 +219,7 @@ char *get_defined_task(task_object *task) {
         char *coordinates = get_circle_coordinates(task->coordinate[i], 400);
         char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
         kml_coordinates = vstrcat(kml_coordinates, kml_coordinate, NULL);
-        efree(kml_coordinate);
+        free(kml_coordinate);
         info = vstrcat(info, "\n\
     <Placemark>\n\
         <Style>\n\
@@ -240,7 +240,7 @@ char *get_defined_task(task_object *task) {
             </outerBoundaryIs>\n\
         </Polygon>\n\
     </Placemark>", "\n\n", NULL);
-        efree(coordinates);
+        free(coordinates);
     }
     info = vstrcat(info, "\n\
     <Placemark>\n\
@@ -255,7 +255,7 @@ char *get_defined_task(task_object *task) {
      </Placemark>\n\
 </Folder>", NULL);
 
-    efree(kml_coordinates);
+    free(kml_coordinates);
     return info;
 }
 
@@ -300,9 +300,9 @@ char *formatter_kml_output(formatter_object *intern) {
         char *open_distance = get_task_od(intern);
         tasks = vstrcat(tasks, open_distance, NULL);
         tasks_info = vstrcat(tasks_info, "OD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
-        efree(od_d);
-        efree(od_t);
-        efree(open_distance);
+        free(od_d);
+        free(od_t);
+        free(open_distance);
     }
     if (intern->open_distance) {
         char *or_d = fdtos(get_task_distance(intern->out_and_return), "%.2f");
@@ -310,9 +310,9 @@ char *formatter_kml_output(formatter_object *intern) {
         char *out_and_return = get_task_or(intern);
         tasks = vstrcat(tasks, out_and_return, NULL);
         tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
-        efree(or_d);
-        efree(or_t);
-        efree(out_and_return);
+        free(or_d);
+        free(or_t);
+        free(out_and_return);
     }
     if (intern->triangle) {
         char *tr_d = fdtos(get_task_distance(intern->triangle), "%.2f");
@@ -320,14 +320,14 @@ char *formatter_kml_output(formatter_object *intern) {
         char *triangle = get_task_tr(intern);
         tasks = vstrcat(tasks, triangle, NULL);
         tasks_info = vstrcat(tasks_info, "TR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
-        efree(tr_d);
-        efree(tr_t);
-        efree(triangle);
+        free(tr_d);
+        free(tr_t);
+        free(triangle);
     }
     if (intern->task) {
         char *task = get_defined_task(intern->task);
         tasks = vstrcat(tasks, task, NULL);
-        efree(task);
+        free(task);
     }
 
     char *metadata = get_meta_data(intern);
@@ -391,15 +391,15 @@ char *formatter_kml_output(formatter_object *intern) {
 	</Folder>\n\
 </Document>", NULL);
 
-    efree(year);
-    efree(month);
-    efree(day);
-    efree(max_ele);
-    efree(min_ele);
-    efree(metadata);
-    efree(linestring);
-    efree(tasks);
-    efree(tasks_info);
+    free(year);
+    free(month);
+    free(day);
+    free(max_ele);
+    free(min_ele);
+    free(metadata);
+    free(linestring);
+    free(tasks);
+    free(tasks_info);
     return output;
 }
 
