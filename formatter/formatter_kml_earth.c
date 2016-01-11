@@ -1,88 +1,24 @@
-#include <php.h>
+#include "../main.h"
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
-#include "../geometry.h"
+#include "../igc_parser.h"
 #include "../task.h"
+#include <time.h>
 #include "formatter_kml_earth.h"
 
-zend_object_handlers formatter_kml_earth_object_handler;
-
-void init_formatter_kml_earth(TSRMLS_D) {
-    zend_class_entry ce;
-
-    INIT_CLASS_ENTRY(ce, "formatter_kml_earth", formatter_kml_earth_methods);
-    formatter_kml_earth_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    formatter_kml_earth_ce->create_object = create_formatter_kml_earth_object;
-
-    memcpy(&formatter_kml_earth_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    formatter_kml_earth_object_handler.free_obj = free_formatter_kml_earth_object;
-    formatter_kml_earth_object_handler.offset = XtOffsetOf(formatter_object, std);
+void formatter_kml_earth_init(formatter_t *this, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+    this->set = set;
+    this->open_distance = task_od;
+    this->out_and_return = task_or;
+    this->triangle = task_tr;
+    this->task = task;
+    this->name = name;
 }
 
-zend_object* create_formatter_kml_earth_object(zend_class_entry *class_type TSRMLS_DC) {
-    formatter_object* retval;
-
-    retval = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
-
-    zend_object_std_init(&retval->std, class_type TSRMLS_CC);
-    object_properties_init(&retval->std, class_type);
-
-    retval->std.handlers = &formatter_kml_earth_object_handler;
-
-    return &retval->std;
-}
-
-void free_formatter_kml_earth_object(formatter_object *intern TSRMLS_DC) {
-    zend_object_std_dtor(&intern->std TSRMLS_CC);
-    free(intern);
-}
-
-static zend_function_entry formatter_kml_earth_methods[] = {
-    PHP_ME(formatter_kml_earth, __construct, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(formatter_kml_earth, output, NULL, ZEND_ACC_PUBLIC)
-    PHP_FE_END
-};
-
-
-PHP_METHOD(formatter_kml_earth, __construct) {
-    zval *coordinate_set_zval;
-    zval *od_zval = NULL;
-    zval *or_zval = NULL;
-    zval *tr_zval = NULL;
-    zval *task_zval = NULL;
-    char *name;
-    int64_t length;
-    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
-    intern->set = NULL;
-    intern->open_distance = NULL;
-    intern->triangle = NULL;
-    intern->task = NULL;
-    intern->name = NULL;
-    if (zend_parse_parameters(
-                ZEND_NUM_ARGS() TSRMLS_CC,
-                "Os|zzzz",
-                &coordinate_set_zval, coordinate_set_ce,
-                &name, &length,
-                &od_zval,
-                &or_zval,
-                &tr_zval,
-                &task_zval
-            ) == FAILURE) {
-        return;
-    }
-
-    intern->set = (coordinate_set_object *) fetch_coordinate_set_object (coordinate_set_zval TSRMLS_CC);
-    intern->open_distance = is_object_of_type(od_zval, task_ce) ? (task_object *) fetch_task_object(od_zval TSRMLS_CC) : NULL;
-    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? (task_object *)fetch_task_object(or_zval TSRMLS_CC) : NULL;
-    intern->triangle = is_object_of_type(tr_zval, task_ce) ? (task_object *)fetch_task_object(tr_zval TSRMLS_CC) : NULL;
-    intern->task = is_object_of_type(task_zval, task_ce) ? (task_object *)fetch_task_object(task_zval TSRMLS_CC) : NULL;
-    intern->name = name;
-}
-
-char *get_meta_data_earth(formatter_object *intern) {
+char *get_meta_data_earth(formatter_t *this) {
     char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
-    coordinate_object *coordinate = intern->set->first;
+    coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
@@ -97,7 +33,7 @@ char *get_meta_data_earth(formatter_object *intern) {
     return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
 }
 
-char *get_linestring_earth(formatter_object *intern, char *style, char *altitude_mode, char *extrude) {
+char *get_linestring_earth(formatter_t *this, char *style, char *altitude_mode, char *extrude) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\
     <styleUrl>#", style, "</styleUrl>    \
@@ -105,7 +41,7 @@ char *get_linestring_earth(formatter_object *intern, char *style, char *altitude
 	<extrude>", extrude, "</extrude>\n\
 	<altitudeMode>", altitude_mode, "</altitudeMode>\n\
 	<coordinates>", NULL);
-    coordinate_object *coordinate = intern->set->first;
+    coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
@@ -120,7 +56,7 @@ char *get_linestring_earth(formatter_object *intern, char *style, char *altitude
     return vstrcat(buffer, "\n</coordinates></LineString>", NULL);
 }
 
-char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_object *last, char *style) {
+char *get_partial_linestring_earth(coordinate_t *coordinate, coordinate_t *last, char *style) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\
 <Placemark>\n\
@@ -146,7 +82,7 @@ char *get_partial_linestring_earth(coordinate_object *coordinate, coordinate_obj
 </Placemark>\n", NULL);
 }
 
-char *format_task_point_earth(coordinate_object *coordinate, int16_t index, coordinate_object *prev, double *total_distance) {
+char *format_task_point_earth(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
     double distance = 0;
     if (prev && coordinate) {
         distance = get_distance_precise(coordinate, prev);
@@ -159,11 +95,11 @@ char *format_task_point_earth(coordinate_object *coordinate, int16_t index, coor
     return buffer;
 }
 
-char *get_task_generic_earth(task_object *task, char *title, char *colour) {
+char *get_task_generic_earth(task_t*task, char *title, char *colour) {
     double distance = 0;
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
-    coordinate_object *prev = NULL;
+    coordinate_t *prev = NULL;
     int16_t i;
     for (i = 0; i < task->size; i++) {
         if (task->coordinate[i]) {
@@ -212,7 +148,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total\
     return buffer;
 }
 
-char *get_circle_coordinates_earth(coordinate_object *coordinate, int16_t radius) {
+char *get_circle_coordinates_earth(coordinate_t *coordinate, int16_t radius) {
     double angularDistance = radius / 6378137.0;
     double sin_lat = 0;
     double cos_lat = 0;
@@ -237,7 +173,7 @@ char *get_circle_coordinates_earth(coordinate_object *coordinate, int16_t radius
     return buffer;
 }
 
-char *get_defined_task_earth(task_object *task) {
+char *get_defined_task_earth(task_t*task) {
     double distance = 0;
     char *info = create_buffer("\
 <Folder>\
@@ -288,86 +224,81 @@ char *get_defined_task_earth(task_object *task) {
     return info;
 }
 
-char *get_task_od_earth(formatter_object *intern) {
-    char *buffer = get_task_generic_earth( intern->open_distance, "Open Distance", "00D7FF");
+char *get_task_od_earth(formatter_t *this) {
+    char *buffer = get_task_generic_earth( this->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
-char *get_task_or_earth(formatter_object *intern) {
-    char *buffer = get_task_generic_earth( intern->out_and_return , "Out and Return", "00FF00");
+char *get_task_or_earth(formatter_t *this) {
+    char *buffer = get_task_generic_earth( this->out_and_return , "Out and Return", "00FF00");
     return buffer;
 }
 
-char *get_task_tr_earth(formatter_object *intern) {
-    char *buffer = get_task_generic_earth(intern->triangle, "FAI Triangle", "0000FF");
+char *get_task_tr_earth(formatter_t *this) {
+    char *buffer = get_task_generic_earth(this->triangle, "FAI Triangle", "0000FF");
     return buffer;
 }
 
-char *get_task_ft_earth(formatter_object *intern) {
-    char *buffer = get_task_generic_earth(intern->triangle, "Flat Triangle", "FF0066");
+char *get_task_ft_earth(formatter_t *this) {
+    char *buffer = get_task_generic_earth(this->triangle, "Flat Triangle", "FF0066");
     return buffer;
 }
 
-PHP_METHOD(formatter_kml_earth, output) {
-    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
-    RETURN_STRING(formatter_kml_earth_output(intern));
-}
-
-char *formatter_kml_earth_output(formatter_object *intern) {
-    char *year = itos(intern->set->year);
-    char *month = fitos(intern->set->month, "%02d");
-    char *day = fitos(intern->set->day, "%02d");
-    char *min_ele = itos(intern->set->min_ele);
-    char *max_ele = itos(intern->set->max_ele);
+char *formatter_kml_earth_output(formatter_t *this) {
+    char *year = itos(this->set->year);
+    char *month = fitos(this->set->month, "%02d");
+    char *day = fitos(this->set->day, "%02d");
+    char *min_ele = itos(this->set->min_ele);
+    char *max_ele = itos(this->set->max_ele);
 
     // TASKS
     char *tasks = create_buffer("");
     char *tasks_info = create_buffer("");
-    if (intern->open_distance) {
-        char *od_d = fdtos(get_task_distance(intern->open_distance), "%.2f");
-        char *od_t = itos(get_task_time(intern->open_distance));
-        char *open_distance = get_task_od_earth(intern);
+    if (this->open_distance) {
+        char *od_d = fdtos(get_task_distance(this->open_distance), "%.2f");
+        char *od_t = itos(get_task_time(this->open_distance));
+        char *open_distance = get_task_od_earth(this);
         tasks = vstrcat(tasks, open_distance, NULL);
         tasks_info = vstrcat(tasks_info, "OD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
         free(od_d);
         free(od_t);
         free(open_distance);
     }
-    if (intern->open_distance) {
-        char *or_d = fdtos(get_task_distance(intern->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(intern->out_and_return ));
-        char *out_and_return = get_task_or_earth(intern);
+    if (this->open_distance) {
+        char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
+        char *or_t = itos(get_task_time(this->out_and_return ));
+        char *out_and_return = get_task_or_earth(this);
         tasks = vstrcat(tasks, out_and_return, NULL);
         tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
         free(or_d);
         free(or_t);
         free(out_and_return);
     }
-    if (intern->triangle) {
-        char *tr_d = fdtos(get_task_distance(intern->triangle), "%.2f");
-        char *tr_t = itos(get_task_time(intern->triangle));
-        char *triangle = get_task_tr_earth(intern);
+    if (this->triangle) {
+        char *tr_d = fdtos(get_task_distance(this->triangle), "%.2f");
+        char *tr_t = itos(get_task_time(this->triangle));
+        char *triangle = get_task_tr_earth(this);
         tasks = vstrcat(tasks, triangle, NULL);
         tasks_info = vstrcat(tasks_info, "TR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
         free(tr_d);
         free(tr_t);
         free(triangle);
     }
-    if (intern->task) {
-        char *task = get_defined_task_earth(intern->task);
+    if (this->task) {
+        char *task = get_defined_task_earth(this->task);
         tasks = vstrcat(tasks, task, NULL);
         free(task);
     }
 
     char *styles = get_kml_styles_earth();
-    char *metadata = get_meta_data_earth(intern);
-    char *linestring = get_linestring_earth(intern, "", "absolute", "0");
-    char *shadow = get_linestring_earth(intern, "shadow", "clampToGround", "0");
-    char *shadow_extrude = get_linestring_earth(intern, "shadow", "absolute", "1");
-    char *height = get_colour_by_height(intern->set);
-    char *speed = get_colour_by_speed(intern->set);
-    char *climb_rate = get_colour_by_climb_rate(intern->set);
-    char *timestamp = get_colour_by_time(intern->set);
+    char *metadata = get_meta_data_earth(this);
+    char *linestring = get_linestring_earth(this, "", "absolute", "0");
+    char *shadow = get_linestring_earth(this, "shadow", "clampToGround", "0");
+    char *shadow_extrude = get_linestring_earth(this, "shadow", "absolute", "1");
+    char *height = get_colour_by_height(this->set);
+    char *speed = get_colour_by_speed(this->set);
+    char *climb_rate = get_colour_by_climb_rate(this->set);
+    char *timestamp = get_colour_by_time(this->set);
 
     char *output = create_buffer("");
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
@@ -375,7 +306,7 @@ char *formatter_kml_earth_output(formatter_object *intern) {
 	<open>1</open>\n",
                      styles, "\n\
     <Folder>\n\
-        <name>", intern->name, "</name>\n\
+        <name>", this->name, "</name>\n\
 		<visibility>1</visibility>\n\
         <open>1</open>\n\
         <Folder>\n\
@@ -533,11 +464,11 @@ char *get_kml_styles_earth() {
     return buffer;
 }
 
-char *get_colour_by_height(coordinate_set_object *set) {
+char *get_colour_by_height(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->min_ele;
     double delta = (set->max_ele - set->min_ele ? : 1) / 16;
-    coordinate_object *last, *first, *current;
+    coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
     last_level = floor((current->ele - min) / delta);
@@ -564,11 +495,11 @@ char *get_colour_by_height(coordinate_set_object *set) {
     return buffer;
 }
 
-char *get_colour_by_climb_rate(coordinate_set_object *set) {
+char *get_colour_by_climb_rate(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->min_climb_rate;
     double delta = (set->max_climb_rate - set->min_climb_rate ? : 1) / 16;
-    coordinate_object *last, *first, *current;
+    coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
     last_level = floor((current->climb_rate - min) / delta);
@@ -596,11 +527,11 @@ char *get_colour_by_climb_rate(coordinate_set_object *set) {
 }
 
 
-char *get_colour_by_speed(coordinate_set_object *set) {
+char *get_colour_by_speed(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = 0;
     double delta = (set->max_speed ? : 1) / 16;
-    coordinate_object *last, *first, *current;
+    coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
     last_level = floor((current->speed - min) / delta);
@@ -641,11 +572,11 @@ char *format_timestamp(int year, int16_t month, int16_t day, int16_t ts) {
     return buffer;
 }
 
-char *get_colour_by_time(coordinate_set_object *set) {
+char *get_colour_by_time(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->first->timestamp;
     double delta = (set->last->timestamp - min ? : 1) / 16;
-    coordinate_object *current = set->first;
+    coordinate_t *current = set->first;
     int16_t current_level;
     char *point, *next_point;
     char *point_date, *next_point_date;

@@ -1,88 +1,23 @@
-#include <php.h>
+#include "../main.h"
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
-#include "../geometry.h"
+#include "../igc_parser.h"
 #include "../task.h"
 #include "formatter_kml.h"
 
-zend_object_handlers formatter_kml_object_handler;
-
-void init_formatter_kml(TSRMLS_D) {
-    zend_class_entry ce;
-
-    INIT_CLASS_ENTRY(ce, "formatter_kml", formatter_kml_methods);
-    formatter_kml_ce = zend_register_internal_class(&ce TSRMLS_CC);
-    formatter_kml_ce->create_object = create_formatter_kml_object;
-
-    memcpy(&formatter_kml_object_handler, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    formatter_kml_object_handler.free_obj = free_formatter_kml_object;
-    formatter_kml_object_handler.offset = XtOffsetOf(formatter_object, std);
+void formatter_kml_init(formatter_t *this, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+    this->set = set;
+    this->open_distance = task_od;
+    this->out_and_return = task_or;
+    this->triangle = task_tr;
+    this->task = task;
+    this->name = name;
 }
 
-zend_object* create_formatter_kml_object(zend_class_entry *class_type TSRMLS_DC) {
-    formatter_object* retval;
-
-    retval = ecalloc(1, sizeof(formatter_object) + zend_object_properties_size(class_type));
-
-    zend_object_std_init(&retval->std, class_type TSRMLS_CC);
-    object_properties_init(&retval->std, class_type);
-
-    retval->std.handlers = &formatter_kml_object_handler;
-
-    return &retval->std;
-}
-
-void free_formatter_kml_object(formatter_object *intern TSRMLS_DC) {
-    zend_object_std_dtor(&intern->std TSRMLS_CC);
-    free(intern);
-}
-
-static zend_function_entry formatter_kml_methods[] = {
-    PHP_ME(formatter_kml, __construct, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(formatter_kml, output, NULL, ZEND_ACC_PUBLIC)
-    PHP_FE_END
-};
-
-
-PHP_METHOD(formatter_kml, __construct) {
-    zval *coordinate_set_zval;
-    zval *od_zval = NULL;
-    zval *or_zval = NULL;
-    zval *tr_zval = NULL;
-    zval *task_zval = NULL;
-    char *name;
-    int64_t length;
-    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
-    intern->set = NULL;
-    intern->open_distance = NULL;
-    intern->triangle = NULL;
-    intern->task = NULL;
-    intern->name = NULL;
-    if (zend_parse_parameters(
-                ZEND_NUM_ARGS() TSRMLS_CC,
-                "Os|zzzz",
-                &coordinate_set_zval, coordinate_set_ce,
-                &name, &length,
-                &od_zval,
-                &or_zval,
-                &tr_zval,
-                &task_zval
-            ) == FAILURE) {
-        return;
-    }
-
-    intern->set = fetch_coordinate_set_object(coordinate_set_zval TSRMLS_CC);
-    intern->open_distance = is_object_of_type(od_zval, task_ce) ? fetch_task_object(od_zval TSRMLS_CC) : NULL;
-    intern->out_and_return = is_object_of_type(or_zval, task_ce) ? fetch_task_object(or_zval TSRMLS_CC) : NULL;
-    intern->triangle = is_object_of_type(tr_zval, task_ce) ? fetch_task_object(tr_zval TSRMLS_CC) : NULL;
-    intern->task = is_object_of_type(task_zval, task_ce) ? fetch_task_object(task_zval TSRMLS_CC) : NULL;
-    intern->name = name;
-}
-
-char *get_meta_data(formatter_object *intern) {
+char *get_meta_data(formatter_t *this) {
     char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
-    coordinate_object *coordinate = intern->set->first;
+    coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
@@ -97,12 +32,12 @@ char *get_meta_data(formatter_object *intern) {
     return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
 }
 
-char *get_linestring(formatter_object *intern) {
+char *get_linestring(formatter_t *this) {
     char *buffer = create_buffer("<LineString>\n\
 	<extrude>0</extrude>\n\
 	<altitudeMode>absolute</altitudeMode>\n\
 	<coordinates>");
-    coordinate_object *coordinate = intern->set->first;
+    coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
@@ -117,7 +52,7 @@ char *get_linestring(formatter_object *intern) {
     return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
 }
 
-char *format_task_point(coordinate_object *coordinate, int16_t index, coordinate_object *prev, double *total_distance) {
+char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
     double distance = 0;
     if (prev) {
         distance = get_distance_precise(coordinate, prev);
@@ -130,11 +65,11 @@ char *format_task_point(coordinate_object *coordinate, int16_t index, coordinate
     return buffer;
 }
 
-char *get_task_generic(task_object *task, char *title, char *colour) {
+char *get_task_generic(task_t*task, char *title, char *colour) {
     double distance = 0;
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
-    coordinate_object *prev = NULL;
+    coordinate_t *prev = NULL;
     int16_t i;
     for (i = 0; i < task->size; i++) {
         if (task->coordinate[i]) {
@@ -183,7 +118,7 @@ TP   Latitude   Longitude   OS Gridref   Distance   Total\
     return buffer;
 }
 
-char *get_circle_coordinates(coordinate_object *coordinate, int16_t radius) {
+char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
     double angularDistance = radius / 6378137.0;
     double sin_lat = 0;
     double cos_lat = 0;
@@ -208,7 +143,7 @@ char *get_circle_coordinates(coordinate_object *coordinate, int16_t radius) {
     return buffer;
 }
 
-char *get_defined_task(task_object *task) {
+char *get_defined_task(task_t*task) {
     double distance = 0;
     char *info = create_buffer("\
 <Folder>\
@@ -259,79 +194,74 @@ char *get_defined_task(task_object *task) {
     return info;
 }
 
-char *get_task_od(formatter_object *intern) {
-    char *buffer = get_task_generic( intern->open_distance, "Open Distance", "00D7FF");
+char *get_task_od(formatter_t *this) {
+    char *buffer = get_task_generic( this->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
-char *get_task_or(formatter_object *intern) {
-    char *buffer = get_task_generic( intern->out_and_return , "Out and Return", "00FF00");
+char *get_task_or(formatter_t *this) {
+    char *buffer = get_task_generic( this->out_and_return , "Out and Return", "00FF00");
     return buffer;
 }
 
-char *get_task_tr(formatter_object *intern) {
-    char *buffer = get_task_generic(intern->triangle, "FAI Triangle", "0000FF");
+char *get_task_tr(formatter_t *this) {
+    char *buffer = get_task_generic(this->triangle, "FAI Triangle", "0000FF");
     return buffer;
 }
 
-char *get_task_ft(formatter_object *intern) {
-    char *buffer = get_task_generic(intern->triangle, "Flat Triangle", "FF0066");
+char *get_task_ft(formatter_t *this) {
+    char *buffer = get_task_generic(this->triangle, "Flat Triangle", "FF0066");
     return buffer;
 }
 
-PHP_METHOD(formatter_kml, output) {
-    formatter_object *intern = fetch_formatter_object(getThis() TSRMLS_CC);
-    RETURN_STRING(formatter_kml_output(intern));
-}
-
-char *formatter_kml_output(formatter_object *intern) {
-    char *year = itos(intern->set->year);
-    char *month = fitos(intern->set->month, "%02d");
-    char *day = fitos(intern->set->day, "%02d");
-    char *min_ele = itos(intern->set->min_ele);
-    char *max_ele = itos(intern->set->max_ele);
+char *formatter_kml_output(formatter_t *this) {
+    char *year = itos(this->set->year);
+    char *month = fitos(this->set->month, "%02d");
+    char *day = fitos(this->set->day, "%02d");
+    char *min_ele = itos(this->set->min_ele);
+    char *max_ele = itos(this->set->max_ele);
 
     // TASKS
     char *tasks = create_buffer("");
     char *tasks_info = create_buffer("");
-    if (intern->open_distance) {
-        char *od_d = fdtos(get_task_distance(intern->open_distance), "%.2f");
-        char *od_t = itos(get_task_time(intern->open_distance));
-        char *open_distance = get_task_od(intern);
+    if (this->open_distance) {
+        char *od_d = fdtos(get_task_distance(this->open_distance), "%.2f");
+        char *od_t = itos(get_task_time(this->open_distance));
+        char *open_distance = get_task_od(this);
         tasks = vstrcat(tasks, open_distance, NULL);
         tasks_info = vstrcat(tasks_info, "OD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
         free(od_d);
         free(od_t);
         free(open_distance);
     }
-    if (intern->open_distance) {
-        char *or_d = fdtos(get_task_distance(intern->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(intern->out_and_return ));
-        char *out_and_return = get_task_or(intern);
+    if (this->open_distance) {
+        char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
+        char *or_t = itos(get_task_time(this->out_and_return ));
+        char *out_and_return = get_task_or(this);
         tasks = vstrcat(tasks, out_and_return, NULL);
         tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
         free(or_d);
         free(or_t);
         free(out_and_return);
     }
-    if (intern->triangle) {
-        char *tr_d = fdtos(get_task_distance(intern->triangle), "%.2f");
-        char *tr_t = itos(get_task_time(intern->triangle));
-        char *triangle = get_task_tr(intern);
+    if (this->triangle) {
+        char *tr_d = fdtos(get_task_distance(this->triangle), "%.2f");
+        char *tr_t = itos(get_task_time(this->triangle));
+        char *triangle = get_task_tr(this);
         tasks = vstrcat(tasks, triangle, NULL);
         tasks_info = vstrcat(tasks_info, "TR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
         free(tr_d);
         free(tr_t);
         free(triangle);
     }
-    if (intern->task) {
-        char *task = get_defined_task(intern->task);
+    if (this->task) {
+        char *task = get_defined_task(this->task);
         tasks = vstrcat(tasks, task, NULL);
         free(task);
     }
 
-    char *metadata = get_meta_data(intern);
-    char *linestring = get_linestring(intern);
+    char *metadata = get_meta_data(this);
+    char *linestring = get_linestring(this);
 
 
     char *output = create_buffer("");
@@ -354,11 +284,11 @@ char *formatter_kml_output(formatter_object *intern) {
 		</LineStyle>\n\
 	</Style>\n\
 	<Folder>\n\
-		<name>", intern->name, "</name>\n\
+		<name>", this->name, "</name>\n\
 		<visibility>1</visibility>\n\
 		<description><![CDATA[<pre>\n\
 			Flight statistics\n\
-			Flight #             ", intern->name, "\n\
+			Flight #             ", this->name, "\n\
 			Pilot                \n\
 			Club                 \n\
 			Glider               \n\
@@ -370,7 +300,7 @@ char *formatter_kml_output(formatter_object *intern) {
 		</pre>]]>\n\
 		</description>\n\
 		<Folder>\n\
-			<name>", intern->name, "</name>\n\
+			<name>", this->name, "</name>\n\
 			<visibility>1</visibility>\n\
 			<open>1</open>\n\
 			<Placemark>\n\

@@ -1,13 +1,9 @@
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
-#include <php.h>
+#include "main.h"
 #include "include/json/jansson.h"
 #include "coordinate.h"
 #include "coordinate_set.h"
 #include "task.h"
-#include "geometry.h"
+#include "igc_parser.h"
 #include "formatter/formatter_kml.h"
 #include "formatter/formatter_kml_earth.h"
 #include "formatter/formatter_kml_split.h"
@@ -16,42 +12,7 @@
 #include "statistics/element.h"
 #include "statistics/group.h"
 
-static zend_function_entry geometry_functions[] = {
-    {NULL, NULL, NULL}
-};
-
-zend_module_entry geometry_module_entry = {
-    STANDARD_MODULE_HEADER,
-    PHP_GEOMETRY_EXTNAME,
-    geometry_functions,
-    PHP_MINIT(geometry),
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    PHP_GEOMETRY_VERSION,
-    STANDARD_MODULE_PROPERTIES
-};
-
-PHP_MINIT_FUNCTION(geometry) {
-//    json_set_alloc_funcs(_emalloc, _efree);
-    init_coordinate(TSRMLS_C);
-    init_coordinate_set(TSRMLS_C);
-    init_distance_map(TSRMLS_C);
-    init_task(TSRMLS_C);
-    init_formatter_kml(TSRMLS_C);
-    init_formatter_js(TSRMLS_C);
-    init_formatter_kml_split(TSRMLS_C);
-    init_formatter_kml_earth(TSRMLS_C);
-    init_statistic(TSRMLS_C);
-    init_statistics_set(TSRMLS_C);
-}
-
-#ifdef COMPILE_DL_GEOMETRY
-ZEND_GET_MODULE(geometry)
-#endif
-
-char *get_os_grid_ref(coordinate_object *point) {
+char *get_os_grid_ref(coordinate_t *point) {
     double lat = point->lat toRAD;
     double lon = point->lng toRAD;
     double a = 6377563.396;
@@ -122,4 +83,10 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     char * gridref = malloc(sizeof(char) * 9);
     sprintf(gridref, "%c%c%03d%03d", l1 + 65, l2 + 65, e, n);
     return gridref;
+}
+
+
+int8_t main(char *argv, int8_t argc) {
+    printf("Hello world!\n");
+    exit(0);
 }

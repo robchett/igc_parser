@@ -181,7 +181,7 @@ static char *read_string(scanner_t *s, va_list *ap,
         }
 
         if(strbuffer_append_bytes(&strbuff, str, length) == -1) {
-            set_error(s, "<internal>", "Out of memory");
+            set_error(s, "<thisal>", "Out of memory");
             strbuffer_close(&strbuff);
             return NULL;
         }
@@ -243,7 +243,7 @@ static json_t *pack_object(scanner_t *s, va_list *ap)
             if(ours)
                 jsonp_free(key);
 
-            set_error(s, "<internal>", "Unable to add key \"%s\"", key);
+            set_error(s, "<thisal>", "Unable to add key \"%s\"", key);
             goto error;
         }
 
@@ -278,7 +278,7 @@ static json_t *pack_array(scanner_t *s, va_list *ap)
             goto error;
 
         if(json_array_append_new(array, value)) {
-            set_error(s, "<internal>", "Unable to append to array");
+            set_error(s, "<thisal>", "Unable to append to array");
             goto error;
         }
 
@@ -360,7 +360,7 @@ static int16_t unpack_object(scanner_t *s, json_t *root, va_list *ap)
     hashtable_t key_set;
 
     if(hashtable_init(&key_set)) {
-        set_error(s, "<internal>", "Out of memory");
+        set_error(s, "<thisal>", "Out of memory");
         return -1;
     }
 

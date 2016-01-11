@@ -195,10 +195,10 @@ acceptable.  Do NOT use for cryptographic purposes.
 
 static uint32_t hashlittle(const void *key, size_t length, uint32_t initval)
 {
-  uint32_t a,b,c;                                          /* internal state */
+  uint32_t a,b,c;                                          /* thisal state */
   union { const void *ptr; size_t i; } u;     /* needed for Mac Powerbook G4 */
 
-  /* Set up the internal state */
+  /* Set up the thisal state */
   a = b = c = 0xdeadbeef + ((uint32_t)length) + initval;
 
   u.ptr = key;

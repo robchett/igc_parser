@@ -1,4 +1,4 @@
-#include <php.h>
+#include "main.h"
 #include "coordinate.h"
 #include "helmert.h"
 #include <math.h>
@@ -33,15 +33,15 @@ static helmert_transform osgb36_to_wsg84_transform = {
     .s =  -20.4894
 };
 
-void osgb36_to_wgs84(coordinate_object *point) {
+void osgb36_to_wgs84(coordinate_t *point) {
     helmert_trans(point, osgb36, wsg84, osgb36_to_wsg84_transform);
 }
 
-void wgs84_to_osgb36(coordinate_object *point) {
+void wgs84_to_osgb36(coordinate_t *point) {
     helmert_trans(point, wsg84, osgb36, wsg84_osgb36_to_transform);
 }
 
-void helmert_trans(coordinate_object *point, const helmert_ellipsoid source_ellipse, const helmert_ellipsoid target_ellipse, const helmert_transform transform) {
+void helmert_trans(coordinate_t *point, const helmert_ellipsoid source_ellipse, const helmert_ellipsoid target_ellipse, const helmert_transform transform) {
     printf("%f, %f\n", point->lat, point->lng);
     double lat = point->lat;
     double lon = point->lng;

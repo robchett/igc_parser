@@ -1,45 +1,29 @@
 #pragma once
 
-void init_distance_map(TSRMLS_D);
-
-PHP_METHOD(distance_map, __construct);
-PHP_METHOD(distance_map, get);
-PHP_METHOD(distance_map, get_precise);
-PHP_METHOD(distance_map, score_open_distance_3tp);
-PHP_METHOD(distance_map, score_out_and_return);
-PHP_METHOD(distance_map, score_triangle);
-
-typedef struct distance_map_object {
-    zend_object std;
-    coordinate_set_object *coordinate_set;
+typedef struct distance_map_t {
+    coordinate_set_t *coordinate_set;
     uint64_t **distances;
     uint64_t size;
-} distance_map_object;
+} distance_map_t;
 
 typedef struct triangle_score {
     uint64_t x,y,z,row,col;
     struct triangle_score *prev, *next;
 } triangle_score;
 
-zend_class_entry *distance_map_ce;
-zend_object_handlers distance_map_handlers;
-static zend_function_entry distance_map_methods[];
+void close_gap(distance_map_t *this, triangle_score *score);
 
-zend_object* create_distance_map_object(zend_class_entry *class_type TSRMLS_DC);
-void free_distance_map_object(distance_map_object *intern TSRMLS_DC);
+uint64_t score_triangle(distance_map_t *this, triangle_score *trianlge, int16_t include_gap);
 
-void close_gap(distance_map_object *intern, triangle_score *score);
+uint64_t maximum_bound_index_back(distance_map_t *map, uint64_t point, uint64_t *index);
+uint64_t maximum_bound_index_fwrd(distance_map_t *map, uint64_t point, uint64_t *index);
 
-uint64_t score_triangle(distance_map_object *intern, triangle_score *trianlge, int16_t include_gap);
+uint64_t skip_up(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
+uint64_t skip_down(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
+ triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *this, uint64_t *_minleg, triangle_score *score);
 
-uint64_t maximum_bound_index_back(distance_map_object *map, uint64_t point, uint64_t *index);
-uint64_t maximum_bound_index_fwrd(distance_map_object *map, uint64_t point, uint64_t *index);
-
-uint64_t skip_up(distance_map_object *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
-uint64_t skip_down(distance_map_object *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
-
-coordinate_object *get_coordinate(distance_map_object *map, uint64_t index);
-int create_distance_map(distance_map_object *map, coordinate_set_object *set);
+coordinate_t *get_coordinate(distance_map_t *map, uint64_t index);
+int create_distance_map(distance_map_t *map, coordinate_set_t *set);
 
 #ifdef DEBUG_LEVEL
      #define MAP(map, from, to) (from >= to ? errn("Map points in wrong order") : map->distances[from][to - from - 1])
