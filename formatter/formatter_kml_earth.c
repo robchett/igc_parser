@@ -36,11 +36,15 @@ char *get_meta_data_earth(formatter_t *this) {
 char *get_linestring_earth(formatter_t *this, char *style, char *altitude_mode, char *extrude) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\
-    <styleUrl>#", style, "</styleUrl>    \
+    <styleUrl>#",
+                     style, "</styleUrl>    \
     <LineString>\n\
-	<extrude>", extrude, "</extrude>\n\
-	<altitudeMode>", altitude_mode, "</altitudeMode>\n\
-	<coordinates>", NULL);
+	<extrude>",
+                     extrude, "</extrude>\n\
+	<altitudeMode>",
+                     altitude_mode, "</altitudeMode>\n\
+	<coordinates>",
+                     NULL);
     coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
@@ -60,11 +64,13 @@ char *get_partial_linestring_earth(coordinate_t *coordinate, coordinate_t *last,
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\
 <Placemark>\n\
-    <styleUrl>#S", style , "</styleUrl>\n\
+    <styleUrl>#S",
+                     style, "</styleUrl>\n\
     <LineString>\n\
         <extrude>0</extrude>\n\
         <altitudeMode>absolute</altitudeMode>\n\
-        <coordinates>\n", NULL);
+        <coordinates>\n",
+                     NULL);
     int16_t i = 0;
     while (coordinate != last) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
@@ -79,7 +85,8 @@ char *get_partial_linestring_earth(coordinate_t *coordinate, coordinate_t *last,
     return vstrcat(buffer, "\n\
         </coordinates>\n\
     </LineString>\n\
-</Placemark>\n", NULL);
+</Placemark>\n",
+                   NULL);
 }
 
 char *format_task_point_earth(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
@@ -90,12 +97,12 @@ char *format_task_point_earth(coordinate_t *coordinate, int16_t index, coordinat
     }
     char *gridref = get_os_grid_ref(coordinate);
     char *buffer = malloc(sizeof(char) * 60);
-    sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s   %-5.2f      %-5.2f", index,  coordinate->lat,  coordinate->lng,  gridref,  distance,  *total_distance);
+    sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s   %-5.2f      %-5.2f", index, coordinate->lat, coordinate->lng, gridref, distance, *total_distance);
     free(gridref);
     return buffer;
 }
 
-char *get_task_generic_earth(task_t*task, char *title, char *colour) {
+char *get_task_generic_earth(task_t *task, char *title, char *colour) {
     double distance = 0;
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
@@ -117,32 +124,38 @@ char *get_task_generic_earth(task_t*task, char *title, char *colour) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\
         <Folder>\n\
-            <name>", title, "</name>\n\
+            <name>",
+                     title, "</name>\n\
             <visibility>1</visibility>\n\
             <styleUrl>#hideChildren</styleUrl>\n\
             <Placemark>\n\
             <visibility>1</visibility>\n\
-                <name>", title, "</name>\n\
+                <name>",
+                     title, "</name>\n\
                 <description>\n\
                 <![CDATA[<pre>\n\
 TP   Latitude   Longitude   OS Gridref   Distance   Total\
-", info, "\n\
+",
+                     info, "\n\
                                           Duration: 01:56:00\n\
                     </pre>]]>\n\
                 </description>\n\
                 <Style>\n\
                     <LineStyle>\n\
-                        <color>FF", colour, "</color>\n\
+                        <color>FF",
+                     colour, "</color>\n\
                         <width>2</width>\n\
                     </LineStyle>\n\
                 </Style>\n\
                 <LineString>\n\
                     <coordinates>\
-                        ", coordinates, "\n\
+                        ",
+                     coordinates, "\n\
                     </coordinates>\n\
                 </LineString>\n\
             </Placemark>\n\
-        </Folder>", NULL);
+        </Folder>",
+                     NULL);
     free(info);
     free(coordinates);
     return buffer;
@@ -173,7 +186,7 @@ char *get_circle_coordinates_earth(coordinate_t *coordinate, int16_t radius) {
     return buffer;
 }
 
-char *get_defined_task_earth(task_t*task) {
+char *get_defined_task_earth(task_t *task) {
     double distance = 0;
     char *info = create_buffer("\
 <Folder>\
@@ -204,7 +217,8 @@ char *get_defined_task_earth(task_t*task) {
                 </LinearRing>\n\
             </outerBoundaryIs>\n\
         </Polygon>\n\
-    </Placemark>", "\n\n", NULL);
+    </Placemark>",
+                       "\n\n", NULL);
         free(coordinates);
     }
     info = vstrcat(info, "\n\
@@ -215,22 +229,24 @@ char *get_defined_task_earth(task_t*task) {
         </LineStyle>\n\
         <LineString>\n\
             <altitudeMode>clampToGround</altitudeMode>\n\
-            <coordinates>", kml_coordinates, "</coordinates>\n\
+            <coordinates>",
+                   kml_coordinates, "</coordinates>\n\
         </LineString>\n\
      </Placemark>\n\
-</Folder>", NULL);
+</Folder>",
+                   NULL);
 
     free(kml_coordinates);
     return info;
 }
 
 char *get_task_od_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth( this->open_distance, "Open Distance", "00D7FF");
+    char *buffer = get_task_generic_earth(this->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
 char *get_task_or_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth( this->out_and_return , "Out and Return", "00FF00");
+    char *buffer = get_task_generic_earth(this->out_and_return, "Out and Return", "00FF00");
     return buffer;
 }
 
@@ -266,7 +282,7 @@ char *formatter_kml_earth_output(formatter_t *this) {
     }
     if (this->open_distance) {
         char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(this->out_and_return ));
+        char *or_t = itos(get_task_time(this->out_and_return));
         char *out_and_return = get_task_or_earth(this);
         tasks = vstrcat(tasks, out_and_return, NULL);
         tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
@@ -295,10 +311,15 @@ char *formatter_kml_earth_output(formatter_t *this) {
     char *linestring = get_linestring_earth(this, "", "absolute", "0");
     char *shadow = get_linestring_earth(this, "shadow", "clampToGround", "0");
     char *shadow_extrude = get_linestring_earth(this, "shadow", "absolute", "1");
-    char *height = get_colour_by_height(this->set);
-    char *speed = get_colour_by_speed(this->set);
-    char *climb_rate = get_colour_by_climb_rate(this->set);
-    char *timestamp = get_colour_by_time(this->set);
+
+    char *height = "";
+    char *speed = "";
+    char *climb_rate = "";
+    char *timestamp = "";
+    // char *height = get_colour_by_height(this->set);
+    // char *speed = get_colour_by_speed(this->set);
+    // char *climb_rate = get_colour_by_climb_rate(this->set);
+    // char *timestamp = get_colour_by_time(this->set);
 
     char *output = create_buffer("");
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
@@ -306,7 +327,8 @@ char *formatter_kml_earth_output(formatter_t *this) {
 	<open>1</open>\n",
                      styles, "\n\
     <Folder>\n\
-        <name>", this->name, "</name>\n\
+        <name>",
+                     this->name, "</name>\n\
 		<visibility>1</visibility>\n\
         <open>1</open>\n\
         <Folder>\n\
@@ -318,14 +340,14 @@ char *formatter_kml_earth_output(formatter_t *this) {
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by height</name>\n\
                 <visibility>1</visibility>\n",
-                     height,  "\
+                     height, "\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by ground speed</name>\n\
                 <visibility>0</visibility>\n",
-                     speed,  "\
+                     speed, "\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
@@ -333,14 +355,14 @@ char *formatter_kml_earth_output(formatter_t *this) {
                 <name>Colour By Climb</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n",
-                     climb_rate,  "\
+                     climb_rate, "\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by time</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n",
-                     timestamp,  "\
+                     timestamp, "\
             </Folder>\n\
         </Folder>\n\
         <Folder>\n\
@@ -360,7 +382,7 @@ char *formatter_kml_earth_output(formatter_t *this) {
                 <visibility>0</visibility>\n\
                 <open>0</open>\n\
                 <Placemark>\n",
-                     shadow,  "\
+                     shadow, "\
                  </Placemark>\n\
             </Folder>\n\
             <Folder>\n\
@@ -369,17 +391,19 @@ char *formatter_kml_earth_output(formatter_t *this) {
                 <visibility>0</visibility>\n\
                 <open>0</open>\n\
                  <Placemark>\n",
-                     shadow_extrude,  "\
+                     shadow_extrude, "\
                  </Placemark>\n\
             </Folder>\n\
         </Folder>\n\
 		<Folder>\n\
 		  <name>Task</name>\n\
 		  <visibility>1</visibility>\n\
-		  ", tasks, "\n\
+		  ",
+                     tasks, "\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>", NULL);
+</Document>",
+                     NULL);
 
     free(year);
     free(month);
@@ -391,32 +415,17 @@ char *formatter_kml_earth_output(formatter_t *this) {
     free(tasks);
     free(tasks_info);
     free(styles);
-    free(height);
-    free(climb_rate);
-    free(timestamp);
+    //    free(height);
+    //    free(climb_rate);
+    //    free(timestamp);
+    //    free(speed);
     free(shadow);
     free(shadow_extrude);
-    free(speed);
     return output;
 }
 
 char *colour_grad_16[] = {
-    "ff0000",
-    "ff3f00",
-    "ff7f00",
-    "ffbf00",
-    "ffff00",
-    "bfff00",
-    "7fff00",
-    "3fff00",
-    "00ff00",
-    "00ff3f",
-    "00ff7f",
-    "00ffbf",
-    "00ffff",
-    "00bfff",
-    "007fff",
-    "003fff",
+    "ff0000", "ff3f00", "ff7f00", "ffbf00", "ffff00", "bfff00", "7fff00", "3fff00", "00ff00", "00ff3f", "00ff7f", "00ffbf", "00ffff", "00bfff", "007fff", "003fff",
 };
 
 char *get_kml_styles_earth() {
@@ -445,19 +454,26 @@ char *get_kml_styles_earth() {
     for (i = 0; i < 16; i++) {
         char *level = itos(i);
         buffer = vstrcat(buffer, "\n\
-    <Style id=\"S", level, "\">\n\
+    <Style id=\"S",
+                         level, "\">\n\
         <LineStyle>\n\
             <width>2</width>\n\
-            <color>FF", colour_grad_16[i], "</color>\n\
+            <color>FF",
+                         colour_grad_16[i], "</color>\n\
         </LineStyle>\n\
-    </Style>", NULL);
+    </Style>",
+                         NULL);
         free(level);
     }
     //$kml->set_animation_styles(1);
-    //public function set_animation_styles() {
+    // public function set_animation_styles() {
     //    for ($i = 0; $i < 10; $i++) {
     //        for ($j = 0; $j < 360; $j += 5) {
-    //            $this->styles .= '<Style id="A' . $i . $j . '"><IconStyle><heading>' . $j . '</heading><Icon><href>http://' . host . '/img/Markers/' . _get::kml_colour($i) . '.gif' . '</href></Icon></IconStyle></Style>';
+    //            $this->styles .= '<Style id="A' . $i . $j .
+    //            '"><IconStyle><heading>' . $j .
+    //            '</heading><Icon><href>http://' . host . '/img/Markers/' .
+    //            _get::kml_colour($i) . '.gif' .
+    //            '</href></Icon></IconStyle></Style>';
     //        }
     //    }
     //}
@@ -467,7 +483,7 @@ char *get_kml_styles_earth() {
 char *get_colour_by_height(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->min_ele;
-    double delta = (set->max_ele - set->min_ele ? : 1) / 16;
+    double delta = (set->max_ele - set->min_ele ?: 1) / 16;
     coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
@@ -498,7 +514,7 @@ char *get_colour_by_height(coordinate_set_t *set) {
 char *get_colour_by_climb_rate(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->min_climb_rate;
-    double delta = (set->max_climb_rate - set->min_climb_rate ? : 1) / 16;
+    double delta = (set->max_climb_rate - set->min_climb_rate ?: 1) / 16;
     coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
@@ -526,11 +542,10 @@ char *get_colour_by_climb_rate(coordinate_set_t *set) {
     return buffer;
 }
 
-
 char *get_colour_by_speed(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = 0;
-    double delta = (set->max_speed ? : 1) / 16;
+    double delta = (set->max_speed ?: 1) / 16;
     coordinate_t *last, *first, *current;
     first = current = set->first;
     int16_t last_level, current_level;
@@ -559,15 +574,8 @@ char *get_colour_by_speed(coordinate_set_t *set) {
 }
 
 char *format_timestamp(int year, int16_t month, int16_t day, int16_t ts) {
-    char *buffer = malloc(sizeof(char) * 20);
-    struct tm point_time = {
-        .tm_year = year - 1990,
-        .tm_mon = month - 1,
-        .tm_mday = day,
-        .tm_hour = floor(ts / 3600),
-        .tm_min = floor((ts % 3600) / 60),
-        .tm_sec = (ts % 60)
-    };
+    char *buffer = calloc(20, sizeof(char));
+    struct tm point_time = {.tm_year = year - 1990, .tm_mon = month - 1, .tm_mday = day, .tm_hour = floor(ts / 3600), .tm_min = floor((ts % 3600) / 60), .tm_sec = (ts % 60)};
     strftime(buffer, 20, "%Y-%m-%dT%T", &point_time);
     return buffer;
 }
@@ -575,7 +583,7 @@ char *format_timestamp(int year, int16_t month, int16_t day, int16_t ts) {
 char *get_colour_by_time(coordinate_set_t *set) {
     char *buffer = create_buffer("");
     int64_t min = set->first->timestamp;
-    double delta = (set->last->timestamp - min ? : 1) / 16;
+    double delta = (set->last->timestamp - min ?: 1) / 16;
     coordinate_t *current = set->first;
     int16_t current_level;
     char *point, *next_point;
@@ -589,17 +597,22 @@ char *get_colour_by_time(coordinate_set_t *set) {
             char *level = itos(floor((current->timestamp - min) / delta));
             buffer = vstrcat(buffer, "\n\
 <Placemark>\n\
-    <styleUrl>#S", level , "</styleUrl>\n\
+    <styleUrl>#S",
+                             level, "</styleUrl>\n\
     <TimeSpan>\n\
-        <begin>", point_date, "Z</begin>\n\
-        <end>", next_point_date, "Z</end>\n\
+        <begin>",
+                             point_date, "Z</begin>\n\
+        <end>",
+                             next_point_date, "Z</end>\n\
     </TimeSpan>\n\
     <LineString>\n\
         <altitudeMode>absolute</altitudeMode>\n\
-        <coordinates>\n", point, " ", next_point, "\n\
+        <coordinates>\n",
+                             point, " ", next_point, "\n\
         </coordinates>\n\
     </LineString>\n\
-</Placemark>\n", NULL);
+</Placemark>\n",
+                             NULL);
             free(point);
             free(level);
             free(point_date);
@@ -610,4 +623,3 @@ char *get_colour_by_time(coordinate_set_t *set) {
     };
     return buffer;
 }
-

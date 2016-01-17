@@ -5,7 +5,6 @@ typedef struct helmert_ellipsoid {
     double b;
 } helmert_ellipsoid;
 
-
 typedef struct helmert_transform {
     double tx;
     double ty;

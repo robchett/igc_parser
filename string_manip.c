@@ -27,7 +27,7 @@ char *dtos(double input) {
 }
 
 char *create_buffer(char *string) {
-    char *buffer = malloc(sizeof(char) * strlen(string) + 1);
+    char *buffer = calloc(strlen(string) + 1, sizeof(char));
     strcpy(buffer, string);
     return buffer;
 }

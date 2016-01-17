@@ -46,7 +46,7 @@ void coordinate_deinit(coordinate_t *this) {
 }
 
 double get_bearing(coordinate_t *obj1, coordinate_t *obj2) {
-    double delta_rad = (obj2->lng - obj1->lng) toRAD;
+    double delta_rad = (obj2->lng - obj1->lng)toRAD;
 
     double y = sin(delta_rad) * obj2->cos_lat;
     double x = obj1->cos_lat * obj2->sin_lat - obj1->sin_lat * obj2->cos_lat * cos(delta_rad);
@@ -60,7 +60,7 @@ double get_bearing(coordinate_t *obj1, coordinate_t *obj2) {
 double get_distance(coordinate_t *point1, coordinate_t *point2) {
     double res = 0;
     if (point1->lat != point2->lat || point1->lng != point2->lng) {
-        double delta_rad = (point1->lng - point2->lng) toRAD;
+        double delta_rad = (point1->lng - point2->lng)toRAD;
         res = (point1->sin_lat * point2->sin_lat) + point1->cos_lat * point2->cos_lat * cos(delta_rad);
         res = acos(res) * 6371;
     }
@@ -85,7 +85,8 @@ double get_distance_precise(coordinate_t *obj1, coordinate_t *obj2) {
         coslng = cos(lng);
         sinSqTheta = (cosU2 * sinlng) * (cosU2 * sinlng) + (cosU1 * sinU2 - sinU1 * cosU2 * coslng) * (cosU1 * sinU2 - sinU1 * cosU2 * coslng);
         sinTheta = sqrt(sinSqTheta);
-        if (sinTheta == 0) return 0;  // co-incident points
+        if (sinTheta == 0)
+            return 0; // co-incident points
         cosTheta = sinU1 * sinU2 + cosU1 * cosU2 * coslng;
         Theta = atan2(sinTheta, cosTheta);
         sinAlpha = cosU1 * cosU2 * sinlng / sinTheta;
@@ -93,7 +94,7 @@ double get_distance_precise(coordinate_t *obj1, coordinate_t *obj2) {
         if (cosSqAlpha != 0) {
             cos2ThetaM = cosTheta - 2 * sinU1 * sinU2 / cosSqAlpha;
         } else {
-            cos2ThetaM = 0;  // equatorial line: cosSqAlpha=0 (§6)
+            cos2ThetaM = 0; // equatorial line: cosSqAlpha=0 (§6)
         }
         C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
         lng_deriv = lng;
@@ -113,7 +114,7 @@ char *coordinate_to_kml(coordinate_t *coordinate) {
     char *lat = fdtos(coordinate->lat, "%.5f");
     char *lng = fdtos(coordinate->lng, "%.5f");
     char *ele = fitos(coordinate->ele, "%d");
-    buffer = vstrcat(buffer, lng, ",", lat , ",", ele, " " , NULL);
+    buffer = vstrcat(buffer, lng, ",", lat, ",", ele, " ", NULL);
     free(lat);
     free(lng);
     free(ele);

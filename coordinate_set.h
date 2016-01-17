@@ -30,45 +30,12 @@ typedef struct coordinate_set_t {
     int64_t subset_count;
 } coordinate_set_t;
 
-
-
 void coordinate_set_init(coordinate_set_t *this);
+void coordinate_set_deinit(coordinate_set_t *this);
 
-coordinate_t *match_b_record(char *line);
-int coordinate_set_set_graph_values(coordinate_set_t *this);
-int parse_igc(coordinate_set_t *this, char *string);
-void parse_igc_coordinate(char *string, coordinate_t *this);
-int is_valid_subset(coordinate_subset_t *start);
-void push_coordinate(coordinate_set_t *set, coordinate_t *coordinate);
-int parse_h_record(coordinate_set_t *coordinate_set, char *line);
-int has_height_data(coordinate_set_t *coordinate_set);
-void clone_coordinate_t(coordinate_t *source, coordinate_t *dest);
-void coordinate_trim(coordinate_set_t *source);
-void coordinate_subset_free(coordinate_set_t *parser, coordinate_subset_t *subset);
+int coordinate_set_parse_igc(coordinate_set_t *this, char *string);
+
+int8_t coordinate_set_extrema(coordinate_set_t *this);
+int8_t coordinate_set_trim(coordinate_set_t *this);
+
 void coordinate_set_section(coordinate_set_t *this, int64_t start, int64_t end);
-
-int is_h_record(char *line);
-int is_b_record(char *line);
-
-
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 

@@ -6,30 +6,36 @@
 #include "distance_map.h"
 #include "igc_parser.h"
 
-void distance_map_init(distance_map_t*this, coordinate_set_t *set) {
-     this->coordinate_set = set;
- 
-     int64_t real_size = this->size = set->length;
+void distance_map_init(distance_map_t *this, coordinate_set_t *set) {
+    this->coordinate_set = set;
 
-     this->distances = malloc(sizeof(uint64_t *) * (real_size));
-     for (int16_t i = 0; i < real_size; i++) {
-        note("%d", i); 
-        this->distances[i] = malloc((real_size - i  + 1) * sizeof(uint64_t));
+    int64_t real_size = this->size = set->length;
 
-     }
-     int16_t j, i= 0;
-     coordinate_t *coordinate1 = set->first;
-     while (coordinate1) {
-         j = 0;
-         coordinate_t *coordinate2 = coordinate1->next;
-         while (coordinate2) {
-             this->distances[i][j] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
-             j++;
-             coordinate2 = coordinate2->next;
-         }
-         i++;
-         coordinate1 = coordinate1->next;
-     }
+    this->distances = malloc(sizeof(uint64_t *) * (real_size));
+    for (int16_t i = 0; i < real_size; i++) {
+        note("%d", i);
+        this->distances[i] = malloc((real_size - i + 1) * sizeof(uint64_t));
+    }
+    int16_t j, i = 0;
+    coordinate_t *coordinate1 = set->first;
+    while (coordinate1) {
+        j = 0;
+        coordinate_t *coordinate2 = coordinate1->next;
+        while (coordinate2) {
+            this->distances[i][j] = floor(get_distance_precise(coordinate1, coordinate2) * 1000000);
+            j++;
+            coordinate2 = coordinate2->next;
+        }
+        i++;
+        coordinate1 = coordinate1->next;
+    }
+}
+
+void distance_map_deinit(distance_map_t *this) {
+    for (size_t i = 0; i < this->size; i++) {
+        free(this->distances[i]);
+    }
+    free(this->distances);
 }
 
 uint64_t score_triangle(distance_map_t *this, triangle_score *score, int16_t include_gap) {
@@ -43,10 +49,9 @@ uint64_t score_triangle(distance_map_t *this, triangle_score *score, int16_t inc
     return res;
 }
 
-
 triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *this, uint64_t *_minleg, triangle_score *score) {
     int64_t distance = (MAP(this, x, y) + MAP(this, y, z) + MAP(this, x, z));
-    int64_t min = fmin(MAP(this, x, y), fmin(MAP(this, y, z), MAP(this, x, z))); 
+    int64_t min = fmin(MAP(this, x, y), fmin(MAP(this, y, z), MAP(this, x, z)));
     if (distance > score_triangle(this, score, 0) && min > distance * 0.28) {
         triangle_score *new_score = malloc(sizeof(triangle_score));
         new_score->x = x;
@@ -62,28 +67,24 @@ triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t co
             // warn("Prev set: x: %d, y: %d, z: %d", new_score->prev->x, new_score->prev->y, new_score->prev->z);
         } else {
             // warn("First set: x: %d, y: %d, z: %d", new_score->x, new_score->y, new_score->z);
-        }  
+        }
         return new_score;
-    } 
+    }
     return score;
 }
 
-triangle_score *scan_between(int64_t x, int64_t z, int64_t row, int64_t col, distance_map_t *this, uint64_t *_minleg, triangle_score *score) { 
+triangle_score *scan_between(int64_t x, int64_t z, int64_t row, int64_t col, distance_map_t *this, uint64_t *_minleg, triangle_score *score) {
     int64_t y = 0;
     uint64_t skip;
-    for (y = floor((x + z) / 2); y <= (z - 1); ++y) {        
-        if ( 
-            skip_up(this, &y, MAP(this, x, y), *_minleg, 2) ||
-            skip_up(this, &y, MAP(this, y, z), *_minleg, 2)
-        ) continue;
+    for (y = floor((x + z) / 2); y <= (z - 1); ++y) {
+        if (skip_up(this, &y, MAP(this, x, y), *_minleg, 2) || skip_up(this, &y, MAP(this, y, z), *_minleg, 2))
+            continue;
         score = check_y(x, y, z, row, col, this, _minleg, score);
     }
     y = floor((x + z) / 2);
     for (; y >= (x + 1); --y) {
-        if (
-            skip_down(this, &y, MAP(this, x, y), *_minleg, 2) ||
-            skip_down(this, &y, MAP(this, y, z), *_minleg, 2)
-        ) continue;
+        if (skip_down(this, &y, MAP(this, x, y), *_minleg, 2) || skip_down(this, &y, MAP(this, y, z), *_minleg, 2))
+            continue;
         score = check_y(x, y, z, row, col, this, _minleg, score);
     }
     return score;
@@ -106,7 +107,7 @@ void close_gap(distance_map_t *this, triangle_score *score) {
     }
 }
 
-task_t *distance_map_score_triangle(distance_map_t*this) {
+task_t *distance_map_score_triangle(distance_map_t *this) {
     uint64_t maximum_distance = 0;
     triangle_score *best_score = NULL;
     int64_t closest_end = 0;
@@ -115,18 +116,21 @@ task_t *distance_map_score_triangle(distance_map_t*this) {
     int64_t row, col, x, y, z = 0;
     for (row = 0; row < this->size; ++row) {
         for (col = this->size - 1; col > row && col > closest_end; --col) {
-            if (skip_down(this, &col, minleg, MAP(this, row, col), 1)) continue;
+            if (skip_down(this, &col, minleg, MAP(this, row, col), 1))
+                continue;
             x = row + ((col - row) / 2);
             for (x; x <= col - 2; ++x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    if (skip_down(this, &z, MAP(this, x, z), _minleg, 3)) continue;
+                    if (skip_down(this, &z, MAP(this, x, z), _minleg, 3))
+                        continue;
                     best_score = scan_between(x, z, row, col, this, &_minleg, best_score);
                 }
             }
             x = row + ((col - row) / 2);
             for (x; x >= row; --x) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
-                    if (skip_down(this, &z, MAP(this, x, z), _minleg, 3)) continue;
+                    if (skip_down(this, &z, MAP(this, x, z), _minleg, 3))
+                        continue;
                     best_score = scan_between(x, z, row, col, this, &_minleg, best_score);
                 }
             }
@@ -141,11 +145,12 @@ task_t *distance_map_score_triangle(distance_map_t*this) {
         int64_t i = 0;
         while (current_score) {
             i++;
-            if (score_triangle(this, current_score, 0) + minleg < score_triangle(this, best_score, 0)) break; 
+            if (score_triangle(this, current_score, 0) + minleg < score_triangle(this, best_score, 0))
+                break;
             // Break if the current iteration could not possible beat the best;
             uint64_t pre_score = score_triangle(this, current_score, 0);
             close_gap(this, current_score);
-            //warn("calc change: %d -> %d", pre_score, score_triangle(this, current_score, 1));
+            // warn("calc change: %d -> %d", pre_score, score_triangle(this, current_score, 1));
             if (score_triangle(this, current_score, 1) > score_triangle(this, best_score, 1)) {
                 best_score = current_score;
             }
@@ -156,35 +161,27 @@ task_t *distance_map_score_triangle(distance_map_t*this) {
         warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
         task_t *task = malloc(sizeof(task_t));
-        task_init(
-            task,
-            4,
-            TRIANGLE,
-            get_coordinate(this, best_score->x),
-            get_coordinate(this, best_score->y),
-            get_coordinate(this, best_score->z),
-            get_coordinate(this, best_score->x),
-            get_coordinate(this, best_score->row),
-            get_coordinate(this, best_score->col)
-        );
+        task_init(task, TRIANGLE, 4, get_coordinate(this, best_score->x), get_coordinate(this, best_score->y), get_coordinate(this, best_score->z), get_coordinate(this, best_score->x));
+        task_add_gap(task, get_coordinate(this, best_score->row), get_coordinate(this, best_score->col));
         return task;
     }
     return NULL;
 }
 
-task_t *distance_map_score_out_and_return(distance_map_t*this) {
+task_t *distance_map_score_out_and_return(distance_map_t *this) {
     note("%d", this->size);
     int64_t distance, maximum_distance = 0;
     int64_t indexes[] = {0, 0, 0};
     int64_t const minLeg = 800000;
     for (int64_t row = 0; row < this->size; ++row) {
         for (int64_t col = (this->size - 1); col > (row + 2); --col) {
-            if(skip_down(this, &col, minLeg, MAP(this, row, col), 1)) continue;
+            if (skip_down(this, &col, minLeg, MAP(this, row, col), 1))
+                continue;
             if (MAP(this, row, col) < minLeg) {
                 for (int64_t x = row + 1; x < col; x++) {
                     distance = MAP(this, row, x) + MAP(this, x, col) - MAP(this, row, col);
                     if (distance > maximum_distance) {
-                        //printf("%d, %d, %ld\n", row, col, MAP(this, row, col));
+                        // printf("%d, %d, %ld\n", row, col, MAP(this, row, col));
                         maximum_distance = distance;
                         indexes[0] = row;
                         indexes[1] = x;
@@ -199,22 +196,14 @@ task_t *distance_map_score_out_and_return(distance_map_t*this) {
 
     if (maximum_distance) {
         task_t *task = malloc(sizeof(task_t));
-        task_init(
-            task,
-            3,
-            OUT_AND_RETURN,
-            get_coordinate(this, indexes[0]),
-            get_coordinate(this, indexes[1]),
-            get_coordinate(this, indexes[2]),
-            get_coordinate(this, indexes[0]),
-            get_coordinate(this, indexes[2])
-        );
+        task_init(task, OUT_AND_RETURN, 3, get_coordinate(this, indexes[0]), get_coordinate(this, indexes[1]), get_coordinate(this, indexes[2]));
+        task_add_gap(task, get_coordinate(this, indexes[0]), get_coordinate(this, indexes[2]));
         return task;
     }
     return NULL;
 }
 
-task_t *distance_map_score_open_distance_3tp(distance_map_t*this) {
+task_t *distance_map_score_open_distance_3tp(distance_map_t *this) {
     uint64_t bestBack[this->size], bestFwrd[this->size];
     int64_t bestBack_index[this->size], bestFwrd_index[this->size];
     int64_t i;
@@ -244,7 +233,7 @@ task_t *distance_map_score_open_distance_3tp(distance_map_t*this) {
             }
         }
         if (maxF + maxB > best_score) {
-            best_score = maxF + maxB;  
+            best_score = maxF + maxB;
             indexes[0] = endB;
             indexes[1] = midB;
             indexes[2] = row;
@@ -255,22 +244,13 @@ task_t *distance_map_score_open_distance_3tp(distance_map_t*this) {
 
     if (best_score) {
         task_t *task = malloc(sizeof(task_t));
-        task_init(
-            task,
-            3,
-            OUT_AND_RETURN,
-            get_coordinate(this, indexes[0]),
-            get_coordinate(this, indexes[1]),
-            get_coordinate(this, indexes[2]),
-            get_coordinate(this, indexes[3]),
-            get_coordinate(this, indexes[4])
-        );
+        task_init(task, OPEN_DISTANCE, 5, get_coordinate(this, indexes[0]), get_coordinate(this, indexes[1]), get_coordinate(this, indexes[2]), get_coordinate(this, indexes[3]), get_coordinate(this, indexes[4]));
         return task;
     }
     return NULL;
 }
 
-double distance_map_get_precise(distance_map_t*this, uint64_t offset1, uint64_t offset2) {
+double distance_map_get_precise(distance_map_t *this, uint64_t offset1, uint64_t offset2) {
     if (offset1 > offset2) {
         uint64_t temp = offset1;
         offset1 = offset2;
@@ -282,7 +262,7 @@ double distance_map_get_precise(distance_map_t*this, uint64_t offset1, uint64_t 
     return get_distance_precise(point1, point2);
 }
 
-double distance_map_get(distance_map_t*this, uint64_t offset1, uint64_t offset2) {
+double distance_map_get(distance_map_t *this, uint64_t offset1, uint64_t offset2) {
     if (offset1 > offset2) {
         int64_t temp = offset1;
         offset1 = offset2;
@@ -307,7 +287,7 @@ uint64_t maximum_bound_index_back(distance_map_t *map, uint64_t point, uint64_t 
     uint64_t best_index = point;
     uint64_t best_score = 0;
     for (uint64_t i = 0; i < point; ++i) {
-        //note("(back) %3d -> %3d = %d", i, point, MAP(map, i, point));
+        // note("(back) %3d -> %3d = %d", i, point, MAP(map, i, point));
         if (best_score < MAP(map, i, point)) {
             best_index = i;
             best_score = MAP(map, i, point);
@@ -321,7 +301,7 @@ uint64_t maximum_bound_index_fwrd(distance_map_t *map, uint64_t point, uint64_t 
     uint64_t best_index = point;
     uint64_t best_score = 0;
     for (uint64_t i = (point + 1); i < map->size; ++i) {
-        //note("(fwrd) %3d -> %3d = %d", i, point, MAP(map, point, i));
+        // note("(fwrd) %3d -> %3d = %d", i, point, MAP(map, point, i));
         if (best_score < MAP(map, point, i)) {
             best_index = i;
             best_score = MAP(map, point, i);
@@ -332,33 +312,41 @@ uint64_t maximum_bound_index_fwrd(distance_map_t *map, uint64_t point, uint64_t 
 }
 
 inline uint64_t skip_up(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs) {
-    uint64_t cnt = 0, dist;
-    while (*index < map->size - 1) {
-        dist = MAP(map, *index, (*index + 1)) * effected_legs;
+    uint64_t cnt = 0;
+    uint64_t dist;
+    uint64_t _index = *index;
+    while (_index < map->size - 1) {
+        dist = MAP(map, _index, (_index + 1)) * effected_legs;
         if (current > required + dist) {
             current -= dist;
-            *index += 1;
-            cnt++;
-        } else {
-            break;
-        }  
-    }
-    //warn("Skipped(u) %d points, distance: %d", cnt, required);
-    return cnt;
-}
-
-inline uint64_t skip_down(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs) {
-    uint64_t cnt = 0, dist;
-    while (*index > 1) {
-        dist = MAP(map, (*index - 1), *index) * effected_legs;
-        if (current > required + dist) {
-            current -= dist;
-            *index -= 1;
+            _index += 1;
             cnt++;
         } else {
             break;
         }
     }
-    //warn("Skipped(d) %d points, distance: %d", cnt, required);
+    *index = _index;
+    if (cnt > 0) {
+        warn("Skipped(u) %d points, distance: %d", cnt, required);
+    }
+    return cnt;
+}
+
+inline uint64_t skip_down(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs) {
+    uint64_t cnt = 0, dist, _index = *index;
+    while (_index > 1) {
+        dist = MAP(map, (_index - 1), _index) * effected_legs;
+        if (current > required + dist) {
+            current -= dist;
+            _index -= 1;
+            cnt++;
+        } else {
+            break;
+        }
+    }
+    *index = _index;
+    if (cnt > 0) {
+        warn("Skipped(d) %d points, distance: %d", cnt, required);
+    }
     return cnt;
 }

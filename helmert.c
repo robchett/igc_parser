@@ -3,35 +3,13 @@
 #include "helmert.h"
 #include <math.h>
 
-static helmert_ellipsoid wsg84 = {
-    .a = 6378137,
-    .b = 6356752.3142
-};
+static helmert_ellipsoid wsg84 = {.a = 6378137, .b = 6356752.3142};
 
-static helmert_ellipsoid osgb36 = {
-    .a = 6378137,
-    .b = 6356752.314140
-};
+static helmert_ellipsoid osgb36 = {.a = 6378137, .b = 6356752.314140};
 
-static helmert_transform wsg84_osgb36_to_transform = {
-    .tx = -446.448,
-    .ty =  125.157,
-    .tz = -542.060,
-    .rx = -0.1502,
-    .ry = -0.2470,
-    .rz =  -0.8421,
-    .s =  20.4894
-};
+static helmert_transform wsg84_osgb36_to_transform = {.tx = -446.448, .ty = 125.157, .tz = -542.060, .rx = -0.1502, .ry = -0.2470, .rz = -0.8421, .s = 20.4894};
 
-static helmert_transform osgb36_to_wsg84_transform = {
-    .tx = 446.448,
-    .ty = -125.157,
-    .tz = 542.060,
-    .rx = 0.1502,
-    .ry = 0.2470,
-    .rz =  0.8421,
-    .s =  -20.4894
-};
+static helmert_transform osgb36_to_wsg84_transform = {.tx = 446.448, .ty = -125.157, .tz = 542.060, .rx = 0.1502, .ry = 0.2470, .rz = 0.8421, .s = -20.4894};
 
 void osgb36_to_wgs84(coordinate_t *point) {
     helmert_trans(point, osgb36, wsg84, osgb36_to_wsg84_transform);
@@ -62,19 +40,17 @@ void helmert_trans(coordinate_t *point, const helmert_ellipsoid source_ellipse, 
     double y1 = (nu + H) * cosPhi * sinLambda;
     double z1 = ((1 - eSq) * nu + H) * sinPhi;
 
-
     double tx = transform.tx;
     double ty = transform.ty;
     double tz = transform.tz;
-    double rx = (transform.rx / 3600) toRAD;
-    double ry = (transform.ry / 3600) toRAD;
-    double rz = (transform.rz / 3600) toRAD;
+    double rx = (transform.rx / 3600)toRAD;
+    double ry = (transform.ry / 3600)toRAD;
+    double rz = (transform.rz / 3600)toRAD;
     double s1 = (transform.s / 1000000) + 1; // normalise ppm to (s+1)
 
     double x2 = tx + (x1 * s1) - (y1 * rz) + (z1 * ry);
     double y2 = ty + (x1 * rz) + (y1 * s1) - (z1 * rx);
     double z2 = tz - (x1 * ry) + (y1 * rx) + (z1 * s1);
-
 
     a = target_ellipse.a;
     b = target_ellipse.b;

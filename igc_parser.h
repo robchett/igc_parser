@@ -12,11 +12,11 @@ char *gridref_number_to_letter(int64_t e, int64_t n);
 	  "\x1b[1m(%s:%d, %s)\x1b[0m\n  \x1b[1m\x1b[33mwarning:\x1b[0m " S "\n", \
 	  __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 
-	#define errn(S, ...) do { fprintf(stderr,                                \
+	#define errn(S, ...) fprintf(stderr,                                     \
 	  "\x1b[1m(%s:%d, %s)\x1b[0m\n  \x1b[1m\x1b[31merror:\x1b[0m " S "\n",   \
-	  __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); exit(1); } while (0) 
+	  __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 #else 
-	#define note(S, ...) ;
-	#define warn(S, ...) ;
-	#define errn(S, ...) ;
+	#define note(S, ...)
+	#define warn(S, ...)
+	#define errn(S, ...)
 #endif

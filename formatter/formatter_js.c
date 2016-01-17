@@ -36,10 +36,7 @@ json_t *get_bounds(coordinate_set_t *set) {
         }
         coordinate = coordinate->next;
     }
-    json_t *center = json_pack("{s:f, s:f}", 
-        "lat", (south + north) / 2,
-        "lng", (west + east) / 2
-    );
+    json_t *center = json_pack("{s:f, s:f}", "lat", (south + north) / 2, "lng", (west + east) / 2);
 
     coordinate_t *se = malloc(sizeof(coordinate_t));
     se->lat = south;
@@ -48,37 +45,28 @@ json_t *get_bounds(coordinate_set_t *set) {
     nw->lat = north;
     nw->lng = west;
 
-    json_t *point = json_pack("{s:f, s:f, s:f, s:f, s:o, s:f}", 
-        "north", north,  
-        "east", east, 
-        "south", south,
-        "west", west,
-        "center", center,
-        "range", get_distance_precise(se, nw) * 5
-    );
+    json_t *point = json_pack("{s:f, s:f, s:f, s:f, s:o, s:f}", "north", north, "east", east, "south", south, "west", west, "center", center, "range", get_distance_precise(se, nw) * 5);
     return point;
 }
 
 char *get_html_output(formatter_t *this) {
     char *string = create_buffer("");
-    char *id = (this->id ? itos(this->id) :  "");
-    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
+    char *id = (this->id ? itos(this->id) : "");
+    string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
     free(id);
     return string;
 }
 
 char *get_html_output_earth(formatter_t *this) {
     char *string = create_buffer("");
-    char *id = (this->id ? itos(this->id) :  "");
-    string = vstrcat(string,  "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
+    char *id = (this->id ? itos(this->id) : "");
+    string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
     free(id);
     return string;
 }
 
 char *formatter_js_output(formatter_t *this) {
     json_t *json = json_object();
-
-    coordinate_set_set_graph_values(this->set);
 
     json_object_set(json, "id", json_integer(this->id));
     json_object_set(json, "xMin", json_integer(this->set->first->timestamp));
@@ -97,8 +85,10 @@ char *formatter_js_output(formatter_t *this) {
         json_object_set(json, "tr_time", json_integer(get_task_time(this->triangle)));
     }
     // if (this->failed_triangle) {
-    //     json_object_set(json, "ft_score", json_real(get_task_distance(this->failed_triangle)));
-    //     json_object_set(json, "ft_time", json_integer(get_task_time(this->failed_triangle)));
+    //     json_object_set(json, "ft_score",
+    //     json_real(get_task_distance(this->failed_triangle)));
+    //     json_object_set(json, "ft_time",
+    //     json_integer(get_task_time(this->failed_triangle)));
     // }
 
     json_t *inner = json_object();

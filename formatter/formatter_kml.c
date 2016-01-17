@@ -16,7 +16,7 @@ void formatter_kml_init(formatter_t *this, coordinate_set_t *set, char *name, ta
 }
 
 char *get_meta_data(formatter_t *this) {
-    char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
+    char *buffer = create_buffer("<Metadata>\n\t\t\t\t\t<SecondsFromTimeOfFirstPoint>\n\t\t\t\t\t\t");
     coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
@@ -25,18 +25,18 @@ char *get_meta_data(formatter_t *this) {
         free(timestamp);
         if (i++ == 15) {
             i = 0;
-            buffer = vstrcat(buffer, "\n", NULL);
+            buffer = vstrcat(buffer, "\n\t\t\t\t\t\t", NULL);
         }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
+    return vstrcat(buffer, "\n\t\t\t\t\t</SecondsFromTimeOfFirstPoint>\n\t\t\t\t</Metadata>", NULL);
 }
 
 char *get_linestring(formatter_t *this) {
     char *buffer = create_buffer("<LineString>\n\
-	<extrude>0</extrude>\n\
-	<altitudeMode>absolute</altitudeMode>\n\
-	<coordinates>");
+	\t\t\t\t<extrude>0</extrude>\n\
+	\t\t\t\t<altitudeMode>absolute</altitudeMode>\n\
+	\t\t\t\t<coordinates>\n\t\t\t\t\t\t");
     coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
@@ -45,11 +45,11 @@ char *get_linestring(formatter_t *this) {
         free(kml_coordinate);
         if (i++ == 5) {
             i = 0;
-            buffer = vstrcat(buffer, "\n\t\t\t\t", NULL);
+            buffer = vstrcat(buffer, "\n\t\t\t\t\t\t", NULL);
         }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
+    return vstrcat(buffer, "\n\t\t\t\t\t</coordinates>\n\t\t\t\t</LineString>", "", NULL);
 }
 
 char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
@@ -60,12 +60,12 @@ char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *p
     }
     char *gridref = get_os_grid_ref(coordinate);
     char *buffer = malloc(sizeof(char) * 60);
-    sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s   %-5.2f      %-5.2f", index,  coordinate->lat,  coordinate->lng,  gridref,  distance,  *total_distance);
+    sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s     %-5.2f      %-5.2f", index, coordinate->lat, coordinate->lng, gridref, distance, *total_distance);
     free(gridref);
     return buffer;
 }
 
-char *get_task_generic(task_t*task, char *title, char *colour) {
+char *get_task_generic(task_t *task, char *title, char *colour) {
     double distance = 0;
     char *info = create_buffer("");
     char *coordinates = create_buffer("");
@@ -87,32 +87,38 @@ char *get_task_generic(task_t*task, char *title, char *colour) {
     char *buffer = create_buffer("");
     buffer = vstrcat(buffer, "\n\
         <Folder>\n\
-            <name>", title, "</name>\n\
+            <name>",
+                     title, "</name>\n\
             <visibility>1</visibility>\n\
             <styleUrl>#hideChildren</styleUrl>\n\
             <Placemark>\n\
             <visibility>1</visibility>\n\
-                <name>", title, "</name>\n\
+                <name>",
+                     title, "</name>\n\
                 <description>\n\
                 <![CDATA[<pre>\n\
-TP   Latitude   Longitude   OS Gridref   Distance   Total\
-", info, "\n\
-                                          Duration: 01:56:00\n\
+TP   Latitude   Longitude   OS Gridref   Distance   Total\n\
+",
+                     info, "\
+                                         Duration:  01:56:00\n\
                     </pre>]]>\n\
                 </description>\n\
                 <Style>\n\
                     <LineStyle>\n\
-                        <color>FF", colour, "</color>\n\
+                        <color>FF",
+                     colour, "</color>\n\
                         <width>2</width>\n\
                     </LineStyle>\n\
                 </Style>\n\
                 <LineString>\n\
-                    <coordinates>\
-                        ", coordinates, "\n\
+                    <coordinates>\n\
+                        ",
+                     coordinates, "\n\
                     </coordinates>\n\
                 </LineString>\n\
             </Placemark>\n\
-        </Folder>", NULL);
+        </Folder>",
+                     NULL);
     free(info);
     free(coordinates);
     return buffer;
@@ -143,7 +149,7 @@ char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
     return buffer;
 }
 
-char *get_defined_task(task_t*task) {
+char *get_defined_task(task_t *task) {
     double distance = 0;
     char *info = create_buffer("\
 <Folder>\
@@ -174,7 +180,8 @@ char *get_defined_task(task_t*task) {
                 </LinearRing>\n\
             </outerBoundaryIs>\n\
         </Polygon>\n\
-    </Placemark>", "\n\n", NULL);
+    </Placemark>",
+                       "\n\n", NULL);
         free(coordinates);
     }
     info = vstrcat(info, "\n\
@@ -185,22 +192,24 @@ char *get_defined_task(task_t*task) {
         </LineStyle>\n\
         <LineString>\n\
             <altitudeMode>clampToGround</altitudeMode>\n\
-            <coordinates>", kml_coordinates, "</coordinates>\n\
+            <coordinates>",
+                   kml_coordinates, "</coordinates>\n\
         </LineString>\n\
      </Placemark>\n\
-</Folder>", NULL);
+</Folder>",
+                   NULL);
 
     free(kml_coordinates);
     return info;
 }
 
 char *get_task_od(formatter_t *this) {
-    char *buffer = get_task_generic( this->open_distance, "Open Distance", "00D7FF");
+    char *buffer = get_task_generic(this->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
 char *get_task_or(formatter_t *this) {
-    char *buffer = get_task_generic( this->out_and_return , "Out and Return", "00FF00");
+    char *buffer = get_task_generic(this->out_and_return, "Out and Return", "00FF00");
     return buffer;
 }
 
@@ -229,17 +238,17 @@ char *formatter_kml_output(formatter_t *this) {
         char *od_t = itos(get_task_time(this->open_distance));
         char *open_distance = get_task_od(this);
         tasks = vstrcat(tasks, open_distance, NULL);
-        tasks_info = vstrcat(tasks_info, "OD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
+        tasks_info = vstrcat(tasks_info, "\t\t\tOD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
         free(od_d);
         free(od_t);
         free(open_distance);
     }
     if (this->open_distance) {
         char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(this->out_and_return ));
+        char *or_t = itos(get_task_time(this->out_and_return));
         char *out_and_return = get_task_or(this);
         tasks = vstrcat(tasks, out_and_return, NULL);
-        tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
+        tasks_info = vstrcat(tasks_info, "\t\t\tOR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
         free(or_d);
         free(or_t);
         free(out_and_return);
@@ -249,7 +258,7 @@ char *formatter_kml_output(formatter_t *this) {
         char *tr_t = itos(get_task_time(this->triangle));
         char *triangle = get_task_tr(this);
         tasks = vstrcat(tasks, triangle, NULL);
-        tasks_info = vstrcat(tasks_info, "TR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
+        tasks_info = vstrcat(tasks_info, "\t\t\tTR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
         free(tr_d);
         free(tr_t);
         free(triangle);
@@ -262,7 +271,6 @@ char *formatter_kml_output(formatter_t *this) {
 
     char *metadata = get_meta_data(this);
     char *linestring = get_linestring(this);
-
 
     char *output = create_buffer("");
     output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
@@ -284,23 +292,27 @@ char *formatter_kml_output(formatter_t *this) {
 		</LineStyle>\n\
 	</Style>\n\
 	<Folder>\n\
-		<name>", this->name, "</name>\n\
+		<name>",
+                     this->name, "</name>\n\
 		<visibility>1</visibility>\n\
 		<description><![CDATA[<pre>\n\
 			Flight statistics\n\
-			Flight #             ", this->name, "\n\
+			Flight #             ",
+                     this->name, "\n\
 			Pilot                \n\
 			Club                 \n\
 			Glider               \n\
-			Date                 ", year, "-", month, "-", day, "\n\
+			Date                 ",
+                     year, "-", month, "-", day, "\n\
 			Start/finish         \n\
 			Duration             \n\
-			Max./min. height     ", max_ele , " / ", min_ele, " m\n",
-                     tasks_info, "\n\
+			Max./min. height     ",
+                     max_ele, " / ", min_ele, " m\n", tasks_info, "\n\
 		</pre>]]>\n\
 		</description>\n\
 		<Folder>\n\
-			<name>", this->name, "</name>\n\
+			<name>",
+                     this->name, "</name>\n\
 			<visibility>1</visibility>\n\
 			<open>1</open>\n\
 			<Placemark>\n\
@@ -310,16 +322,19 @@ char *formatter_kml_output(formatter_t *this) {
 						<width>2</width>\n\
 					</LineStyle>\n\
 				</Style>\n\
-				", metadata, linestring, "\n\
+				",
+                     metadata, "\n\t\t\t\t", linestring, "\n\
 			</Placemark>\n\
 		</Folder>\n\
 		<Folder>\n\
 		<name>Task</name>\n\
 		<visibility>1</visibility>\n\
-		", tasks, "\n\
+		",
+                     tasks, "\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>", NULL);
+</Document>",
+                     NULL);
 
     free(year);
     free(month);
@@ -332,4 +347,3 @@ char *formatter_kml_output(formatter_t *this) {
     free(tasks_info);
     return output;
 }
-
