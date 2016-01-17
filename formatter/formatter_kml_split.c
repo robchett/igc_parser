@@ -4,15 +4,15 @@
 #include "../coordinate_set.h"
 #include "formatter_kml_split.h"
 
-void formatter_kml_split_init(formatter_t *this, coordinate_set_t *set) {
+void formatter_kml_split_init(formatter_split_t *this, coordinate_set_t *set) {
     this->set = set;
 }
 
 char *get_linestring_subset(coordinate_subset_t *this) {
     char *buffer = create_buffer("<LineString>\n\
-    <extrude>0</extrude>\n\
-    <altitudeMode>absolute</altitudeMode>\n\
-    <coordinates>");
+            <extrude>0</extrude>\n\
+            <altitudeMode>absolute</altitudeMode>\n\
+            <coordinates>\n\t\t\t\t");
     coordinate_t *coordinate = this->first;
     int16_t i = 0;
     while (coordinate && coordinate != this->last) {
@@ -23,8 +23,9 @@ char *get_linestring_subset(coordinate_subset_t *this) {
             buffer = vstrcat(buffer, "\n\t\t\t\t", NULL);
         }
         coordinate = coordinate->next;
+        free(kml_coordinate);
     }
-    return vstrcat(buffer, "\n</coordinates></LineString>", "", NULL);
+    return vstrcat(buffer, "\n\t\t\t</coordinates>\n\t\t</LineString>", "", NULL);
 }
 
 char *kml_colour(int i) {
@@ -89,31 +90,28 @@ char *heat_colour(int i) {
     }
 }
 
-char *formatter_kml_split_output(formatter_split_object *this) {
-    char *output = create_buffer("");
-    output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
-<Document>",
-                     NULL);
+char *formatter_kml_split_output(formatter_split_t *this, char *filename) {
+    FILE *fp = fopen(filename, "w");
+    fputs("\
+<?xml version='1.0' encoding='UTF-8'?>\n\
+<Document>", fp);
     coordinate_subset_t *subset = this->set->first_subset;
     int16_t i = 0;
     while (subset) {
         char *linestring = get_linestring_subset(subset);
-        output = vstrcat(output, "\
+        fprintf(fp, "\n\
     <Placemark>\n\
         <Style>\n\
             <LineStyle>\n\
-                <color>ff",
-                         kml_colour(i++), "</color>\n\
+                <color>ff%s/color>\n\
                 <width>2</width>\n\
             </LineStyle>\n\
         </Style>\n\
-        ",
-                         linestring, "\n\
-    </Placemark>\n",
-                         NULL);
+        %s\n\
+    </Placemark>\n", kml_colour(i++), linestring);
         free(linestring);
         subset = subset->next;
     }
-
-    output = vstrcat(output, "</Document>", NULL);
+    fputs("</Document>", fp);
+    fclose(fp);
 }

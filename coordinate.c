@@ -32,16 +32,16 @@ void coordinate_deinit(coordinate_t *this) {
         }
         this->coordinate_set->length--;
     }
-    // Todo this won't compile :(
-    // if (this->coordinate_subset) {
-    //     if (this == this->coordinate_subset->first) {
-    //         this->coordinate_subset->first = this->next;
-    //     }
-    //     if (this == this->coordinate_subset->last) {
-    //         this->coordinate_subset->last = this->prev;
-    //     }
-    //     this->coordinate_subset->length--;
-    // }
+
+    if (this->coordinate_subset) {
+        if (this == this->coordinate_subset->first) {
+            this->coordinate_subset->first = this->next;
+        }
+        if (this == this->coordinate_subset->last) {
+            this->coordinate_subset->last = this->prev;
+        }
+        this->coordinate_subset->length--;
+    }
     free(this);
 }
 

@@ -65,7 +65,8 @@ char *get_html_output_earth(formatter_t *this) {
     return string;
 }
 
-char *formatter_js_output(formatter_t *this) {
+char *formatter_js_output(formatter_t *this, char *filename) {
+    FILE *fp = fopen(filename, "w");
     json_t *json = json_object();
 
     json_object_set(json, "id", json_integer(this->id));
@@ -129,5 +130,8 @@ char *formatter_js_output(formatter_t *this) {
 
     json_array_append(tracks, inner);
     json_object_set(json, "track", tracks);
-    return (json_dumps(json, JSON_PRESERVE_ORDER));
+    char *s = (json_dumps(json, JSON_PRESERVE_ORDER));
+    fputs(s, fp);
+    fclose(fp);
+    free(s);
 }

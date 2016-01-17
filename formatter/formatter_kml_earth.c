@@ -260,50 +260,23 @@ char *get_task_ft_earth(formatter_t *this) {
     return buffer;
 }
 
-char *formatter_kml_earth_output(formatter_t *this) {
-    char *year = itos(this->set->year);
-    char *month = fitos(this->set->month, "%02d");
-    char *day = fitos(this->set->day, "%02d");
-    char *min_ele = itos(this->set->min_ele);
-    char *max_ele = itos(this->set->max_ele);
-
-    // TASKS
-    char *tasks = create_buffer("");
-    char *tasks_info = create_buffer("");
+char *formatter_kml_earth_output(formatter_t *this, char *filename) {
+    FILE *fp = fopen(filename, "w");
+    char *open_distance;
+    char *out_and_return;
+    char *triangle;
+    char *task;
     if (this->open_distance) {
-        char *od_d = fdtos(get_task_distance(this->open_distance), "%.2f");
-        char *od_t = itos(get_task_time(this->open_distance));
-        char *open_distance = get_task_od_earth(this);
-        tasks = vstrcat(tasks, open_distance, NULL);
-        tasks_info = vstrcat(tasks_info, "OD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
-        free(od_d);
-        free(od_t);
-        free(open_distance);
+        open_distance = get_task_od_earth(this);
     }
     if (this->open_distance) {
-        char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(this->out_and_return));
-        char *out_and_return = get_task_or_earth(this);
-        tasks = vstrcat(tasks, out_and_return, NULL);
-        tasks_info = vstrcat(tasks_info, "OR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
-        free(or_d);
-        free(or_t);
-        free(out_and_return);
+        out_and_return = get_task_or_earth(this);
     }
     if (this->triangle) {
-        char *tr_d = fdtos(get_task_distance(this->triangle), "%.2f");
-        char *tr_t = itos(get_task_time(this->triangle));
-        char *triangle = get_task_tr_earth(this);
-        tasks = vstrcat(tasks, triangle, NULL);
-        tasks_info = vstrcat(tasks_info, "TR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
-        free(tr_d);
-        free(tr_t);
-        free(triangle);
+        triangle = get_task_tr_earth(this);
     }
     if (this->task) {
-        char *task = get_defined_task_earth(this->task);
-        tasks = vstrcat(tasks, task, NULL);
-        free(task);
+        task = get_defined_task_earth(this->task);
     }
 
     char *styles = get_kml_styles_earth();
@@ -321,14 +294,13 @@ char *formatter_kml_earth_output(formatter_t *this) {
     // char *climb_rate = get_colour_by_climb_rate(this->set);
     // char *timestamp = get_colour_by_time(this->set);
 
-    char *output = create_buffer("");
-    output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
+    fprintf(fp, "\
+<?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
-	<open>1</open>\n",
-                     styles, "\n\
+	<open>1</open>\n\
+    %s\n\
     <Folder>\n\
-        <name>",
-                     this->name, "</name>\n\
+        <name>%s</name>\n\
 		<visibility>1</visibility>\n\
         <open>1</open>\n\
         <Folder>\n\
@@ -339,30 +311,30 @@ char *formatter_kml_earth_output(formatter_t *this) {
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by height</name>\n\
-                <visibility>1</visibility>\n",
-                     height, "\
+                <visibility>1</visibility>\n\
+                %s\n\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by ground speed</name>\n\
-                <visibility>0</visibility>\n",
-                     speed, "\
+                <visibility>0</visibility>\n\
+                %s\n\
                 <open>0</open>\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour By Climb</name>\n\
                 <visibility>0</visibility>\n\
-                <open>0</open>\n",
-                     climb_rate, "\
+                <open>0</open>\n\
+                %s\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Colour by time</name>\n\
                 <visibility>0</visibility>\n\
-                <open>0</open>\n",
-                     timestamp, "\
+                <open>0</open>\n\
+                %s\n\
             </Folder>\n\
         </Folder>\n\
         <Folder>\n\
@@ -381,39 +353,33 @@ char *formatter_kml_earth_output(formatter_t *this) {
                 <name>Shadow</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n\
-                <Placemark>\n",
-                     shadow, "\
-                 </Placemark>\n\
+                <Placemark>\n\
+                    %s\n\
+                </Placemark>\n\
             </Folder>\n\
             <Folder>\n\
                 <styleUrl>hideChildren</styleUrl>\n\
                 <name>Extrude</name>\n\
                 <visibility>0</visibility>\n\
                 <open>0</open>\n\
-                 <Placemark>\n",
-                     shadow_extrude, "\
-                 </Placemark>\n\
+                <Placemark>\n\
+                    %s\n\
+                </Placemark>\n\
             </Folder>\n\
         </Folder>\n\
 		<Folder>\n\
-		  <name>Task</name>\n\
-		  <visibility>1</visibility>\n\
-		  ",
-                     tasks, "\n\
+		   <name>Task</name>\n\
+		   <visibility>1</visibility>\n\
+           %s\n\
+           %s\n\
+           %s\n\
+           %s\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>",
-                     NULL);
+</Document>", styles, this->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance, out_and_return, triangle, task);
 
-    free(year);
-    free(month);
-    free(day);
-    free(max_ele);
-    free(min_ele);
     free(metadata);
     free(linestring);
-    free(tasks);
-    free(tasks_info);
     free(styles);
     //    free(height);
     //    free(climb_rate);
@@ -421,7 +387,7 @@ char *formatter_kml_earth_output(formatter_t *this) {
     //    free(speed);
     free(shadow);
     free(shadow_extrude);
-    return output;
+    fclose(fp);
 }
 
 char *colour_grad_16[] = {

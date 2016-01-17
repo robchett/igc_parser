@@ -132,9 +132,11 @@ int8_t main(int argc, char **argv) {
     char out_file_1[strlen(root) + 20];
     char out_file_2[strlen(root) + 20];
     char out_file_3[strlen(root) + 20];
+    char out_file_4[strlen(root) + 20];
     sprintf(out_file_1, "%s%s", root, "/track.js");
     sprintf(out_file_2, "%s%s", root, "/track.kml");
     sprintf(out_file_3, "%s%s", root, "/track_earth.kml");
+    sprintf(out_file_4, "%s%s", root, "/track_split.kml");
 
     printf("Parsing: %s\n", source_file);
     printf("Output: %s\n", root);
@@ -147,78 +149,80 @@ int8_t main(int argc, char **argv) {
         printf("Parsed\nPoints: %d\n", set->length);
 
         coordinate_set_trim(set);
+        coordinate_set_repair(set);
+        coordinate_set_simplify(set, 1500);
         coordinate_set_extrema(set);
 
-        distance_map_t *map = malloc(sizeof(distance_map_t));
-        distance_map_init(map, set);
+        printf("Sets: %d\n", set->subset_count);
 
-        char *ids;
+        if (set->subset_count == 1) {
 
-        task_t *od = distance_map_score_open_distance_3tp(map);
-        if (od) {
-            ids = task_get_coordinate_ids(od);
-            printf("OD IDs: %s\n", ids);
-            free(ids);
+            printf("Simplified: %d\n", set->length);
+
+            distance_map_t *map = malloc(sizeof(distance_map_t));
+            distance_map_init(map, set);
+
+            char *ids;
+
+            task_t *od = distance_map_score_open_distance_3tp(map);
+            if (od) {
+                ids = task_get_coordinate_ids(od);
+                printf("OD IDs: %s\n", ids);
+                free(ids);
+            } else {
+                printf("OD: Not found\n");
+            }
+
+            task_t *or = distance_map_score_out_and_return(map);
+            if (or) {
+                ids = task_get_coordinate_ids(or);
+                printf("OR IDs: %s\n", ids);
+                free(ids);
+            } else {
+                printf("OR: Not found\n");
+            }
+
+            task_t *tr = distance_map_score_triangle(map);
+            if (tr) {
+                ids = task_get_coordinate_ids(tr);
+                printf("TR IDs: %s\n", ids);
+                free(ids);
+            } else {
+                printf("TR: Not found\n");
+            }
+
+            formatter_t *formatter;
+
+            formatter = malloc(sizeof(formatter_t));
+            formatter_js_init(formatter, set, 1, od, or, tr);
+            formatter_js_output(formatter, out_file_1);
+            free(formatter);
+            printf("JS output formatted\n");
+
+            formatter = malloc(sizeof(formatter_t));
+            formatter_kml_init(formatter, set, "Bob", od, or, tr, NULL);
+            formatter_kml_output(formatter, out_file_2);
+            free(formatter);
+            printf("KML output formatted\n");
+
+            formatter = malloc(sizeof(formatter_t));
+            formatter_kml_earth_init(formatter, set, "Bob", od, or, tr, NULL);
+            formatter_kml_earth_output(formatter, out_file_3);
+            free(formatter);
+            printf("KML Earth output formatted\n");
+
+            free(od);
+            free(or);
+            free(tr);
+            distance_map_deinit(map);
+
         } else {
-            printf("OD: Not found\n");
+            formatter_split_t *formatter = malloc(sizeof(formatter_split_t));
+            formatter_kml_split_init(formatter, set);
+            formatter_kml_split_output(formatter, out_file_4);
+            free(formatter);
+            printf("KML split output formatted\n");
         }
-
-        task_t *or = distance_map_score_out_and_return(map);
-        if (or) {
-            ids = task_get_coordinate_ids(or);
-            printf("OR IDs: %s\n", ids);
-            free(ids);
-        } else {
-            printf("OR: Not found\n");
-        }
-
-        task_t *tr = distance_map_score_triangle(map);
-        if (tr) {
-            ids = task_get_coordinate_ids(tr);
-            printf("TR IDs: %s\n", ids);
-            free(ids);
-        } else {
-            printf("TR: Not found\n");
-        }
-
-        FILE *fp;
-        char *formatted_string;
-        formatter_t *formatter;
-
-        fp = fopen(out_file_1, "w");
-        formatter = malloc(sizeof(formatter_t));
-        formatter_js_init(formatter, set, 1, od, or, tr);
-        formatted_string = formatter_js_output(formatter);
-        fputs(formatted_string, fp);
-        fclose(fp);
-        free(formatted_string);
-        free(formatter);
-        printf("JS output formatted\n");
-
-        fp = fopen(out_file_2, "w");
-        formatter = malloc(sizeof(formatter_t));
-        formatter_kml_init(formatter, set, "Bob", od, or, tr, NULL);
-        formatted_string = formatter_kml_output(formatter);
-        fputs(formatted_string, fp);
-        fclose(fp);
-        free(formatted_string);
-        free(formatter);
-        printf("KML output formatted\n");
-
-        fp = fopen(out_file_3, "w");
-        formatter = malloc(sizeof(formatter_t));
-        formatter_kml_earth_init(formatter, set, "Bob", od, or, tr, NULL);
-        formatted_string = formatter_kml_earth_output(formatter);
-        fputs(formatted_string, fp);
-        fclose(fp);
-        free(formatted_string);
-        free(formatter);
-        printf("KML Earth output formatted\n");
-
-        free(od);
-        free(or);
-        free(tr);
-        distance_map_deinit(map);
         coordinate_set_deinit(set);
     } else {
         printf("Failed: %s\n", source_file);

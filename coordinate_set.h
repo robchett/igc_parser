@@ -35,7 +35,9 @@ void coordinate_set_deinit(coordinate_set_t *this);
 
 int coordinate_set_parse_igc(coordinate_set_t *this, char *string);
 
+int coordinate_set_repair(coordinate_set_t *this);
+int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size);
 int8_t coordinate_set_extrema(coordinate_set_t *this);
 int8_t coordinate_set_trim(coordinate_set_t *this);
 
-void coordinate_set_section(coordinate_set_t *this, int64_t start, int64_t end);
+void coordinate_set_section(coordinate_set_t *this, uint16_t start, uint16_t end);

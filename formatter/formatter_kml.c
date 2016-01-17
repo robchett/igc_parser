@@ -223,57 +223,38 @@ char *get_task_ft(formatter_t *this) {
     return buffer;
 }
 
-char *formatter_kml_output(formatter_t *this) {
-    char *year = itos(this->set->year);
-    char *month = fitos(this->set->month, "%02d");
-    char *day = fitos(this->set->day, "%02d");
-    char *min_ele = itos(this->set->min_ele);
-    char *max_ele = itos(this->set->max_ele);
+char *formatter_kml_output(formatter_t *this, char *filename) {
+    FILE *fp = fopen(filename, "w");
 
     // TASKS
-    char *tasks = create_buffer("");
-    char *tasks_info = create_buffer("");
+    char od_results[100];
+    char or_results[100];
+    char tr_results[100];
+    char *open_distance;
+    char *out_and_return;
+    char *triangle;
+    char *task;
     if (this->open_distance) {
-        char *od_d = fdtos(get_task_distance(this->open_distance), "%.2f");
-        char *od_t = itos(get_task_time(this->open_distance));
-        char *open_distance = get_task_od(this);
-        tasks = vstrcat(tasks, open_distance, NULL);
-        tasks_info = vstrcat(tasks_info, "\t\t\tOD Score / Time      ", od_d, " / ", od_t, "s\n", NULL);
-        free(od_d);
-        free(od_t);
-        free(open_distance);
+        open_distance = get_task_od(this);
+        sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(this->open_distance), get_task_time(this->open_distance));
     }
     if (this->open_distance) {
-        char *or_d = fdtos(get_task_distance(this->out_and_return), "%.2f");
-        char *or_t = itos(get_task_time(this->out_and_return));
-        char *out_and_return = get_task_or(this);
-        tasks = vstrcat(tasks, out_and_return, NULL);
-        tasks_info = vstrcat(tasks_info, "\t\t\tOR Score / Time      ", or_d, " / ", or_t, "s\n", NULL);
-        free(or_d);
-        free(or_t);
-        free(out_and_return);
+        out_and_return = get_task_or(this);
+        sprintf(od_results, "OR Score / Time %3.2f / %d", get_task_distance(this->out_and_return), get_task_time(this->out_and_return));
     }
     if (this->triangle) {
-        char *tr_d = fdtos(get_task_distance(this->triangle), "%.2f");
-        char *tr_t = itos(get_task_time(this->triangle));
-        char *triangle = get_task_tr(this);
-        tasks = vstrcat(tasks, triangle, NULL);
-        tasks_info = vstrcat(tasks_info, "\t\t\tTR Score / Time      ", tr_d, " / ", tr_t, "s\n", NULL);
-        free(tr_d);
-        free(tr_t);
-        free(triangle);
+        triangle = get_task_tr(this);
+        sprintf(od_results, "TR Score / Time %3.2f / %d", get_task_distance(this->triangle), get_task_time(this->triangle));
     }
     if (this->task) {
-        char *task = get_defined_task(this->task);
-        tasks = vstrcat(tasks, task, NULL);
-        free(task);
+        task = get_defined_task(this->task);
     }
 
     char *metadata = get_meta_data(this);
     char *linestring = get_linestring(this);
 
-    char *output = create_buffer("");
-    output = vstrcat(output, "<?xml version='1.0' encoding='UTF-8'?>\n\
+    fprintf(fp, "\
+<?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
 	<open>1</open>\n\
 	<Style id=\"shadow\">\n\
@@ -292,27 +273,24 @@ char *formatter_kml_output(formatter_t *this) {
 		</LineStyle>\n\
 	</Style>\n\
 	<Folder>\n\
-		<name>",
-                     this->name, "</name>\n\
+		<name>%d/name>\n\
 		<visibility>1</visibility>\n\
 		<description><![CDATA[<pre>\n\
 			Flight statistics\n\
-			Flight #             ",
-                     this->name, "\n\
-			Pilot                \n\
-			Club                 \n\
-			Glider               \n\
-			Date                 ",
-                     year, "-", month, "-", day, "\n\
-			Start/finish         \n\
-			Duration             \n\
-			Max./min. height     ",
-                     max_ele, " / ", min_ele, " m\n", tasks_info, "\n\
-		</pre>]]>\n\
-		</description>\n\
+			Flight: #%d                  \n\
+			Pilot:                       \n\
+			Club:                        \n\
+			Glider:                      \n\
+			Date: %02d-%02d-%04d         \n\
+			Start/finish:                \n\
+			Duration:                    \n\
+			Max./min. height:    %d / %d \n\
+            %s                           \n\
+            %s                           \n\
+            %s                           \n\
+		</pre>]]></description>\n\
 		<Folder>\n\
-			<name>",
-                     this->name, "</name>\n\
+			<name>%d</name>\n\
 			<visibility>1</visibility>\n\
 			<open>1</open>\n\
 			<Placemark>\n\
@@ -321,29 +299,28 @@ char *formatter_kml_output(formatter_t *this) {
 						<color>ffff0000</color>\n\
 						<width>2</width>\n\
 					</LineStyle>\n\
-				</Style>\n\
-				",
-                     metadata, "\n\t\t\t\t", linestring, "\n\
+				</Style> \n\
+                %s \n\
+                %s \n\
 			</Placemark>\n\
 		</Folder>\n\
 		<Folder>\n\
-		<name>Task</name>\n\
-		<visibility>1</visibility>\n\
-		",
-                     tasks, "\n\
+		    <name>Task</name>\n\
+		    <visibility>1</visibility>\n\
+            %s\n\
+            %s\n\
+            %s\n\
+            %s\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>",
-                     NULL);
+</Document>", this->name, this->name,this->set->day,this->set->month,this->set->year, this->set->max_ele, this->set->min_ele, od_results, or_results, tr_results, this->name, metadata, linestring, open_distance, out_and_return, triangle, task);
 
-    free(year);
-    free(month);
-    free(day);
-    free(max_ele);
-    free(min_ele);
     free(metadata);
     free(linestring);
-    free(tasks);
-    free(tasks_info);
-    return output;
+
+    free(triangle);
+    free(open_distance);
+    free(out_and_return);
+    free(task);
+    fclose(fp);
 }
