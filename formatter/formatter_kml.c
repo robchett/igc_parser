@@ -1,4 +1,5 @@
 #include "../main.h"
+#include <string.h>
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
@@ -33,23 +34,31 @@ char *get_meta_data(formatter_t *this) {
 }
 
 char *get_linestring(formatter_t *this) {
-    char *buffer = create_buffer("<LineString>\n\
-	\t\t\t\t<extrude>0</extrude>\n\
-	\t\t\t\t<altitudeMode>absolute</altitudeMode>\n\
-	\t\t\t\t<coordinates>\n\t\t\t\t\t\t");
+    char *coordinates = calloc((200 + (30 * this->set->length)), sizeof(char));
     coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
-        buffer = vstrcat(buffer, kml_coordinate, NULL);
+        strcat(coordinates, kml_coordinate);
         free(kml_coordinate);
         if (i++ == 5) {
             i = 0;
-            buffer = vstrcat(buffer, "\n\t\t\t\t\t\t", NULL);
+            strcat(coordinates, "\n\t\t\t\t\t\t");
         }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n\t\t\t\t\t</coordinates>\n\t\t\t\t</LineString>", "", NULL);
+    char *buffer = malloc(sizeof(char) * (200 + (30 * this->set->length)));
+    sprintf(buffer, "\
+            <LineString>\n\
+                <extrude>0</extrude>\n\
+	            <altitudeMode>absolute</altitudeMode>\n\
+	            <coordinates>\n\
+                    %s\n\
+                <coordinates>\n\
+            </LineString>",
+            coordinates);
+    free(coordinates);
+    return buffer;
 }
 
 char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
@@ -225,35 +234,35 @@ char *get_task_ft(formatter_t *this) {
 
 char *formatter_kml_output(formatter_t *this, char *filename) {
     FILE *fp = fopen(filename, "w");
+    if (fp) {
+        // TASKS
+        char od_results[100];
+        char or_results[100];
+        char tr_results[100];
+        char *open_distance = NULL;
+        char *out_and_return = NULL;
+        char *triangle = NULL;
+        char *task = NULL;
+        if (this->open_distance) {
+            open_distance = get_task_od(this);
+            sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(this->open_distance), get_task_time(this->open_distance));
+        }
+        if (this->open_distance) {
+            out_and_return = get_task_or(this);
+            sprintf(or_results, "OR Score / Time %3.2f / %d", get_task_distance(this->out_and_return), get_task_time(this->out_and_return));
+        }
+        if (this->triangle) {
+            triangle = get_task_tr(this);
+            sprintf(tr_results, "TR Score / Time %3.2f / %d", get_task_distance(this->triangle), get_task_time(this->triangle));
+        }
+        if (this->task) {
+            task = get_defined_task(this->task);
+        }
 
-    // TASKS
-    char od_results[100];
-    char or_results[100];
-    char tr_results[100];
-    char *open_distance;
-    char *out_and_return;
-    char *triangle;
-    char *task;
-    if (this->open_distance) {
-        open_distance = get_task_od(this);
-        sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(this->open_distance), get_task_time(this->open_distance));
-    }
-    if (this->open_distance) {
-        out_and_return = get_task_or(this);
-        sprintf(od_results, "OR Score / Time %3.2f / %d", get_task_distance(this->out_and_return), get_task_time(this->out_and_return));
-    }
-    if (this->triangle) {
-        triangle = get_task_tr(this);
-        sprintf(od_results, "TR Score / Time %3.2f / %d", get_task_distance(this->triangle), get_task_time(this->triangle));
-    }
-    if (this->task) {
-        task = get_defined_task(this->task);
-    }
+        char *metadata = get_meta_data(this);
+        char *linestring = get_linestring(this);
 
-    char *metadata = get_meta_data(this);
-    char *linestring = get_linestring(this);
-
-    fprintf(fp, "\
+        fprintf(fp, "\
 <?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
 	<open>1</open>\n\
@@ -273,11 +282,11 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
 		</LineStyle>\n\
 	</Style>\n\
 	<Folder>\n\
-		<name>%d/name>\n\
+		<name>%s/name>\n\
 		<visibility>1</visibility>\n\
 		<description><![CDATA[<pre>\n\
 			Flight statistics\n\
-			Flight: #%d                  \n\
+			Flight: #%s                  \n\
 			Pilot:                       \n\
 			Club:                        \n\
 			Glider:                      \n\
@@ -290,7 +299,7 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
             %s                           \n\
 		</pre>]]></description>\n\
 		<Folder>\n\
-			<name>%d</name>\n\
+			<name>%s</name>\n\
 			<visibility>1</visibility>\n\
 			<open>1</open>\n\
 			<Placemark>\n\
@@ -313,14 +322,27 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
             %s\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>", this->name, this->name,this->set->day,this->set->month,this->set->year, this->set->max_ele, this->set->min_ele, od_results, or_results, tr_results, this->name, metadata, linestring, open_distance, out_and_return, triangle, task);
+</Document>",
+                this->name, this->name, this->set->day, this->set->month, this->set->year, this->set->max_ele, this->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", this->name, metadata, linestring, open_distance ?: "",
+                out_and_return ?: "", triangle ?: "", task ?: "");
 
-    free(metadata);
-    free(linestring);
+        free(metadata);
+        free(linestring);
 
-    free(triangle);
-    free(open_distance);
-    free(out_and_return);
-    free(task);
-    fclose(fp);
+        if (triangle) {
+            free(triangle);
+        }
+        if (open_distance) {
+            free(open_distance);
+        }
+        if (out_and_return) {
+            free(out_and_return);
+        }
+        if (task) {
+            free(task);
+        }
+        fclose(fp);
+    } else {
+        printf("Failed to open file: %s", filename);
+    }
 }

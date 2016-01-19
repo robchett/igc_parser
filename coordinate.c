@@ -110,13 +110,7 @@ double get_distance_precise(coordinate_t *obj1, coordinate_t *obj2) {
 }
 
 char *coordinate_to_kml(coordinate_t *coordinate) {
-    char *buffer = create_buffer("");
-    char *lat = fdtos(coordinate->lat, "%.5f");
-    char *lng = fdtos(coordinate->lng, "%.5f");
-    char *ele = fitos(coordinate->ele, "%d");
-    buffer = vstrcat(buffer, lng, ",", lat, ",", ele, " ", NULL);
-    free(lat);
-    free(lng);
-    free(ele);
+    char *buffer = malloc(sizeof(char) * (8 + 1 + 9 + 1 + 4 + 1));
+    sprintf(buffer, "%02.5f,%02.5f,%04d ", coordinate->lat, coordinate->lng, coordinate->ele);
     return buffer;
 }

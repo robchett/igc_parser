@@ -92,14 +92,16 @@ char *heat_colour(int i) {
 
 char *formatter_kml_split_output(formatter_split_t *this, char *filename) {
     FILE *fp = fopen(filename, "w");
-    fputs("\
+    if (fp) {
+        fputs("\
 <?xml version='1.0' encoding='UTF-8'?>\n\
-<Document>", fp);
-    coordinate_subset_t *subset = this->set->first_subset;
-    int16_t i = 0;
-    while (subset) {
-        char *linestring = get_linestring_subset(subset);
-        fprintf(fp, "\n\
+<Document>",
+              fp);
+        coordinate_subset_t *subset = this->set->first_subset;
+        int16_t i = 0;
+        while (subset) {
+            char *linestring = get_linestring_subset(subset);
+            fprintf(fp, "\n\
     <Placemark>\n\
         <Style>\n\
             <LineStyle>\n\
@@ -108,10 +110,14 @@ char *formatter_kml_split_output(formatter_split_t *this, char *filename) {
             </LineStyle>\n\
         </Style>\n\
         %s\n\
-    </Placemark>\n", kml_colour(i++), linestring);
-        free(linestring);
-        subset = subset->next;
+    </Placemark>\n",
+                    kml_colour(i++), linestring);
+            free(linestring);
+            subset = subset->next;
+        }
+        fputs("</Document>", fp);
+        fclose(fp);
+    } else {
+        printf("Failed to open file: %s", filename);
     }
-    fputs("</Document>", fp);
-    fclose(fp);
 }

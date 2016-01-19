@@ -19,7 +19,7 @@ void coordinate_subset_deinit(coordinate_subset_t *this, coordinate_set_t *parse
 
     coordinate_t *tmp;
     coordinate_t *coordinate = this->first;
-    while(this->length) {
+    while (this->length) {
         tmp = coordinate->next;
         coordinate_deinit(coordinate);
         coordinate = tmp;
@@ -42,4 +42,8 @@ void coordinate_subset_init(coordinate_subset_t *subset, coordinate_set_t *set, 
     if (!set->first_subset) {
         set->first_subset = subset;
     }
+}
+
+uint64_t coordinate_subset_duration(coordinate_subset_t *this) {
+    return (this->last->timestamp - this->first->timestamp);
 }

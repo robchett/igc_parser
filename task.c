@@ -14,7 +14,7 @@ void task_init(task_t *this, task_type type, int8_t size, ...) {
     this->size = size;
     this->gap = NULL;
 
-    this->coordinate = malloc(sizeof(coordinate_t) * size);
+    this->coordinate = malloc(sizeof(coordinate_t *) * size);
 
     va_list va;
     va_start(va, size);
@@ -25,8 +25,16 @@ void task_init(task_t *this, task_type type, int8_t size, ...) {
     va_end(va);
 }
 
+void task_deinit(task_t *this) {
+    if (this->gap) {
+        free(this->gap);
+    }
+    free(this->coordinate);
+    free(this);
+}
+
 void task_add_gap(task_t *this, coordinate_t *start, coordinate_t *end) {
-    this->gap = malloc(sizeof(coordinate_t) * 2);
+    this->gap = malloc(sizeof(coordinate_t *) * 2);
     this->gap[0] = start;
     this->gap[1] = end;
 }

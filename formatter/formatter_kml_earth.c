@@ -5,6 +5,7 @@
 #include "../igc_parser.h"
 #include "../task.h"
 #include <time.h>
+#include <string.h>
 #include "formatter_kml_earth.h"
 
 void formatter_kml_earth_init(formatter_t *this, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
@@ -34,30 +35,32 @@ char *get_meta_data_earth(formatter_t *this) {
 }
 
 char *get_linestring_earth(formatter_t *this, char *style, char *altitude_mode, char *extrude) {
-    char *buffer = create_buffer("");
-    buffer = vstrcat(buffer, "\n\
-    <styleUrl>#",
-                     style, "</styleUrl>    \
-    <LineString>\n\
-	<extrude>",
-                     extrude, "</extrude>\n\
-	<altitudeMode>",
-                     altitude_mode, "</altitudeMode>\n\
-	<coordinates>",
-                     NULL);
+    char *coordinates = calloc((30 * this->set->length), sizeof(char));
     coordinate_t *coordinate = this->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
-        buffer = vstrcat(buffer, kml_coordinate, NULL);
+        strcat(coordinates, kml_coordinate);
         free(kml_coordinate);
         if (i++ == 5) {
             i = 0;
-            buffer = vstrcat(buffer, "\n\t\t\t\t", NULL);
+            strcat(coordinates, "\n\t\t\t\t");
         }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n</coordinates></LineString>", NULL);
+    char *buffer = malloc(sizeof(char) * (200 + (30 * this->set->length)));
+    sprintf(buffer, "\
+    <styleUrl>#%s</styleUrl>\n\
+    <LineString>\n\
+	    <extrude>%s</extrude>\n\
+	    <altitudeMode>%s</altitudeMode>\n\
+	    <coordinates>\n\
+            %s\n\
+        </coordinates>\n\
+    </LineString>",
+            style, extrude, altitude_mode, coordinates);
+    free(coordinates);
+    return buffer;
 }
 
 char *get_partial_linestring_earth(coordinate_t *coordinate, coordinate_t *last, char *style) {
@@ -134,7 +137,7 @@ char *get_task_generic_earth(task_t *task, char *title, char *colour) {
                      title, "</name>\n\
                 <description>\n\
                 <![CDATA[<pre>\n\
-TP   Latitude   Longitude   OS Gridref   Distance   Total\
+TP   Latitude   Longitude   OS Gridref   Distance   Total\n\
 ",
                      info, "\n\
                                           Duration: 01:56:00\n\
@@ -262,39 +265,40 @@ char *get_task_ft_earth(formatter_t *this) {
 
 char *formatter_kml_earth_output(formatter_t *this, char *filename) {
     FILE *fp = fopen(filename, "w");
-    char *open_distance;
-    char *out_and_return;
-    char *triangle;
-    char *task;
-    if (this->open_distance) {
-        open_distance = get_task_od_earth(this);
-    }
-    if (this->open_distance) {
-        out_and_return = get_task_or_earth(this);
-    }
-    if (this->triangle) {
-        triangle = get_task_tr_earth(this);
-    }
-    if (this->task) {
-        task = get_defined_task_earth(this->task);
-    }
+    if (fp) {
+        char *open_distance = NULL;
+        char *out_and_return = NULL;
+        char *triangle = NULL;
+        char *task = NULL;
+        if (this->open_distance) {
+            open_distance = get_task_od_earth(this);
+        }
+        if (this->open_distance) {
+            out_and_return = get_task_or_earth(this);
+        }
+        if (this->triangle) {
+            triangle = get_task_tr_earth(this);
+        }
+        if (this->task) {
+            task = get_defined_task_earth(this->task);
+        }
 
-    char *styles = get_kml_styles_earth();
-    char *metadata = get_meta_data_earth(this);
-    char *linestring = get_linestring_earth(this, "", "absolute", "0");
-    char *shadow = get_linestring_earth(this, "shadow", "clampToGround", "0");
-    char *shadow_extrude = get_linestring_earth(this, "shadow", "absolute", "1");
+        char *styles = get_kml_styles_earth();
+        char *metadata = get_meta_data_earth(this);
+        char *linestring = get_linestring_earth(this, "", "absolute", "0");
+        char *shadow = get_linestring_earth(this, "shadow", "clampToGround", "0");
+        char *shadow_extrude = get_linestring_earth(this, "shadow", "absolute", "1");
 
-    char *height = "";
-    char *speed = "";
-    char *climb_rate = "";
-    char *timestamp = "";
-    // char *height = get_colour_by_height(this->set);
-    // char *speed = get_colour_by_speed(this->set);
-    // char *climb_rate = get_colour_by_climb_rate(this->set);
-    // char *timestamp = get_colour_by_time(this->set);
+        char *height = "";
+        char *speed = "";
+        char *climb_rate = "";
+        char *timestamp = "";
+        // char *height = get_colour_by_height(this->set);
+        // char *speed = get_colour_by_speed(this->set);
+        // char *climb_rate = get_colour_by_climb_rate(this->set);
+        // char *timestamp = get_colour_by_time(this->set);
 
-    fprintf(fp, "\
+        fprintf(fp, "\
 <?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>\n\
 	<open>1</open>\n\
@@ -376,18 +380,34 @@ char *formatter_kml_earth_output(formatter_t *this, char *filename) {
            %s\n\
 		</Folder>\n\
 	</Folder>\n\
-</Document>", styles, this->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance, out_and_return, triangle, task);
+</Document>",
+                styles, this->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance ?: "", out_and_return ?: "", triangle ?: "", task ?: "");
 
-    free(metadata);
-    free(linestring);
-    free(styles);
-    //    free(height);
-    //    free(climb_rate);
-    //    free(timestamp);
-    //    free(speed);
-    free(shadow);
-    free(shadow_extrude);
-    fclose(fp);
+        free(metadata);
+        free(linestring);
+        free(styles);
+        //    free(height);
+        //    free(climb_rate);
+        //    free(timestamp);
+        //    free(speed);
+        free(shadow);
+        free(shadow_extrude);
+        fclose(fp);
+        if (triangle) {
+            free(triangle);
+        }
+        if (open_distance) {
+            free(open_distance);
+        }
+        if (out_and_return) {
+            free(out_and_return);
+        }
+        if (task) {
+            free(task);
+        }
+    } else {
+        printf("Failed to open file: %s", filename);
+    }
 }
 
 char *colour_grad_16[] = {

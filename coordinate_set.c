@@ -159,18 +159,6 @@ uint64_t coordinate_subset_length(coordinate_set_t *this, uint16_t offset) {
     return 0;
 }
 
-uint64_t coordinate_subset_duration(coordinate_set_t *this, uint16_t offset) {
-    coordinate_subset_t *set = this->first_subset;
-    int16_t i = 0;
-    while (i++ < offset && set) {
-        set = set->next;
-    }
-    if (set) {
-        return (set->last->timestamp - set->first->timestamp);
-    }
-    return 0;
-}
-
 void coordinate_set_section(coordinate_set_t *this, uint16_t start, uint16_t end) {
     if (!end)
         end = start;
@@ -265,7 +253,7 @@ int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size) {
         int64_t i = 0;
         while (current) {
             double distance = get_distance_precise(current, current->prev);
-            if (distance < 0.001) {
+            if (distance < 0.003) {
                 tmp = current->next;
                 coordinate_deinit(current);
                 current = tmp;
@@ -275,35 +263,48 @@ int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size) {
             }
         }
 
-//        if (set->length > max_size) {
-//            printf("Over max!\n");
-//            double total_distance = 0;
-//            current = set->first;
-//            while (current && current->next) {
-//                total_distance += get_distance_precise(current, current->next);
-//                current = current->next;
-//            }
-//            printf("Total: %5.5f\n", total_distance);
-//            double average = total_distance / max_size;
-//            printf("Average: %5.5f\n", average);
-//
-//            total_distance = 0;
-//            current = set->first->next;
-//            while (current && current->next) {
-//                total_distance += get_distance_precise(current, current->next);
-//                if (total_distance < average) {
-//                    tmp = current->next;
-//                    coordinate_deinit(current);
-//                    current = tmp;
-//                    i++;
-//                } else {
-//                    total_distance = 0;
-//                }
-//                current = current->next;
-//            }
-//            printf("Remove: %ld\n", i);
-//        }
+        if (set->length > max_size) {
+            printf("Over max!\n");
+            double total_distance = 0;
+            current = set->first;
+            while (current && current->next) {
+                double distance = get_distance_precise(current, current->next);
+                if (distance < 1) {
+                    total_distance += distance;
+                }
+                current = current->next;
+            }
+            printf("Total: %5.5f\n", total_distance);
+            double average = total_distance / max_size;
+            printf("Average: %5.5f\n", average);
 
+            total_distance = 0;
+            current = set->first->next;
+            while (current && current->next) {
+                total_distance += get_distance_precise(current, current->next);
+                if (total_distance < average) {
+                    tmp = current->next;
+                    coordinate_deinit(current);
+                    current = tmp;
+                    i++;
+                } else {
+                    total_distance = 0;
+                    current = current->next;
+                }
+            }
+            printf("Remove: %ld\n", i);
+        }
+
+        coordinate_subset_t *current = set->first_subset;
+        do {
+            if (current->length < 2) {
+                coordinate_subset_t *tmp = current->next;
+                coordinate_subset_deinit(current, set);
+                current = tmp;
+            } else {
+                current = current->next;
+            }
+        } while (current);
         return i;
     }
     return 0;
