@@ -113,19 +113,18 @@ char *load_file(char *filename) {
 
 uint8_t _main(json_t *data);
 
-void format_task(task_t *task, char *title);
+void format_task(task_t *task, char *title, int type);
 
 int8_t main(int argc, char **argv) {
     char *source_file;
     char *root;
 
-    fprintf(stderr, "\n\nArgs: %d\n0: %s\n", argc, argv[0]);
     if (argc >= 2) {
         json_error_t error;
         json_t *root = json_loads(argv[1], 1, &error);
 
         if (!root) {
-            fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
+            printf("{\"error\": \"JSON decode - line %d: %s\"}", error.line, error.text);
             return 1;
         }
 
@@ -135,7 +134,7 @@ int8_t main(int argc, char **argv) {
             for (size_t i = 0; i < json_array_size(root); i++) {
                 json_t *data = json_array_get(root, i);
                 if (!json_is_object(data)) {
-                    fprintf(stderr, "error: entry %d is not an object\n", i + 1);
+                    printf("{\"error\": \"entry %d is not an object\"", i + 1);
                 } else {
                     _main(data);
                 };
@@ -145,7 +144,7 @@ int8_t main(int argc, char **argv) {
         json_decref(root);
         return 1;
     } else if (argc == 0) {
-        fprintf(stderr, "Please provide a file\n\nUsage:\nigc_parser [file] {output_dir}");
+        printf( "{\"error\": \"Please provide a file\"}");
         exit(2);
     }
 }
@@ -208,24 +207,33 @@ uint8_t _main(json_t *data) {
             char *ids;
 
             printf("{");
-            printf("\n\t\"total_points\": %d,", initial_length);
-            printf("\n\t\"sets\": %d,", set->subset_count);
-            printf("\n\t\"points\": %d,", set->length);
-            printf("\n\t\"task\": {\n", set->length);
+            printf("\"total_points\": %d,", initial_length);
+            printf("\"sets\": %d,", set->subset_count);
+            printf("\"date\": \"%04d-%02d-%02d\",", set->year, set->month, set->day);
+            printf("\"start_time\": %d,", set->first->timestamp);
+            printf("\"duration\": %d,", set->last->timestamp - set->first->timestamp);
+            printf("\"completes_task\": %s,", "false");
+            printf("\"points\": %d,", set->length);
+            printf("\"stats\": {", set->length);
+            printf("\"height\" : {\"min\": %d, \"max\": %d},", set->first->ele, set->last->ele);
+            printf("\"speed\" : {\"min\": %d, \"max\": %d},", set->first->speed, set->last->speed);
+            printf("\"climb_rate\" : {\"min\": %d, \"max\": %d}", set->first->climb_rate, set->last->climb_rate);
+            printf("},");
+            printf("\"task\": {", set->length);
 
             task_t *od, * or, *tr;
 
             od = distance_map_score_open_distance_3tp(map);
-            format_task(od, "open_distance");
-            printf(",\n");
+            format_task(od, "open_distance", 1);
+            printf(",");
 
             or = distance_map_score_out_and_return(map);
-            format_task(or, "out_and_return");
-            printf(",\n");
+            format_task(or, "out_and_return", 2);
+            printf(",");
 
             tr = distance_map_score_triangle(map);
-            format_task(tr, "triangle");
-            printf("\n\t},\n\t\"output\": {\n\t\t\"js\": \"%s\",\n\t\t\"kml\": \"%s\",\n\t\t\"earth\": \"%s\"\n\t}", out_file_1, out_file_2, out_file_3);
+            format_task(tr, "triangle", 3);
+            printf("},\"output\": {\"js\": \"%s\",\"kml\": \"%s\",\"earth\": \"%s\"}", out_file_1, out_file_2, out_file_3);
 
             formatter_t *formatter;
 
@@ -244,35 +252,45 @@ uint8_t _main(json_t *data) {
             formatter_kml_earth_output(formatter, out_file_3);
             free(formatter);
 
-            printf("\n}");
+            printf("}");
 
-            task_deinit(od);
-            task_deinit(or );
-            task_deinit(tr);
+            if (od) {
+                task_deinit(od);
+            }
+            if (or) {
+                task_deinit(or);
+            }
+            if (tr) {
+                task_deinit(tr);
+            }
             distance_map_deinit(map);
 
         } else {
             size_t i = 0;
             coordinate_subset_t *current = set->first_subset;
-            printf("{\n\t\"output\": \"%s\",\n\t\"sets\":\n\t[\n\t\t", out_file_4);
+            printf("{\"output\": \"%s\",\"sets\":[", out_file_4);
             do {
                 if (current->next) {
-                    printf("{\n\t\t\t\"duration\": %d,\n\t\t\t\"skipped_distance\": %05.5f,\n\t\t\t\"points\": %d,\n\t\t\t\"skipped_duration\": %d\n\t\t}, ", coordinate_subset_duration(current),
+                    printf("{\"duration\": %d,\"skipped_distance\": %05.5f,\"points\": %d,\"skipped_duration\": %d}, ", coordinate_subset_duration(current),
                            get_distance_precise(current->last, current->next->first), current->length, current->next->first->timestamp - current->last->timestamp);
                 } else {
-                    printf("{\n\t\t\t\"duration\": %d,\n\t\t\t\"points\": %d\n\t\t}\n", coordinate_subset_duration(current), current->length);
+                    printf("{\"duration\": %d,\"points\": %d}", coordinate_subset_duration(current), current->length);
                 }
             } while (current = current->next);
-            printf("\t]\n}\n");
+            printf("]}");
             formatter_split_t *formatter = malloc(sizeof(formatter_split_t));
             formatter_kml_split_init(formatter, set);
             formatter_kml_split_output(formatter, out_file_4);
             free(formatter);
-            fprintf(stderr, "KML split output formatted\n");
+
+            formatter_t *js_formatter = malloc(sizeof(formatter_t));
+            formatter_js_init(js_formatter, set, 1, NULL, NULL, NULL);
+            formatter_js_output(js_formatter, out_file_1);
+            free(js_formatter);
         }
         coordinate_set_deinit(set);
     } else {
-        fprintf(stderr, "Failed: %s\n", source);
+        fprintf(stderr, "Failed: %s", source);
         exit(1);
     }
 
@@ -281,35 +299,39 @@ uint8_t _main(json_t *data) {
     exit(0);
 }
 
-void format_task(task_t *task, char *title) {
+void format_task(task_t *task, char *title, int type) {
     if (task) {
-        printf("\t\t\"%s\": {", title);
-        printf("\n\t\t\t\"distance\": %.5f,\n\t\t\t\"points\":\n\t\t\t[\n\t\t\t\t", get_task_distance(task));
+        printf("\"%s\": {", title);
+        printf("\"type\":\"%d\", \"distance\": %.5f,\"duration\": %d,\"coordinates\":[", type, task->coordinate[task->size - 1]->timestamp - task->coordinate[0]->timestamp, get_task_distance(task));
 
         size_t i;
         for (i = 0; i < task->size; i++) {
             coordinate_t *coordinate = task->coordinate[i];
-            printf("{\n\t\t\t\t\t\"lat\": %.5f,\n\t\t\t\t\t\"lng\": %.5f,\n\t\t\t\t\t\"id\": %d\n\t\t\t\t}", coordinate->lat, coordinate->lng, coordinate->id);
+            char *os = get_os_grid_ref(coordinate);
+            printf("{\"lat\": %.5f,\"lng\": %.5f,\"id\": %d, \"os_gridref\":\"%s\"}", coordinate->lat, coordinate->lng, coordinate->id, os);
             if (i < task->size - 1) {
                 printf(", ");
             }
+            free(os);
         }
 
         if (task->gap) {
-            printf("\n\t\t\t],");
-            printf("\n\t\t\t\"gap\":\n\t\t\t[\n\t\t\t\t", get_task_distance(task));
+            printf("],");
+            printf("\"gap\":[", get_task_distance(task));
 
             size_t i;
             for (i = 0; i < 2; i++) {
                 coordinate_t *coordinate = task->gap[i];
-                printf("{\n\t\t\t\t\t\"lat\": %.5f,\n\t\t\t\t\t\"lng\": %.5f,\n\t\t\t\t\t\"id\": %d\n\t\t\t\t}", coordinate->lat, coordinate->lng, coordinate->id);
+                char *os = get_os_grid_ref(coordinate);
+                printf("{\"lat\": %.5f,\"lng\": %.5f,\"id\": %d, \"os_gridref\":\"%s\"}", coordinate->lat, coordinate->lng, coordinate->id, os);
                 if (i == 0) {
                     printf(", ");
                 }
+                free(os);
             }
         }
-        printf("\n\t\t\t]\n\t\t}");
+        printf("]}");
     } else {
-        printf("\t\t\"%s\": null", title);
+        printf("\"%s\": null", title);
     }
 }

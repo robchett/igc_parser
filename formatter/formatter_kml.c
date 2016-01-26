@@ -54,7 +54,7 @@ char *get_linestring(formatter_t *this) {
 	            <altitudeMode>absolute</altitudeMode>\n\
 	            <coordinates>\n\
                     %s\n\
-                <coordinates>\n\
+                </coordinates>\n\
             </LineString>",
             coordinates);
     free(coordinates);
@@ -101,7 +101,7 @@ char *get_task_generic(task_t *task, char *title, char *colour) {
             <visibility>1</visibility>\n\
             <styleUrl>#hideChildren</styleUrl>\n\
             <Placemark>\n\
-            <visibility>1</visibility>\n\
+                <visibility>1</visibility>\n\
                 <name>",
                      title, "</name>\n\
                 <description>\n\
@@ -161,7 +161,7 @@ char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
 char *get_defined_task(task_t *task) {
     double distance = 0;
     char *info = create_buffer("\
-<Folder>\
+<Folder>\n\
     <name>Task</name>");
     char *kml_coordinates = create_buffer("");
     int16_t i;
@@ -282,8 +282,9 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
 		</LineStyle>\n\
 	</Style>\n\
 	<Folder>\n\
-		<name>%s/name>\n\
+		<name>%s</name>\n\
 		<visibility>1</visibility>\n\
+        <open>1</open>\n\
 		<description><![CDATA[<pre>\n\
 			Flight statistics\n\
 			Flight: #%s                  \n\
@@ -298,21 +299,16 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
             %s                           \n\
             %s                           \n\
 		</pre>]]></description>\n\
-		<Folder>\n\
-			<name>%s</name>\n\
-			<visibility>1</visibility>\n\
-			<open>1</open>\n\
-			<Placemark>\n\
-				<Style>\n\
-					<LineStyle>\n\
-						<color>ffff0000</color>\n\
-						<width>2</width>\n\
-					</LineStyle>\n\
-				</Style> \n\
-                %s \n\
-                %s \n\
-			</Placemark>\n\
-		</Folder>\n\
+		<Placemark>\n\
+			<Style>\n\
+				<LineStyle>\n\
+					<color>ffff0000</color>\n\
+					<width>2</width>\n\
+				</LineStyle>\n\
+			</Style> \n\
+               %s \n\
+               %s \n\
+		</Placemark>\n\
 		<Folder>\n\
 		    <name>Task</name>\n\
 		    <visibility>1</visibility>\n\
@@ -323,7 +319,7 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
 		</Folder>\n\
 	</Folder>\n\
 </Document>",
-                this->name, this->name, this->set->day, this->set->month, this->set->year, this->set->max_ele, this->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", this->name, metadata, linestring, open_distance ?: "",
+                this->name, this->name, this->set->day, this->set->month, this->set->year, this->set->max_ele, this->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", metadata, linestring, open_distance ?: "",
                 out_and_return ?: "", triangle ?: "", task ?: "");
 
         free(metadata);

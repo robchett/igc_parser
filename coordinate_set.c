@@ -264,7 +264,6 @@ int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size) {
         }
 
         if (set->length > max_size) {
-            printf("Over max!\n");
             double total_distance = 0;
             current = set->first;
             while (current && current->next) {
@@ -274,9 +273,7 @@ int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size) {
                 }
                 current = current->next;
             }
-            printf("Total: %5.5f\n", total_distance);
             double average = total_distance / max_size;
-            printf("Average: %5.5f\n", average);
 
             total_distance = 0;
             current = set->first->next;
@@ -292,7 +289,6 @@ int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size) {
                     current = current->next;
                 }
             }
-            printf("Remove: %ld\n", i);
         }
 
         coordinate_subset_t *current = set->first_subset;

@@ -111,6 +111,6 @@ double get_distance_precise(coordinate_t *obj1, coordinate_t *obj2) {
 
 char *coordinate_to_kml(coordinate_t *coordinate) {
     char *buffer = malloc(sizeof(char) * (8 + 1 + 9 + 1 + 4 + 1));
-    sprintf(buffer, "%02.5f,%02.5f,%04d ", coordinate->lat, coordinate->lng, coordinate->ele);
+    sprintf(buffer, "%02.5f,%02.5f,%04d ", coordinate->lng, coordinate->lat, coordinate->ele);
     return buffer;
 }

@@ -105,7 +105,7 @@ char *formatter_kml_split_output(formatter_split_t *this, char *filename) {
     <Placemark>\n\
         <Style>\n\
             <LineStyle>\n\
-                <color>ff%s/color>\n\
+                <color>ff%s</color>\n\
                 <width>2</width>\n\
             </LineStyle>\n\
         </Style>\n\

@@ -20,3 +20,6 @@ format:
 
 test:
 	for i in {0..11}; do ./igc_parser "{\"source\": \"$(test_dir)$$i/test.igc\"}"; done
+
+grind_source:
+	valgrind --tool=memcheck --log-file=./grind.log --leak-check=full --track-origins=yes -v igc_parser "{\"source\": \"$(source)\"}";
