@@ -6,7 +6,7 @@
 #include "igc_parser.h"
 #include "string_manip.h"
 
-void coordinate_init(coordinate_t *this, int64_t lat, int64_t lng, int64_t ele, int64_t timestamp) {
+void coordinate_init(coordinate_t *this, double lat, double lng, int64_t ele, int64_t timestamp) {
     this->lat = lat;
     this->lng = lng;
     this->sin_lat = sin(lat toRAD);

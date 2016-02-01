@@ -69,8 +69,8 @@ char *get_os_grid_ref(coordinate_t *point) {
 
 char *gridref_number_to_letter(int64_t e, int64_t n) {
     // get the 100km-grid indices
-    int64_t e100k = (int64_t)floor(e / 100000);
-    int64_t n100k = (int64_t)floor(n / 100000);
+    int64_t e100k = (int64_t) floor(e / 100000);
+    int64_t n100k = (int64_t) floor(n / 100000);
 
     if (e100k < 0 || e100k > 8 || n100k < 0 || n100k > 12) {
     }
@@ -89,6 +89,81 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     char *gridref = malloc(sizeof(char) * 9);
     sprintf(gridref, "%c%c%03d%03d", l1 + 65, l2 + 65, e, n);
     return gridref;
+}
+
+int os_grid_ref_to_lat_lng(char *input, double *lat, double *lng) {
+    int E, N;
+
+    int l1 = input[0] - 'A';
+    int l2 = input[1] - 'A';
+    // shuffle down letters after 'I' since 'I' is not used in grid:
+    if (l1 > 7) l1--;
+    if (l2 > 7) l2--;
+
+    int e100km = ((l1 - 2) % 5) * 5 + (l2 % 5);
+    int n100km = (19 - floor(l1 / 5) * 5) - floor(l2 / 5);
+
+    int offset = 0;
+    int multi = 10;
+    if (strlen(input) == 8) {
+        offset = 3;
+        multi = 100;
+    } else if (strlen(input) == 10) {
+        offset = 4;
+        multi = 10;
+    }
+
+    char northing[offset], easting[offset];
+    memcpy(northing, &input[2], offset);
+    memcpy(easting, &input[2+offset], offset);
+    northing[offset] = '\0';
+    easting[offset] = '\0';
+    E = (atoi(northing) * multi) + (e100km * 100000);
+    N = (atoi(easting) * multi) + (n100km * 100000);
+
+    double a = 6377563.396, b = 6356256.909;              // Airy 1830 major & minor semi-axes
+    double F0 = 0.9996012717;                             // NatGrid scale factor on central meridian
+    double phi0 = 49 * M_PI / 180, lamda0 = -2 * M_PI / 180;      // NatGrid true origin
+    double N0 = -100000, E0 = 400000;                     // northing & easting of true origin, metres
+    double e2 = 1 - (b * b) / (a * a);                          // eccentricity squared
+    double n = (a - b) / (a + b), n2 = n * n, n3 = n * n * n;         // n, n², n³
+
+    double phi = phi0, M = 0;
+    do {
+        phi = (N - N0 - M) / (a * F0) + phi;
+
+        double Ma = (1 + n + (5 / 4) * n2 + (5 / 4) * n3) * (phi - phi0);
+        double Mb = (3 * n + 3 * n * n + (21 / 8) * n3) * sin(phi - phi0) * cos(phi + phi0);
+        double Mc = ((15 / 8) * n2 + (15 / 8) * n3) * sin(2 * (phi - phi0)) * cos(2 * (phi + phi0));
+        double Md = (35 / 24) * n3 * sin(3 * (phi - phi0)) * cos(3 * (phi + phi0));
+        M = b * F0 * (Ma - Mb + Mc - Md);              // meridional arc
+
+    } while (N - N0 - M >= 0.00001);  // ie until < 0.01mm
+
+    double cosphi = cos(phi), sinphi = sin(phi);
+    double v = a * F0 / sqrt(1 - e2 * sinphi * sinphi);            // nu = transverse radius of curvature
+    double p = a * F0 * (1 - e2) / pow(1 - e2 * sinphi * sinphi, 1.5); // rho = meridional radius of curvature
+    double nu2 = v / p - 1;                                    // eta = ?
+
+    double tanphi = tan(phi);
+    double tan2phi = tanphi * tanphi, tan4phi = tan2phi * tan2phi, tan6phi = tan4phi * tan2phi;
+    double secphi = 1 / cosphi;
+    double v3 = v * v * v, v5 = v3 * v * v, v7 = v5 * v * v;
+    double VII = tanphi / (2 * p * v);
+    double VIII = tanphi / (24 * p * v3) * (5 + 3 * tan2phi + nu2 - 9 * tan2phi * nu2);
+    double IX = tanphi / (720 * p * v5) * (61 + 90 * tan2phi + 45 * tan4phi);
+    double X = secphi / v;
+    double XI = secphi / (6 * v3) * (v / p + 2 * tan2phi);
+    double XII = secphi / (120 * v5) * (5 + 28 * tan2phi + 24 * tan4phi);
+    double XIIA = secphi / (5040 * v7) * (61 + 662 * tan2phi + 1320 * tan4phi + 720 * tan6phi);
+
+    double dE = (E - E0), dE2 = dE * dE, dE3 = dE2 * dE, dE4 = dE2 * dE2, dE5 = dE3 * dE2, dE6 = dE4 * dE2, dE7 = dE5 * dE2;
+    phi = phi - VII * dE2 + VIII * dE4 - IX * dE6;
+    double lamda = lamda0 + X * dE - XI * dE3 + XII * dE5 - XIIA * dE7;
+
+    *lat = phi toDEG;
+    *lng = lamda toDEG;
+    return 1;
 }
 
 char *load_file(char *filename) {
@@ -144,13 +219,13 @@ int8_t main(int argc, char **argv) {
         json_decref(root);
         return 1;
     } else if (argc == 0) {
-        printf( "{\"error\": \"Please provide a file\"}");
+        printf("{\"error\": \"Please provide a file\"}");
         exit(2);
     }
 }
 
 uint8_t _main(json_t *data) {
-    json_t *_source, *_destination, *_set_start, *_set_end, *_pilot;
+    json_t *_source, *_destination, *_set_start, *_set_end, *_pilot, *_task;
     char *source, *destination, *pilot;
     size_t set_start, set_end;
 
@@ -159,6 +234,7 @@ uint8_t _main(json_t *data) {
     _set_start = json_object_get(data, "set_start");
     _set_end = json_object_get(data, "set_end");
     _pilot = json_object_get(data, "pilot");
+    _task = json_object_get(data, "task");
 
     if (!json_is_string(_source)) {
         fprintf(stderr, "{\"error\": \"No source file provided\"}");
@@ -201,6 +277,33 @@ uint8_t _main(json_t *data) {
         coordinate_set_extrema(set);
 
         if (set->subset_count == 1) {
+
+            task_t *task = NULL;
+
+            if (_task) {
+                if (json_is_object(_task)) {
+                    task = malloc(sizeof(task_t));
+                    json_t *_task_type = json_object_get(_task, "type");
+                    const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
+                    json_t *_coordinate = json_object_get(_task, "coordinate");
+                    size_t count = json_array_size(_coordinate);
+                    task->coordinate = malloc(sizeof(coordinate_t) * count);
+                    for (size_t i = 0; i < count; i++) {
+                        const char *gridref = json_string_value(json_array_get(_coordinate, i));
+                        double lat = 0, lng = 0;
+                        os_grid_ref_to_lat_lng(gridref, &lat, &lng);
+                        coordinate_t *coordinate = malloc(sizeof(coordinate_t));
+                        coordinate_init(coordinate, lat, lng, 0, 0);
+                        task->coordinate[i] = coordinate;
+                    }
+                    task->size = count;
+                    task->gap = NULL;
+                    task->type = 1;
+                } else {
+                    // Not object
+                }
+            }
+
             distance_map_t *map = malloc(sizeof(distance_map_t));
             distance_map_init(map, set);
 
@@ -221,7 +324,7 @@ uint8_t _main(json_t *data) {
             printf("},");
             printf("\"task\": {", set->length);
 
-            task_t *od, * or, *tr;
+            task_t *od, *or, *tr;
 
             od = distance_map_score_open_distance_3tp(map);
             format_task(od, "open_distance", 1);
@@ -233,7 +336,14 @@ uint8_t _main(json_t *data) {
 
             tr = distance_map_score_triangle(map);
             format_task(tr, "triangle", 3);
-            printf("},\"output\": {\"js\": \"%s\",\"kml\": \"%s\",\"earth\": \"%s\"}", out_file_1, out_file_2, out_file_3);
+
+            if (task) {
+                printf(",");
+                format_task(task, "declared", 4);
+                printf(", \"complete\": %d", task_completes_task(task, set));
+            }
+
+            printf("}, \"output\": {\"js\": \"%s\",\"kml\": \"%s\",\"earth\": \"%s\"}", out_file_1, out_file_2, out_file_3);
 
             formatter_t *formatter;
 
@@ -243,12 +353,12 @@ uint8_t _main(json_t *data) {
             free(formatter);
 
             formatter = malloc(sizeof(formatter_t));
-            formatter_kml_init(formatter, set, pilot ?: "Bob", od, or, tr, NULL);
+            formatter_kml_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
             formatter_kml_output(formatter, out_file_2);
             free(formatter);
 
             formatter = malloc(sizeof(formatter_t));
-            formatter_kml_earth_init(formatter, set, pilot ?: "Bob", od, or, tr, NULL);
+            formatter_kml_earth_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
             formatter_kml_earth_output(formatter, out_file_3);
             free(formatter);
 
@@ -289,6 +399,7 @@ uint8_t _main(json_t *data) {
             free(js_formatter);
         }
         coordinate_set_deinit(set);
+        printf("\n");
     } else {
         fprintf(stderr, "Failed: %s", source);
         exit(1);

@@ -13,7 +13,7 @@ typedef struct task_t {
 
 double get_task_distance(task_t *task);
 int get_task_time(task_t *task);
-int completes_task(coordinate_set_t *set, task_t *task);
+int8_t task_completes_task(task_t *this, coordinate_set_t *set);
 char *task_get_coordinate_ids(task_t *this);
 
 char *task_get_gridref(task_t *this);
