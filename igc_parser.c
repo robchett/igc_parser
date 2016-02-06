@@ -91,7 +91,7 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     return gridref;
 }
 
-int os_grid_ref_to_lat_lng(char *input, double *lat, double *lng) {
+int os_grid_ref_to_lat_lng(const char *input, double *lat, double *lng) {
     int E, N;
 
     int l1 = input[0] - 'A';
@@ -166,7 +166,7 @@ int os_grid_ref_to_lat_lng(char *input, double *lat, double *lng) {
     return 1;
 }
 
-char *load_file(char *filename) {
+char *load_file(const char *filename) {
     char *source = NULL;
     FILE *fp = fopen(filename, "r");
     if (fp != NULL) {
@@ -226,7 +226,8 @@ int8_t main(int argc, char **argv) {
 
 uint8_t _main(json_t *data) {
     json_t *_source, *_destination, *_set_start, *_set_end, *_pilot, *_task;
-    char *source, *destination, *pilot;
+    const char *source;
+    char *destination, *pilot;
     size_t set_start, set_end;
 
     _source = json_object_get(data, "source");
@@ -248,11 +249,11 @@ uint8_t _main(json_t *data) {
         strcpy(destination, source);
         dirname(destination);
     } else {
-        destination = json_string_value(_destination);
+        destination = (char *) json_string_value(_destination);
     }
 
     if (!json_is_string(_pilot)) {
-        pilot = json_string_value(_pilot);
+        pilot = (char *) json_string_value(_pilot);
     }
 
     char out_file_1[strlen(destination) + 20];
