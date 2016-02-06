@@ -298,7 +298,21 @@ uint8_t _main(json_t *data) {
                     }
                     task->size = count;
                     task->gap = NULL;
-                    task->type = 1;
+                    if (
+                            task->size == 4 &&
+                            task->coordinate[0]->lat == task->coordinate[3]->lat &&
+                            task->coordinate[0]->lng == task->coordinate[3]->lng
+                            ) {
+                        task->type = TRIANGLE;
+                    } else if (
+                            task->size == 3 &&
+                            task->coordinate[0]->lat == task->coordinate[2]->lat &&
+                            task->coordinate[0]->lng == task->coordinate[2]->lng
+                            ) {
+                        task->type = OUT_AND_RETURN;
+                    } else {
+                        task->type = OPEN_DISTANCE;
+                    }
                 } else {
                     // Not object
                 }
@@ -339,7 +353,7 @@ uint8_t _main(json_t *data) {
 
             if (task) {
                 printf(",");
-                format_task(task, "declared", 4);
+                format_task(task, "declared", task->type);
                 printf(", \"complete\": %d", task_completes_task(task, set));
             }
 
