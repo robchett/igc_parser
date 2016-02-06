@@ -1,5 +1,4 @@
 #include "main.h"
-#include <math.h>
 #include "coordinate.h"
 #include "coordinate_set.h"
 #include "task.h"

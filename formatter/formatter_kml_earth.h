@@ -1,7 +1,6 @@
 #pragma once
 
 #include "formatter.h"
-#include <math.h>
 
 char *formatter_kml_earth_output(formatter_t *this, char *filename);
 char *get_colour_by_height(coordinate_set_t *set);

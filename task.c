@@ -1,5 +1,4 @@
 #include "main.h"
-#include <math.h>
 #include <string.h>
 #include "string_manip.h"
 #include "coordinate.h"

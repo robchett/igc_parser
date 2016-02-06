@@ -1,7 +1,6 @@
 #include "main.h"
 #include "coordinate.h"
 #include "helmert.h"
-#include <math.h>
 
 static helmert_ellipsoid wsg84 = {.a = 6378137, .b = 6356752.3142};
 

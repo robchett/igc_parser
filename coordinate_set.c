@@ -1,6 +1,5 @@
 #include "main.h"
 #include "string.h"
-#include <math.h>
 #include <stdio.h>
 #include "coordinate.h"
 #include "coordinate_set.h"
