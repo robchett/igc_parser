@@ -11,7 +11,7 @@ make : $(objects)
 .PHONY: clean test format grind
 
 grind:
-	for i in {0..11}; do valgrind --tool=memcheck --log-file=$(test_dir)$$i/php.log --leak-check=full --track-origins=yes -v ./igc_parser "{\"source\": \"$(test_dir)$$i/test.igc\"}"; done
+	for i in {0..11}; do valgrind --tool=memcheck --log-file=$(test_dir)$$i/php.log --leak-check=full --track-origins=yes ./igc_parser "{\"source\": \"$(test_dir)$$i/test.igc\"}"; done
 
 clean: 
 	rm -rf *.o **/*.o test/**/*.kml test/**/*.js
@@ -28,4 +28,4 @@ grind_source:
 gtest:
 	g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
 	ar -rv libgtest.a gtest-all.o
-	g++ -isystem ${GTEST_DIR}/include -pthread ./test/tests.cpp libgtest.a -o your_test
+	g++ -isystem ${GTEST_DIR}/include -pthread ./test/tests.cpp libgtest.a -o tests
