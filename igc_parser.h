@@ -1,6 +1,5 @@
 #pragma once
 
-char *get_os_grid_ref(coordinate_t *point);
 char *gridref_number_to_letter(int64_t e, int64_t n);
 
 #ifdef DEBUG_LEVEL

@@ -99,7 +99,7 @@ char *task_get_gridref(task_t *this) {
 
     for (int16_t i = 0; i < this->size; i++) {
         coordinate_t *point1 = this->coordinate[i];
-        char *gridref = get_os_grid_ref(point1);
+        char *gridref = convert_latlng_to_gridref(point1);
         coordinates = vstrcat(coordinates, gridref, ";", NULL);
         free(gridref);
     }
