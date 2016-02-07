@@ -1,5 +1,5 @@
 objects := $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.c,%.o,$(wildcard **/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/*.c))
-test_dir = /var/www/vhosts/uknxcl/extensions/include/igc_parser/test/
+test_dir = "$(shell pwd)/test/"
 
 make : $(objects)
 	cc -o igc_parser $(objects) -g -Og -lm -std=c99
