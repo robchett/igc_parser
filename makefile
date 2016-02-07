@@ -11,7 +11,7 @@ make : $(objects)
 .PHONY: clean test format grind
 
 grind:
-	for i in {0..11}; do valgrind --tool=memcheck --log-file=$(test_dir)$$i/php.log --leak-check=full --track-origins=yes ./igc_parser "{\"source\": \"$(test_dir)$$i/test.igc\"}"; done
+	for i in {0..11}; do valgrind --tool=memcheck --log-file=$(test_dir)$$i/memcheck.log --leak-check=full --xml=yes --xml-file=$(test_dir)$$i/memcheck.xml --track-origins=yes ./igc_parser "{\"source\": \"$(test_dir)$$i/test.igc\"}"; done
 
 clean: 
 	rm -rf *.o **/*.o test/**/*.kml test/**/*.js

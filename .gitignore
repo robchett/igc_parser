@@ -11,7 +11,7 @@ test/php.log
 *.o
 .libs
 gmon.out
-test/**/*.log
+test/**/memcheck.*
 test/**/*.kml
 test/**/*.js
 libgtest.a
