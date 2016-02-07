@@ -21,7 +21,7 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     // strip 100km-grid indices from easting & northing, and reduce precision
     e = floor((e % 100000) / pow(10, 2));
     n = floor((n % 100000) / pow(10, 2));
-    char *gridref = malloc(sizeof(char) * 9);
+    char *gridref = (char *)malloc(sizeof(char) * 9);
     sprintf(gridref, "%c%c%03d%03d", l1 + 65, l2 + 65, e, n);
     return gridref;
 }
