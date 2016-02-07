@@ -26,14 +26,14 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     return gridref;
 }
 
-char *convert_latlng_to_gridref(coordinate_t *point) {
-    double lat = point->lat toRAD;
-    double lon = point->lng toRAD;
+char *convert_latlng_to_gridref(double lat, double lng) {
+    lat = lat toRAD;
+    lng = lng toRAD;
     double a = 6377563.396;
     double b = 6356256.910;
     double F0 = 0.9996012717;
     double lat0 = 49 toRAD;
-    double lon0 = -2 toRAD;
+    double lng0 = -2 toRAD;
     double N0 = -100000;
     double E0 = 400000;
     double e2 = 1 - ((b * b) / (a * a));
@@ -66,15 +66,15 @@ char *convert_latlng_to_gridref(coordinate_t *point) {
     double V = (nu / 6) * cos3lat * (nu / rho - tan2lat);
     double VI = (nu / 120) * cos5lat * (5 - 18 * tan2lat + tan4lat + 14 * eta2 - 58 * tan2lat * eta2);
 
-    double dLon = lon - lon0;
-    double dLon2 = dLon * dLon;
-    double dLon3 = dLon2 * dLon;
-    double dLon4 = dLon3 * dLon;
-    double dLon5 = dLon4 * dLon;
-    double dLon6 = dLon5 * dLon;
+    double dlng = lng - lng0;
+    double dlng2 = dlng * dlng;
+    double dlng3 = dlng2 * dlng;
+    double dlng4 = dlng3 * dlng;
+    double dlng5 = dlng4 * dlng;
+    double dlng6 = dlng5 * dlng;
 
-    double N = I + II * dLon2 + III * dLon4 + IIIA * dLon6;
-    double E = E0 + IV * dLon + V * dLon3 + VI * dLon5;
+    double N = I + II * dlng2 + III * dlng4 + IIIA * dlng6;
+    double E = E0 + IV * dlng + V * dlng3 + VI * dlng5;
     return gridref_number_to_letter(E, N);
 }
 

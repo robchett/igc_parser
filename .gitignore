@@ -14,3 +14,4 @@ gmon.out
 test/**/*.log
 test/**/*.kml
 test/**/*.js
+libgtest.a

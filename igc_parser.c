@@ -282,7 +282,7 @@ void format_task(task_t *task, char *title, int type) {
         size_t i;
         for (i = 0; i < task->size; i++) {
             coordinate_t *coordinate = task->coordinate[i];
-            char *os = convert_latlng_to_gridref(coordinate);
+            char *os = convert_latlng_to_gridref(coordinate->lat, coordinate->lng);
             printf("{\"lat\": %.5f,\"lng\": %.5f,\"id\": %d, \"os_gridref\":\"%s\"}", coordinate->lat, coordinate->lng, coordinate->id, os);
             if (i < task->size - 1) {
                 printf(", ");
@@ -297,7 +297,7 @@ void format_task(task_t *task, char *title, int type) {
             size_t i;
             for (i = 0; i < 2; i++) {
                 coordinate_t *coordinate = task->gap[i];
-                char *os = convert_latlng_to_gridref(coordinate);
+                char *os = convert_latlng_to_gridref(coordinate->lat, coordinate->lng);
                 printf("{\"lat\": %.5f,\"lng\": %.5f,\"id\": %d, \"os_gridref\":\"%s\"}", coordinate->lat, coordinate->lng, coordinate->id, os);
                 if (i == 0) {
                     printf(", ");
