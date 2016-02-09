@@ -73,6 +73,47 @@ int8_t main(int argc, char **argv) {
     }
 }
 
+task_t *parse_task(json_t *_task) {
+    if (_task) {
+        if (json_is_object(_task)) {
+            task_t *task = malloc(sizeof(task_t));
+            json_t *_task_type = json_object_get(_task, "type");
+            const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
+            json_t *_coordinate = json_object_get(_task, "coordinate");
+            size_t count = json_array_size(_coordinate);
+            task->coordinate = malloc(sizeof(coordinate_t) * count);
+            for (size_t i = 0; i < count; i++) {
+                const char *gridref = json_string_value(json_array_get(_coordinate, i));
+                double lat = 0, lng = 0;
+                convert_gridref_to_latlng(gridref, &lat, &lng);
+                coordinate_t *coordinate = malloc(sizeof(coordinate_t));
+                coordinate_init(coordinate, lat, lng, 0, 0);
+                task->coordinate[i] = coordinate;
+            }
+            task->size = count;
+            task->gap = NULL;
+            if (
+                    task->size == 4 &&
+                    task->coordinate[0]->lat == task->coordinate[3]->lat &&
+                    task->coordinate[0]->lng == task->coordinate[3]->lng
+                    ) {
+                task->type = TRIANGLE;
+            } else if (
+                    task->size == 3 &&
+                    task->coordinate[0]->lat == task->coordinate[2]->lat &&
+                    task->coordinate[0]->lng == task->coordinate[2]->lng
+                    ) {
+                task->type = OUT_AND_RETURN;
+            } else {
+                task->type = OPEN_DISTANCE;
+            }
+        } else {
+            // Not object
+        }
+    }
+    return NULL;
+}
+
 uint8_t _main(json_t *data) {
     json_t *_source, *_destination, *_set_start, *_set_end, *_pilot, *_task;
     const char *source;
@@ -128,45 +169,7 @@ uint8_t _main(json_t *data) {
 
         if (set->subset_count == 1) {
 
-            task_t *task = NULL;
-
-            if (_task) {
-                if (json_is_object(_task)) {
-                    task = malloc(sizeof(task_t));
-                    json_t *_task_type = json_object_get(_task, "type");
-                    const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
-                    json_t *_coordinate = json_object_get(_task, "coordinate");
-                    size_t count = json_array_size(_coordinate);
-                    task->coordinate = malloc(sizeof(coordinate_t) * count);
-                    for (size_t i = 0; i < count; i++) {
-                        const char *gridref = json_string_value(json_array_get(_coordinate, i));
-                        double lat = 0, lng = 0;
-                        convert_gridref_to_latlng(gridref, &lat, &lng);
-                        coordinate_t *coordinate = malloc(sizeof(coordinate_t));
-                        coordinate_init(coordinate, lat, lng, 0, 0);
-                        task->coordinate[i] = coordinate;
-                    }
-                    task->size = count;
-                    task->gap = NULL;
-                    if (
-                            task->size == 4 &&
-                            task->coordinate[0]->lat == task->coordinate[3]->lat &&
-                            task->coordinate[0]->lng == task->coordinate[3]->lng
-                            ) {
-                        task->type = TRIANGLE;
-                    } else if (
-                            task->size == 3 &&
-                            task->coordinate[0]->lat == task->coordinate[2]->lat &&
-                            task->coordinate[0]->lng == task->coordinate[2]->lng
-                            ) {
-                        task->type = OUT_AND_RETURN;
-                    } else {
-                        task->type = OPEN_DISTANCE;
-                    }
-                } else {
-                    // Not object
-                }
-            }
+            task_t *task = parse_task(_task);
 
             distance_map_t *map = malloc(sizeof(distance_map_t));
             distance_map_init(map, set);
