@@ -21,3 +21,8 @@ char *task_get_gridref(task_t *this);
 void task_init(task_t *this, task_type type, int8_t size, ...);
 void task_deinit(task_t *this);
 void task_add_gap(task_t *this, coordinate_t *start, coordinate_t *end);
+
+struct json_t;
+typedef struct json_t json_t;
+
+task_t *parse_task(json_t *_task);

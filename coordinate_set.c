@@ -158,10 +158,10 @@ uint64_t coordinate_subset_length(coordinate_set_t *this, uint16_t offset) {
     return 0;
 }
 
-void coordinate_set_section(coordinate_set_t *this, uint16_t start, uint16_t end) {
-    if (!end)
+void coordinate_set_select_section(coordinate_set_t *this, uint16_t start, uint16_t end) {
+    if (!end) {
         end = start;
-    warn("Setting subset: %d, %d", start, end);
+    }
     coordinate_subset_t *current = this->first_subset;
     coordinate_subset_t *tmp;
     int16_t i = 0;
@@ -172,19 +172,21 @@ void coordinate_set_section(coordinate_set_t *this, uint16_t start, uint16_t end
     }
     i = 0;
     int64_t diff = end - start;
-    if (current != NULL) {
+    if (current) {
         this->first = current->first;
         this->first_subset = current;
         while (i++ < diff && current) {
             current = current->next;
         }
-        this->last = current->last;
-        this->last_subset = current;
-        current = current->next;
-        while (current) {
-            tmp = current->next;
-            coordinate_subset_deinit(current, this);
-            current = tmp;
+        if (current) {
+            this->last = current->last;
+            this->last_subset = current;
+            current = current->next;
+            while (current) {
+                tmp = current->next;
+                coordinate_subset_deinit(current, this);
+                current = tmp;
+            }
         }
     }
 }
