@@ -2,7 +2,7 @@
 
 #include "coordinate_set.h"
 
-typedef enum { OPEN_DISTANCE, OUT_AND_RETURN, TRIANGLE } task_type;
+typedef enum { OPEN_DISTANCE, OUT_AND_RETURN, GOAL, TRIANGLE } task_type;
 
 typedef struct task_t {
     coordinate_t **coordinate;

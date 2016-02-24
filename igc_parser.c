@@ -160,15 +160,15 @@ uint8_t _main(json_t *data) {
             task_t *od, *or, *tr;
 
             od = distance_map_score_open_distance_3tp(map);
-            format_task(od, "open_distance", 1);
+            format_task(od, "open_distance", OPEN_DISTANCE);
             printf(",");
 
             or = distance_map_score_out_and_return(map);
-            format_task(or, "out_and_return", 2);
+            format_task(or, "out_and_return", OUT_AND_RETURN);
             printf(",");
 
             tr = distance_map_score_triangle(map);
-            format_task(tr, "triangle", 3);
+            format_task(tr, "triangle", TRIANGLE);
 
             if (task) {
                 printf(",");
