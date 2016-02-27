@@ -404,9 +404,13 @@ void parse_igc_coordinate(char *line, coordinate_t *obj) {
 }
 
 int parse_h_record(coordinate_set_t *parser, char *line) {
-    if (strncmp(line, "HFDTE", 5) == 0) {
+    size_t offset = 5;
+    if (strncmp(line, "HFDTE", 5) == 0 || strncmp(line, "HFDTEDATE", offset = 9) == 0) {
         char day[3], month[3], year[3];
-        strncpy(day, line += 5, 2);
+        if (strncpy(line, "HFDTEDATE", offset + 1) == ":") {
+            offset += 1;
+        }
+        strncpy(day, line += offset, 2);
         day[2] = 0;
         strncpy(month, line += 2, 2);
         month[2] = 0;

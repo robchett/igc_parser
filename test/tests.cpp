@@ -1,6 +1,11 @@
 #include "gtest/gtest.h"
 #include "../convert.c"
+//#include "../task.c"
+#include "../coordinate.c"
+#include "../coordinate_subset.c"
+#include "../coordinate_set.c"
 #include <math.h>
+#include <string>
 
 double rounddp(double num, int dp) {
     if (dp == 2) {
@@ -33,3 +38,29 @@ TEST (Conversion, gridref_to_latlng) {
     EXPECT_DOUBLE_EQ(50.123f, rounddp(lat, 3));
     EXPECT_DOUBLE_EQ(0.986f, rounddp(lng, 3));
 }
+
+//TEST (Tasks, parsing) {
+//    task_t *task;
+//
+//    json_error_t error;
+//    json_t *data = json_loads("", 1, error);
+//
+//    task = parse_task(data);
+//}
+
+TEST (Parsing, parse_h_record) {
+    char * strings [] = {
+            "HFDTE240216",
+            "HFDTE:240216",
+            "HFDTEDATE:240216",
+            "HFDTEDATE:240216,1"
+    };
+    for (int i = 0; i < 4; i++) {
+        coordinate_set_t *set = new coordinate_set_t;
+        EXPECT_EQ (true, parse_h_record (set, strings[i]));
+        EXPECT_EQ (2016, set->year);
+        EXPECT_EQ (2, set->month);
+        EXPECT_EQ (24, set->day);
+    }
+}
+
