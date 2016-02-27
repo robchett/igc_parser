@@ -24,5 +24,3 @@ void task_add_gap(task_t *obj, coordinate_t *start, coordinate_t *end);
 
 struct json_t;
 typedef struct json_t json_t;
-
-task_t *parse_task(json_t *_task);

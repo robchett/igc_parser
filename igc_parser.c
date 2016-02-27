@@ -15,6 +15,8 @@
 #include "statistics/element.h"
 #include "statistics/group.h"
 
+task_t *parse_task(json_t *_task);
+
 char *load_file(const char *filename) {
     char *source = NULL;
     FILE *fp = fopen(filename, "r");
@@ -278,4 +280,46 @@ void format_task(task_t *task, char *title, int type) {
     } else {
         printf("\"%s\": null", title);
     }
+}
+
+
+task_t *parse_task(json_t *_task) {
+    if (_task) {
+        if (json_is_object(_task)) {
+            task_t *task = NEW(task_t, 1);
+            json_t *_task_type = json_object_get(_task, "type");
+            const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
+            json_t *_coordinate = json_object_get(_task, "coordinate");
+            size_t count = json_array_size(_coordinate);
+            task->coordinate = NEW(coordinate_t *, count);
+            for (size_t i = 0; i < count; i++) {
+                const char *gridref = json_string_value(json_array_get(_coordinate, i));
+                double lat = 0, lng = 0;
+                convert_gridref_to_latlng(gridref, &lat, &lng);
+                coordinate_t *coordinate = NEW(coordinate_t, 1);
+                coordinate_init(coordinate, lat, lng, 0, 0);
+                task->coordinate[i] = coordinate;
+            }
+            task->size = count;
+            task->gap = NULL;
+            if (
+                    task->size == 4 &&
+                    task->coordinate[0]->lat == task->coordinate[3]->lat &&
+                    task->coordinate[0]->lng == task->coordinate[3]->lng
+                    ) {
+                task->type = TRIANGLE;
+            } else if (
+                    task->size == 3 &&
+                    task->coordinate[0]->lat == task->coordinate[2]->lat &&
+                    task->coordinate[0]->lng == task->coordinate[2]->lng
+                    ) {
+                task->type = OUT_AND_RETURN;
+            } else {
+                task->type = OPEN_DISTANCE;
+            }
+        } else {
+            // Not object
+        }
+    }
+    return NULL;
 }

@@ -4,7 +4,6 @@
 #include "coordinate.h"
 #include "coordinate_set.h"
 #include "coordinate_subset.h"
-#include "./statistics/group.h"
 #include "igc_parser.h"
 
 void parse_igc_coordinate(char *line, coordinate_t *obj);
@@ -138,12 +137,6 @@ int coordinate_set_repair(coordinate_set_t *obj) {
         return 1;
     }
     return 0;
-}
-
-statistics_set_t *coordinate_set_stats(coordinate_set_t *obj) {
-    statistics_set_t *ret = NEW(statistics_set_t, 1);
-    statistics_set_init(ret, obj);
-    return ret;
 }
 
 uint64_t coordinate_subset_length(coordinate_set_t *obj, uint16_t offset) {
