@@ -116,7 +116,7 @@ uint8_t _main(json_t *data) {
 
     char *igc_file = load_file(source);
     if (igc_file != NULL) {
-        coordinate_set_t *set = malloc(sizeof(coordinate_set_t));
+        coordinate_set_t *set = NEW(coordinate_set_t, 1);
         coordinate_set_init(set);
         coordinate_set_parse_igc(set, igc_file);
 
@@ -137,7 +137,7 @@ uint8_t _main(json_t *data) {
 
             task_t *task = parse_task(_task);
 
-            distance_map_t *map = malloc(sizeof(distance_map_t));
+            distance_map_t *map = NEW(distance_map_t, 1);
             distance_map_init(map, set);
 
             char *ids;
@@ -180,17 +180,17 @@ uint8_t _main(json_t *data) {
 
             formatter_t *formatter;
 
-            formatter = malloc(sizeof(formatter_t));
+            formatter = NEW(formatter_t, 1);
             formatter_js_init(formatter, set, 1, od, or, tr);
             formatter_js_output(formatter, out_file_1);
             free(formatter);
 
-            formatter = malloc(sizeof(formatter_t));
+            formatter = NEW(formatter_t, 1);
             formatter_kml_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
             formatter_kml_output(formatter, out_file_2);
             free(formatter);
 
-            formatter = malloc(sizeof(formatter_t));
+            formatter = NEW(formatter_t, 1);
             formatter_kml_earth_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
             formatter_kml_earth_output(formatter, out_file_3);
             free(formatter);
@@ -221,12 +221,12 @@ uint8_t _main(json_t *data) {
                 }
             } while (current = current->next);
             printf("]}");
-            formatter_split_t *formatter = malloc(sizeof(formatter_split_t));
+            formatter_split_t *formatter = NEW(formatter_split_t, 1);
             formatter_kml_split_init(formatter, set);
             formatter_kml_split_output(formatter, out_file_4);
             free(formatter);
 
-            formatter_t *js_formatter = malloc(sizeof(formatter_t));
+            formatter_t *js_formatter = NEW(formatter_t, 1);
             formatter_js_init(js_formatter, set, 1, NULL, NULL, NULL);
             formatter_js_output(js_formatter, out_file_1);
             free(js_formatter);

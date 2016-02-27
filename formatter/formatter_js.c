@@ -38,10 +38,10 @@ json_t *get_bounds(coordinate_set_t *set) {
     }
     json_t *center = json_pack("{s:f, s:f}", "lat", (south + north) / 2, "lng", (west + east) / 2);
 
-    coordinate_t *se = malloc(sizeof(coordinate_t));
+    coordinate_t *se = NEW(coordinate_t, 1);
     se->lat = south;
     se->lng = east;
-    coordinate_t *nw = malloc(sizeof(coordinate_t));
+    coordinate_t *nw = NEW(coordinate_t, 1);
     nw->lat = north;
     nw->lng = west;
 

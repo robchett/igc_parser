@@ -6,14 +6,14 @@
 
 char *fitos(int64_t input, char *format) {
     int64_t length = snprintf(NULL, 0, format, input);
-    char *buffer = malloc(sizeof(char) * length + 1);
+    char *buffer = NEW(char, length + 1);
     snprintf(buffer, length + 1, format, input);
     return buffer;
 }
 
 char *fdtos(double input, char *format) {
     int64_t length = snprintf(NULL, 0, format, input);
-    char *buffer = malloc(sizeof(char) * length + 1);
+    char *buffer = NEW(char, length + 1);
     snprintf(buffer, length + 1, format, input);
     return buffer;
 }

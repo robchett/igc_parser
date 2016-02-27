@@ -47,7 +47,7 @@ char *get_linestring(formatter_t *obj) {
         }
         coordinate = coordinate->next;
     }
-    char *buffer = malloc(sizeof(char) * (200 + (30 * obj->set->length)));
+    char *buffer = NEW(char, (200 + (30 * obj->set->length)));
     sprintf(buffer, "\
             <LineString>\n\
                 <extrude>0</extrude>\n\
@@ -68,7 +68,7 @@ char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *p
         *total_distance += distance;
     }
     char *gridref = convert_latlng_to_gridref(coordinate->lat, coordinate->lng);
-    char *buffer = malloc(sizeof(char) * 60);
+    char *buffer = NEW(char, 60);
     sprintf(buffer, "%-2d   %-8.5f   %-9.5f   %-s     %-5.2f      %-5.2f", index, coordinate->lat, coordinate->lng, gridref, distance, *total_distance);
     free(gridref);
     return buffer;

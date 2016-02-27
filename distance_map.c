@@ -10,10 +10,10 @@ void distance_map_init(distance_map_t *obj, coordinate_set_t *set) {
 
     int64_t real_size = obj->size = set->length;
 
-    obj->distances = malloc(sizeof(uint64_t *) * (real_size));
+    obj->distances = NEW(uint64_t *, real_size);
     for (int16_t i = 0; i < real_size; i++) {
         note("%d", i);
-        obj->distances[i] = malloc((real_size - i + 1) * sizeof(uint64_t));
+        obj->distances[i] = NEW(uint64_t, (real_size - i + 1));
     }
     int16_t j, i = 0;
     coordinate_t *coordinate1 = set->first;
@@ -52,7 +52,7 @@ triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t co
     int64_t distance = (MAP(obj, x, y) + MAP(obj, y, z) + MAP(obj, x, z));
     int64_t min = fmin(MAP(obj, x, y), fmin(MAP(obj, y, z), MAP(obj, x, z)));
     if (distance > score_triangle(obj, score, 0) && min > distance * 0.28) {
-        triangle_score *new_score = malloc(sizeof(triangle_score));
+        triangle_score *new_score = NEW(triangle_score, 1);
         new_score->x = x;
         new_score->y = y;
         new_score->z = z;
@@ -159,7 +159,7 @@ task_t *distance_map_score_triangle(distance_map_t *obj) {
         warn("Optimising tringle done: %d sets checked", i);
         warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
-        task_t *task = malloc(sizeof(task_t));
+        task_t *task = NEW(task_t, 1);
         task_init(task, TRIANGLE, 4, get_coordinate(obj, best_score->x), get_coordinate(obj, best_score->y), get_coordinate(obj, best_score->z), get_coordinate(obj, best_score->x));
         task_add_gap(task, get_coordinate(obj, best_score->row), get_coordinate(obj, best_score->col));
         return task;
@@ -194,7 +194,7 @@ task_t *distance_map_score_out_and_return(distance_map_t *obj) {
     }
 
     if (maximum_distance) {
-        task_t *task = malloc(sizeof(task_t));
+        task_t *task = NEW(task_t, 1);
         task_init(task, OUT_AND_RETURN, 3, get_coordinate(obj, indexes[0]), get_coordinate(obj, indexes[1]), get_coordinate(obj, indexes[2]));
         task_add_gap(task, get_coordinate(obj, indexes[0]), get_coordinate(obj, indexes[2]));
         return task;
@@ -242,7 +242,7 @@ task_t *distance_map_score_open_distance_3tp(distance_map_t *obj) {
     }
 
     if (best_score) {
-        task_t *task = malloc(sizeof(task_t));
+        task_t *task = NEW(task_t, 1);
         task_init(task, OPEN_DISTANCE, 5, get_coordinate(obj, indexes[0]), get_coordinate(obj, indexes[1]), get_coordinate(obj, indexes[2]), get_coordinate(obj, indexes[3]), get_coordinate(obj, indexes[4]));
         return task;
     }

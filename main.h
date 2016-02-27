@@ -13,3 +13,9 @@
 #if !defined(M_PI)
 #define M_PI 3.14159265358979323846
 #endif
+
+#ifdef __cplusplus
+#define NEW(type, count) ((type *)calloc(count, sizeof(type)))
+#else
+#define NEW(type, count) (calloc(count, sizeof(type)))
+#endif

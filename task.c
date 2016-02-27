@@ -14,7 +14,7 @@ void task_init(task_t *obj, task_type type, int8_t size, ...) {
     obj->size = size;
     obj->gap = NULL;
 
-    obj->coordinate = malloc(sizeof(coordinate_t *) * size);
+    obj->coordinate = NEW(coordinate_t *, size);
 
     va_list va;
     va_start(va, size);
@@ -34,7 +34,7 @@ void task_deinit(task_t *obj) {
 }
 
 void task_add_gap(task_t *obj, coordinate_t *start, coordinate_t *end) {
-    obj->gap = malloc(sizeof(coordinate_t *) * 2);
+    obj->gap = NEW(coordinate_t *, 2);
     obj->gap[0] = start;
     obj->gap[1] = end;
 }
@@ -61,7 +61,7 @@ start:
 }
 
 char *task_get_coordinate_ids(task_t *obj) {
-    char *res = calloc(40, sizeof(char));
+    char *res = NEW(char, 40);
     coordinate_t **c = obj->coordinate;
     switch (obj->size) {
         case 1:
@@ -88,7 +88,7 @@ char *task_get_coordinate_ids(task_t *obj) {
 
 char *task_get_gap_ids(task_t *obj) {
     if (obj->gap) {
-        char *coordinate = malloc(sizeof(char) * 12);
+        char *coordinate = NEW(char, 12);
         sprintf(coordinate, "%d,%d", obj->gap[0]->id + 1, obj->gap[1]->id + 1);
         return coordinate;
     }
@@ -139,17 +139,17 @@ double get_task_distance(task_t *task) {
 task_t *parse_task(json_t *_task) {
     if (_task) {
         if (json_is_object(_task)) {
-            task_t *task = malloc(sizeof(task_t));
+            task_t *task = NEW(task_t, 1);
             json_t *_task_type = json_object_get(_task, "type");
             const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
             json_t *_coordinate = json_object_get(_task, "coordinate");
             size_t count = json_array_size(_coordinate);
-            task->coordinate = malloc(sizeof(coordinate_t) * count);
+            task->coordinate = NEW(coordinate_t *, count);
             for (size_t i = 0; i < count; i++) {
                 const char *gridref = json_string_value(json_array_get(_coordinate, i));
                 double lat = 0, lng = 0;
                 convert_gridref_to_latlng(gridref, &lat, &lng);
-                coordinate_t *coordinate = malloc(sizeof(coordinate_t));
+                coordinate_t *coordinate = NEW(coordinate_t, 1);
                 coordinate_init(coordinate, lat, lng, 0, 0);
                 task->coordinate[i] = coordinate;
             }

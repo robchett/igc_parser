@@ -36,7 +36,7 @@ void coordinate_set_deinit(coordinate_set_t *obj) {
 }
 
 char *coordinate_set_date(coordinate_set_t *obj) {
-    char *buffer = malloc(sizeof(char) * 11);
+    char *buffer = NEW(char, 11);
     sprintf(buffer, "%04d-%02d-%02d", obj->year, obj->month, obj->day);
     return buffer;
 }
@@ -46,14 +46,14 @@ void coordinate_set_append(coordinate_set_t *obj, coordinate_t *coordinate) {
     obj->real_length++;
     coordinate->prev = obj->last;
     if (!obj->first) {
-        coordinate_subset_t *subset = malloc(sizeof(coordinate_subset_t));
+        coordinate_subset_t *subset = NEW(coordinate_subset_t, 1);
         coordinate_subset_init(subset, obj, coordinate);
         obj->first = obj->real_first = coordinate;
         obj->subset_count++;
     } else {
         obj->last->next = coordinate;
         if (!obj->last || coordinate->timestamp - obj->last->timestamp > 60 || get_distance(coordinate, obj->last) > 5) {
-            coordinate_subset_t *subset = malloc(sizeof(coordinate_subset_t));
+            coordinate_subset_t *subset = NEW(coordinate_subset_t, 1);
             coordinate_subset_init(subset, obj, coordinate);
             obj->subset_count++;
         } else {
@@ -100,7 +100,7 @@ int coordinate_set_parse_igc(coordinate_set_t *obj, char *string) {
         if (is_h_record(curLine)) {
             parse_h_record(obj, curLine);
         } else if (is_b_record(curLine)) {
-            coordinate_t *coordinate = malloc(sizeof(coordinate_t));
+            coordinate_t *coordinate = NEW(coordinate_t, 1);
             parse_igc_coordinate(curLine, coordinate);
             coordinate_set_append(obj, coordinate);
         }
@@ -141,7 +141,7 @@ int coordinate_set_repair(coordinate_set_t *obj) {
 }
 
 statistics_set_t *coordinate_set_stats(coordinate_set_t *obj) {
-    statistics_set_t *ret = malloc(sizeof(statistics_set_t));
+    statistics_set_t *ret = NEW(statistics_set_t, 1);
     statistics_set_init(ret, obj);
     return ret;
 }
