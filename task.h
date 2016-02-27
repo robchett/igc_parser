@@ -13,14 +13,14 @@ typedef struct task_t {
 
 double get_task_distance(task_t *task);
 int get_task_time(task_t *task);
-int8_t task_completes_task(task_t *this, coordinate_set_t *set);
-char *task_get_coordinate_ids(task_t *this);
+int8_t task_completes_task(task_t *obj, coordinate_set_t *set);
+char *task_get_coordinate_ids(task_t *obj);
 
-char *task_get_gridref(task_t *this);
+char *task_get_gridref(task_t *obj);
 
-void task_init(task_t *this, task_type type, int8_t size, ...);
-void task_deinit(task_t *this);
-void task_add_gap(task_t *this, coordinate_t *start, coordinate_t *end);
+void task_init(task_t *obj, task_type type, int8_t size, ...);
+void task_deinit(task_t *obj);
+void task_add_gap(task_t *obj, coordinate_t *start, coordinate_t *end);
 
 struct json_t;
 typedef struct json_t json_t;

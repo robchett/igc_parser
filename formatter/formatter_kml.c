@@ -7,18 +7,18 @@
 #include "../task.h"
 #include "formatter_kml.h"
 
-void formatter_kml_init(formatter_t *this, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
-    this->set = set;
-    this->open_distance = task_od;
-    this->out_and_return = task_or;
-    this->triangle = task_tr;
-    this->task = task;
-    this->name = name;
+void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+    obj->set = set;
+    obj->open_distance = task_od;
+    obj->out_and_return = task_or;
+    obj->triangle = task_tr;
+    obj->task = task;
+    obj->name = name;
 }
 
-char *get_meta_data(formatter_t *this) {
+char *get_meta_data(formatter_t *obj) {
     char *buffer = create_buffer("<Metadata>\n\t\t\t\t\t<SecondsFromTimeOfFirstPoint>\n\t\t\t\t\t\t");
-    coordinate_t *coordinate = this->set->first;
+    coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
@@ -33,9 +33,9 @@ char *get_meta_data(formatter_t *this) {
     return vstrcat(buffer, "\n\t\t\t\t\t</SecondsFromTimeOfFirstPoint>\n\t\t\t\t</Metadata>", NULL);
 }
 
-char *get_linestring(formatter_t *this) {
-    char *coordinates = calloc((200 + (30 * this->set->length)), sizeof(char));
-    coordinate_t *coordinate = this->set->first;
+char *get_linestring(formatter_t *obj) {
+    char *coordinates = calloc((200 + (30 * obj->set->length)), sizeof(char));
+    coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
@@ -47,7 +47,7 @@ char *get_linestring(formatter_t *this) {
         }
         coordinate = coordinate->next;
     }
-    char *buffer = malloc(sizeof(char) * (200 + (30 * this->set->length)));
+    char *buffer = malloc(sizeof(char) * (200 + (30 * obj->set->length)));
     sprintf(buffer, "\
             <LineString>\n\
                 <extrude>0</extrude>\n\
@@ -212,27 +212,27 @@ char *get_defined_task(task_t *task) {
     return info;
 }
 
-char *get_task_od(formatter_t *this) {
-    char *buffer = get_task_generic(this->open_distance, "Open Distance", "00D7FF");
+char *get_task_od(formatter_t *obj) {
+    char *buffer = get_task_generic(obj->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
-char *get_task_or(formatter_t *this) {
-    char *buffer = get_task_generic(this->out_and_return, "Out and Return", "00FF00");
+char *get_task_or(formatter_t *obj) {
+    char *buffer = get_task_generic(obj->out_and_return, "Out and Return", "00FF00");
     return buffer;
 }
 
-char *get_task_tr(formatter_t *this) {
-    char *buffer = get_task_generic(this->triangle, "FAI Triangle", "0000FF");
+char *get_task_tr(formatter_t *obj) {
+    char *buffer = get_task_generic(obj->triangle, "FAI Triangle", "0000FF");
     return buffer;
 }
 
-char *get_task_ft(formatter_t *this) {
-    char *buffer = get_task_generic(this->triangle, "Flat Triangle", "FF0066");
+char *get_task_ft(formatter_t *obj) {
+    char *buffer = get_task_generic(obj->triangle, "Flat Triangle", "FF0066");
     return buffer;
 }
 
-char *formatter_kml_output(formatter_t *this, char *filename) {
+char *formatter_kml_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
         // TASKS
@@ -243,24 +243,24 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
         char *out_and_return = NULL;
         char *triangle = NULL;
         char *task = NULL;
-        if (this->open_distance) {
-            open_distance = get_task_od(this);
-            sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(this->open_distance), get_task_time(this->open_distance));
+        if (obj->open_distance) {
+            open_distance = get_task_od(obj);
+            sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(obj->open_distance), get_task_time(obj->open_distance));
         }
-        if (this->open_distance) {
-            out_and_return = get_task_or(this);
-            sprintf(or_results, "OR Score / Time %3.2f / %d", get_task_distance(this->out_and_return), get_task_time(this->out_and_return));
+        if (obj->open_distance) {
+            out_and_return = get_task_or(obj);
+            sprintf(or_results, "OR Score / Time %3.2f / %d", get_task_distance(obj->out_and_return), get_task_time(obj->out_and_return));
         }
-        if (this->triangle) {
-            triangle = get_task_tr(this);
-            sprintf(tr_results, "TR Score / Time %3.2f / %d", get_task_distance(this->triangle), get_task_time(this->triangle));
+        if (obj->triangle) {
+            triangle = get_task_tr(obj);
+            sprintf(tr_results, "TR Score / Time %3.2f / %d", get_task_distance(obj->triangle), get_task_time(obj->triangle));
         }
-        if (this->task) {
-            task = get_defined_task(this->task);
+        if (obj->task) {
+            task = get_defined_task(obj->task);
         }
 
-        char *metadata = get_meta_data(this);
-        char *linestring = get_linestring(this);
+        char *metadata = get_meta_data(obj);
+        char *linestring = get_linestring(obj);
 
         fprintf(fp, "\
 <?xml version='1.0' encoding='UTF-8'?>\n\
@@ -319,7 +319,7 @@ char *formatter_kml_output(formatter_t *this, char *filename) {
 		</Folder>\n\
 	</Folder>\n\
 </Document>",
-                this->name, this->name, this->set->day, this->set->month, this->set->year, this->set->max_ele, this->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", metadata, linestring, open_distance ?: "",
+                obj->name, obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", metadata, linestring, open_distance ?: "",
                 out_and_return ?: "", triangle ?: "", task ?: "");
 
         free(metadata);

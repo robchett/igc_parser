@@ -5,43 +5,43 @@
 #include "igc_parser.h"
 #include "string_manip.h"
 
-void coordinate_init(coordinate_t *this, double lat, double lng, int64_t ele, int64_t timestamp) {
-    this->lat = lat;
-    this->lng = lng;
-    this->sin_lat = sin(lat toRAD);
-    this->cos_lat = cos(lat toRAD);
-    this->ele = ele;
-    this->id = 0;
-    this->timestamp = timestamp;
+void coordinate_init(coordinate_t *obj, double lat, double lng, int64_t ele, int64_t timestamp) {
+    obj->lat = lat;
+    obj->lng = lng;
+    obj->sin_lat = sin(lat toRAD);
+    obj->cos_lat = cos(lat toRAD);
+    obj->ele = ele;
+    obj->id = 0;
+    obj->timestamp = timestamp;
 }
 
-void coordinate_deinit(coordinate_t *this) {
-    if (this->prev) {
-        this->prev->next = this->next;
+void coordinate_deinit(coordinate_t *obj) {
+    if (obj->prev) {
+        obj->prev->next = obj->next;
     }
-    if (this->next) {
-        this->next->prev = this->prev;
+    if (obj->next) {
+        obj->next->prev = obj->prev;
     }
-    if (this->coordinate_set) {
-        if (this == this->coordinate_set->first) {
-            this->coordinate_set->first = this->next;
+    if (obj->coordinate_set) {
+        if (obj == obj->coordinate_set->first) {
+            obj->coordinate_set->first = obj->next;
         }
-        if (this == this->coordinate_set->last) {
-            this->coordinate_set->last = this->prev;
+        if (obj == obj->coordinate_set->last) {
+            obj->coordinate_set->last = obj->prev;
         }
-        this->coordinate_set->length--;
+        obj->coordinate_set->length--;
     }
 
-    if (this->coordinate_subset) {
-        if (this == this->coordinate_subset->first) {
-            this->coordinate_subset->first = this->next;
+    if (obj->coordinate_subset) {
+        if (obj == obj->coordinate_subset->first) {
+            obj->coordinate_subset->first = obj->next;
         }
-        if (this == this->coordinate_subset->last) {
-            this->coordinate_subset->last = this->prev;
+        if (obj == obj->coordinate_subset->last) {
+            obj->coordinate_subset->last = obj->prev;
         }
-        this->coordinate_subset->length--;
+        obj->coordinate_subset->length--;
     }
-    free(this);
+    free(obj);
 }
 
 double get_bearing(coordinate_t *obj1, coordinate_t *obj2) {

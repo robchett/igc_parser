@@ -8,18 +8,18 @@
 #include <string.h>
 #include "formatter_kml_earth.h"
 
-void formatter_kml_earth_init(formatter_t *this, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
-    this->set = set;
-    this->open_distance = task_od;
-    this->out_and_return = task_or;
-    this->triangle = task_tr;
-    this->task = task;
-    this->name = name;
+void formatter_kml_earth_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+    obj->set = set;
+    obj->open_distance = task_od;
+    obj->out_and_return = task_or;
+    obj->triangle = task_tr;
+    obj->task = task;
+    obj->name = name;
 }
 
-char *get_meta_data_earth(formatter_t *this) {
+char *get_meta_data_earth(formatter_t *obj) {
     char *buffer = create_buffer("<Metadata><SecondsFromTimeOfFirstPoint>");
-    coordinate_t *coordinate = this->set->first;
+    coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
@@ -34,9 +34,9 @@ char *get_meta_data_earth(formatter_t *this) {
     return vstrcat(buffer, "\n</SecondsFromTimeOfFirstPoint></Metadata>", NULL);
 }
 
-char *get_linestring_earth(formatter_t *this, char *style, char *altitude_mode, char *extrude) {
-    char *coordinates = calloc((30 * this->set->length), sizeof(char));
-    coordinate_t *coordinate = this->set->first;
+char *get_linestring_earth(formatter_t *obj, char *style, char *altitude_mode, char *extrude) {
+    char *coordinates = calloc((30 * obj->set->length), sizeof(char));
+    coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
     while (coordinate) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
@@ -48,7 +48,7 @@ char *get_linestring_earth(formatter_t *this, char *style, char *altitude_mode, 
         }
         coordinate = coordinate->next;
     }
-    char *buffer = malloc(sizeof(char) * (200 + (30 * this->set->length)));
+    char *buffer = malloc(sizeof(char) * (200 + (30 * obj->set->length)));
     sprintf(buffer, "\
     <styleUrl>#%s</styleUrl>\n\
     <LineString>\n\
@@ -243,60 +243,60 @@ char *get_defined_task_earth(task_t *task) {
     return info;
 }
 
-char *get_task_od_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth(this->open_distance, "Open Distance", "00D7FF");
+char *get_task_od_earth(formatter_t *obj) {
+    char *buffer = get_task_generic_earth(obj->open_distance, "Open Distance", "00D7FF");
     return buffer;
 }
 
-char *get_task_or_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth(this->out_and_return, "Out and Return", "00FF00");
+char *get_task_or_earth(formatter_t *obj) {
+    char *buffer = get_task_generic_earth(obj->out_and_return, "Out and Return", "00FF00");
     return buffer;
 }
 
-char *get_task_tr_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth(this->triangle, "FAI Triangle", "0000FF");
+char *get_task_tr_earth(formatter_t *obj) {
+    char *buffer = get_task_generic_earth(obj->triangle, "FAI Triangle", "0000FF");
     return buffer;
 }
 
-char *get_task_ft_earth(formatter_t *this) {
-    char *buffer = get_task_generic_earth(this->triangle, "Flat Triangle", "FF0066");
+char *get_task_ft_earth(formatter_t *obj) {
+    char *buffer = get_task_generic_earth(obj->triangle, "Flat Triangle", "FF0066");
     return buffer;
 }
 
-char *formatter_kml_earth_output(formatter_t *this, char *filename) {
+char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
         char *open_distance = NULL;
         char *out_and_return = NULL;
         char *triangle = NULL;
         char *task = NULL;
-        if (this->open_distance) {
-            open_distance = get_task_od_earth(this);
+        if (obj->open_distance) {
+            open_distance = get_task_od_earth(obj);
         }
-        if (this->open_distance) {
-            out_and_return = get_task_or_earth(this);
+        if (obj->open_distance) {
+            out_and_return = get_task_or_earth(obj);
         }
-        if (this->triangle) {
-            triangle = get_task_tr_earth(this);
+        if (obj->triangle) {
+            triangle = get_task_tr_earth(obj);
         }
-        if (this->task) {
-            task = get_defined_task_earth(this->task);
+        if (obj->task) {
+            task = get_defined_task_earth(obj->task);
         }
 
         char *styles = get_kml_styles_earth();
-        char *metadata = get_meta_data_earth(this);
-        char *linestring = get_linestring_earth(this, "", "absolute", "0");
-        char *shadow = get_linestring_earth(this, "shadow", "clampToGround", "0");
-        char *shadow_extrude = get_linestring_earth(this, "shadow", "absolute", "1");
+        char *metadata = get_meta_data_earth(obj);
+        char *linestring = get_linestring_earth(obj, "", "absolute", "0");
+        char *shadow = get_linestring_earth(obj, "shadow", "clampToGround", "0");
+        char *shadow_extrude = get_linestring_earth(obj, "shadow", "absolute", "1");
 
         char *height = "";
         char *speed = "";
         char *climb_rate = "";
         char *timestamp = "";
-        // char *height = get_colour_by_height(this->set);
-        // char *speed = get_colour_by_speed(this->set);
-        // char *climb_rate = get_colour_by_climb_rate(this->set);
-        // char *timestamp = get_colour_by_time(this->set);
+        // char *height = get_colour_by_height(obj->set);
+        // char *speed = get_colour_by_speed(obj->set);
+        // char *climb_rate = get_colour_by_climb_rate(obj->set);
+        // char *timestamp = get_colour_by_time(obj->set);
 
         fprintf(fp, "\
 <?xml version='1.0' encoding='UTF-8'?>\n\
@@ -381,7 +381,7 @@ char *formatter_kml_earth_output(formatter_t *this, char *filename) {
 		</Folder>\n\
 	</Folder>\n\
 </Document>",
-                styles, this->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance ?: "", out_and_return ?: "", triangle ?: "", task ?: "");
+                styles, obj->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance ?: "", out_and_return ?: "", triangle ?: "", task ?: "");
 
         free(metadata);
         free(linestring);
@@ -455,7 +455,7 @@ char *get_kml_styles_earth() {
     // public function set_animation_styles() {
     //    for ($i = 0; $i < 10; $i++) {
     //        for ($j = 0; $j < 360; $j += 5) {
-    //            $this->styles .= '<Style id="A' . $i . $j .
+    //            $obj->styles .= '<Style id="A' . $i . $j .
     //            '"><IconStyle><heading>' . $j .
     //            '</heading><Icon><href>http://' . host . '/img/Markers/' .
     //            _get::kml_colour($i) . '.gif' .

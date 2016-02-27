@@ -4,18 +4,18 @@
 #include "../coordinate_set.h"
 #include "formatter_kml_split.h"
 
-void formatter_kml_split_init(formatter_split_t *this, coordinate_set_t *set) {
-    this->set = set;
+void formatter_kml_split_init(formatter_split_t *obj, coordinate_set_t *set) {
+    obj->set = set;
 }
 
-char *get_linestring_subset(coordinate_subset_t *this) {
+char *get_linestring_subset(coordinate_subset_t *obj) {
     char *buffer = create_buffer("<LineString>\n\
             <extrude>0</extrude>\n\
             <altitudeMode>absolute</altitudeMode>\n\
             <coordinates>\n\t\t\t\t");
-    coordinate_t *coordinate = this->first;
+    coordinate_t *coordinate = obj->first;
     int16_t i = 0;
-    while (coordinate && coordinate != this->last) {
+    while (coordinate && coordinate != obj->last) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         buffer = vstrcat(buffer, kml_coordinate, NULL);
         if (i++ == 5) {
@@ -90,14 +90,14 @@ char *heat_colour(int i) {
     }
 }
 
-char *formatter_kml_split_output(formatter_split_t *this, char *filename) {
+char *formatter_kml_split_output(formatter_split_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
         fputs("\
 <?xml version='1.0' encoding='UTF-8'?>\n\
 <Document>",
               fp);
-        coordinate_subset_t *subset = this->set->first_subset;
+        coordinate_subset_t *subset = obj->set->first_subset;
         int16_t i = 0;
         while (subset) {
             char *linestring = get_linestring_subset(subset);

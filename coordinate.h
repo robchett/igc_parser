@@ -20,8 +20,8 @@ typedef struct coordinate_t {
     struct coordinate_subset_t *coordinate_subset;
 } coordinate_t;
 
-void coordinate_init(coordinate_t *this, double lat, double lng, int64_t ele, int64_t timestamp);
-void coordinate_deinit(coordinate_t *this);
+void coordinate_init(coordinate_t *obj, double lat, double lng, int64_t ele, int64_t timestamp);
+void coordinate_deinit(coordinate_t *obj);
 
 double get_distance(coordinate_t *point1, coordinate_t *point2);
 double get_distance_precise(coordinate_t *point1, coordinate_t *point2);

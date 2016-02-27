@@ -30,14 +30,14 @@ typedef struct coordinate_set_t {
     int64_t subset_count;
 } coordinate_set_t;
 
-void coordinate_set_init(coordinate_set_t *this);
-void coordinate_set_deinit(coordinate_set_t *this);
+void coordinate_set_init(coordinate_set_t *obj);
+void coordinate_set_deinit(coordinate_set_t *obj);
 
-int coordinate_set_parse_igc(coordinate_set_t *this, char *string);
+int coordinate_set_parse_igc(coordinate_set_t *obj, char *string);
 
-int coordinate_set_repair(coordinate_set_t *this);
+int coordinate_set_repair(coordinate_set_t *obj);
 int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size);
-int8_t coordinate_set_extrema(coordinate_set_t *this);
-int8_t coordinate_set_trim(coordinate_set_t *this);
+int8_t coordinate_set_extrema(coordinate_set_t *obj);
+int8_t coordinate_set_trim(coordinate_set_t *obj);
 
-void coordinate_set_select_section(coordinate_set_t *this, uint16_t start, uint16_t end);
+void coordinate_set_select_section(coordinate_set_t *obj, uint16_t start, uint16_t end);

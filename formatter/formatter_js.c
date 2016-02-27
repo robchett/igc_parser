@@ -7,12 +7,12 @@
 #include "formatter_js.h"
 #include "../include/json/jansson.h"
 
-void formatter_js_init(formatter_t *this, coordinate_set_t *set, int64_t id, task_t *task_od, task_t *task_or, task_t *task_tr) {
-    this->set = set;
-    this->open_distance = task_od;
-    this->out_and_return = task_or;
-    this->triangle = task_tr;
-    this->id = id;
+void formatter_js_init(formatter_t *obj, coordinate_set_t *set, int64_t id, task_t *task_od, task_t *task_or, task_t *task_tr) {
+    obj->set = set;
+    obj->open_distance = task_od;
+    obj->out_and_return = task_or;
+    obj->triangle = task_tr;
+    obj->id = id;
 }
 
 json_t *get_bounds(coordinate_set_t *set) {
@@ -49,77 +49,77 @@ json_t *get_bounds(coordinate_set_t *set) {
     return point;
 }
 
-char *get_html_output(formatter_t *this) {
+char *get_html_output(formatter_t *obj) {
     char *string = create_buffer("");
-    char *id = (this->id ? itos(this->id) : "");
+    char *id = (obj->id ? itos(obj->id) : "");
     string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
     free(id);
     return string;
 }
 
-char *get_html_output_earth(formatter_t *this) {
+char *get_html_output_earth(formatter_t *obj) {
     char *string = create_buffer("");
-    char *id = (this->id ? itos(this->id) : "");
+    char *id = (obj->id ? itos(obj->id) : "");
     string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
     free(id);
     return string;
 }
 
-char *formatter_js_output(formatter_t *this, char *filename) {
+char *formatter_js_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
         json_t *json = json_object();
 
-        json_object_set(json, "id", json_integer(this->id));
-        json_object_set(json, "xMin", json_integer(this->set->first->timestamp));
+        json_object_set(json, "id", json_integer(obj->id));
+        json_object_set(json, "xMin", json_integer(obj->set->first->timestamp));
 
-        json_object_set(json, "xMax", json_integer(this->set->last->timestamp));
-        if (this->open_distance) {
-            json_object_set(json, "od_score", json_real(get_task_distance(this->open_distance)));
-            json_object_set(json, "od_time", json_integer(get_task_time(this->open_distance)));
+        json_object_set(json, "xMax", json_integer(obj->set->last->timestamp));
+        if (obj->open_distance) {
+            json_object_set(json, "od_score", json_real(get_task_distance(obj->open_distance)));
+            json_object_set(json, "od_time", json_integer(get_task_time(obj->open_distance)));
         }
-        if (this->out_and_return) {
-            json_object_set(json, "or_score", json_real(get_task_distance(this->out_and_return)));
-            json_object_set(json, "or_time", json_integer(get_task_time(this->out_and_return)));
+        if (obj->out_and_return) {
+            json_object_set(json, "or_score", json_real(get_task_distance(obj->out_and_return)));
+            json_object_set(json, "or_time", json_integer(get_task_time(obj->out_and_return)));
         }
-        if (this->triangle) {
-            json_object_set(json, "tr_score", json_real(get_task_distance(this->triangle)));
-            json_object_set(json, "tr_time", json_integer(get_task_time(this->triangle)));
+        if (obj->triangle) {
+            json_object_set(json, "tr_score", json_real(get_task_distance(obj->triangle)));
+            json_object_set(json, "tr_time", json_integer(get_task_time(obj->triangle)));
         }
-        // if (this->failed_triangle) {
+        // if (obj->failed_triangle) {
         //     json_object_set(json, "ft_score",
-        //     json_real(get_task_distance(this->failed_triangle)));
+        //     json_real(get_task_distance(obj->failed_triangle)));
         //     json_object_set(json, "ft_time",
-        //     json_integer(get_task_time(this->failed_triangle)));
+        //     json_integer(get_task_time(obj->failed_triangle)));
         // }
 
         json_t *inner = json_object();
         json_object_set(inner, "draw_graph", json_integer(1));
         json_object_set(inner, "pilot", json_string("N/A"));
         json_object_set(inner, "colour", json_string("FF0000"));
-        json_object_set(inner, "min_ele", json_integer(this->set->min_ele));
-        json_object_set(inner, "max_ele", json_integer(this->set->max_ele));
-        json_object_set(inner, "min_cr", json_integer(this->set->min_climb_rate));
-        json_object_set(inner, "max_cr", json_integer(this->set->max_climb_rate));
+        json_object_set(inner, "min_ele", json_integer(obj->set->min_ele));
+        json_object_set(inner, "max_ele", json_integer(obj->set->max_ele));
+        json_object_set(inner, "min_cr", json_integer(obj->set->min_climb_rate));
+        json_object_set(inner, "max_cr", json_integer(obj->set->max_climb_rate));
         json_object_set(inner, "min_speed", json_integer(0));
-        json_object_set(inner, "max_speed", json_integer(this->set->max_speed));
+        json_object_set(inner, "max_speed", json_integer(obj->set->max_speed));
         json_object_set(inner, "total_dist", json_integer(0));
         json_object_set(inner, "av_speed", json_integer(0));
-        json_object_set(inner, "bounds", get_bounds(this->set));
-        // Can I not do this?
-        // char *html = get_html_output(this);
+        json_object_set(inner, "bounds", get_bounds(obj->set));
+        // Can I not do obj?
+        // char *html = get_html_output(obj);
         // json_object_set(inner, "html", json_string(html));
         // free(html);
-        // char *html_earth = get_html_output_earth(this);
+        // char *html_earth = get_html_output_earth(obj);
         // json_object_set(inner, "html_earth", json_string(html_earth));
         // free(html_earth);
 
         json_t *data = json_array();
         json_t *coordinates = json_array();
-        coordinate_t *coordinate = this->set->first;
+        coordinate_t *coordinate = obj->set->first;
         while (coordinate) {
             json_t *point = json_pack("{s:i, s:f, s:f}", "ele", coordinate->ele, "lat", coordinate->lat, "lng", coordinate->lng);
-            json_t *point_data = json_pack("[iifff]", coordinate->timestamp - this->set->first->timestamp, coordinate->ele, coordinate->climb_rate, coordinate->speed, coordinate->bearing);
+            json_t *point_data = json_pack("[iifff]", coordinate->timestamp - obj->set->first->timestamp, coordinate->ele, coordinate->climb_rate, coordinate->speed, coordinate->bearing);
             json_array_append(coordinates, point);
             json_array_append(data, point_data);
             coordinate = coordinate->next;

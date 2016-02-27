@@ -3,30 +3,30 @@
 #include "coordinate_set.h"
 #include "coordinate_subset.h"
 
-void coordinate_subset_deinit(coordinate_subset_t *this, coordinate_set_t *parser) {
-    if (this->prev) {
-        this->prev->next = this->next;
+void coordinate_subset_deinit(coordinate_subset_t *obj, coordinate_set_t *parser) {
+    if (obj->prev) {
+        obj->prev->next = obj->next;
     }
-    if (this->next) {
-        this->next->prev = this->prev;
+    if (obj->next) {
+        obj->next->prev = obj->prev;
     }
-    if (this == parser->first_subset) {
-        parser->first_subset = this->next;
+    if (obj == parser->first_subset) {
+        parser->first_subset = obj->next;
     }
-    if (this == parser->last_subset) {
-        parser->last_subset = this->prev;
+    if (obj == parser->last_subset) {
+        parser->last_subset = obj->prev;
     }
 
     coordinate_t *tmp;
-    coordinate_t *coordinate = this->first;
-    while (this->length) {
+    coordinate_t *coordinate = obj->first;
+    while (obj->length) {
         tmp = coordinate->next;
         coordinate_deinit(coordinate);
         coordinate = tmp;
     }
 
     parser->subset_count--;
-    free(this);
+    free(obj);
 }
 
 void coordinate_subset_init(coordinate_subset_t *subset, coordinate_set_t *set, coordinate_t *coordinate) {
@@ -44,6 +44,6 @@ void coordinate_subset_init(coordinate_subset_t *subset, coordinate_set_t *set, 
     }
 }
 
-uint64_t coordinate_subset_duration(coordinate_subset_t *this) {
-    return (this->last->timestamp - this->first->timestamp);
+uint64_t coordinate_subset_duration(coordinate_subset_t *obj) {
+    return (obj->last->timestamp - obj->first->timestamp);
 }

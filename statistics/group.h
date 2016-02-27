@@ -7,7 +7,7 @@ typedef struct statistics_set_t {
     double height_min, speed_min, climb_min;
 } statistics_set_t;
 
-void statistics_set_init(statistics_set_t *this, coordinate_set_t *set);
+void statistics_set_init(statistics_set_t *obj, coordinate_set_t *set);
 
 //
 //

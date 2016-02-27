@@ -7,7 +7,7 @@
 #include "./statistics/group.h"
 #include "igc_parser.h"
 
-void parse_igc_coordinate(char *line, coordinate_t *this);
+void parse_igc_coordinate(char *line, coordinate_t *obj);
 coordinate_t *match_b_record(char *line);
 int is_valid_subset(coordinate_subset_t *start);
 int parse_h_record(coordinate_set_t *coordinate_set, char *line);
@@ -15,60 +15,60 @@ int has_height_data(coordinate_set_t *coordinate_set);
 int is_h_record(char *line);
 int is_b_record(char *line);
 
-void coordinate_set_init(coordinate_set_t *this) {
-    this->length = 0;
-    this->real_length = 0;
-    this->first_subset = this->last_subset = NULL;
-    this->first = this->last = NULL;
-    this->real_first = this->real_last = NULL;
-    this->subset_count = 0;
+void coordinate_set_init(coordinate_set_t *obj) {
+    obj->length = 0;
+    obj->real_length = 0;
+    obj->first_subset = obj->last_subset = NULL;
+    obj->first = obj->last = NULL;
+    obj->real_first = obj->real_last = NULL;
+    obj->subset_count = 0;
 
-    this->max_alt = this->min_alt = this->max_alt_t = this->min_alt_t = 0;
-    this->max_ele = this->min_ele = this->max_ele_t = this->min_ele_t = 0;
-    this->max_climb_rate = this->min_climb_rate = 0;
-    this->max_speed = 0;
+    obj->max_alt = obj->min_alt = obj->max_alt_t = obj->min_alt_t = 0;
+    obj->max_ele = obj->min_ele = obj->max_ele_t = obj->min_ele_t = 0;
+    obj->max_climb_rate = obj->min_climb_rate = 0;
+    obj->max_speed = 0;
 }
 
-void coordinate_set_deinit(coordinate_set_t *this) {
-    for (size_t i = 0; i < this->subset_count; i++) {
-        coordinate_subset_deinit(this->first_subset, this);
+void coordinate_set_deinit(coordinate_set_t *obj) {
+    for (size_t i = 0; i < obj->subset_count; i++) {
+        coordinate_subset_deinit(obj->first_subset, obj);
     }
 }
 
-char *coordinate_set_date(coordinate_set_t *this) {
+char *coordinate_set_date(coordinate_set_t *obj) {
     char *buffer = malloc(sizeof(char) * 11);
-    sprintf(buffer, "%04d-%02d-%02d", this->year, this->month, this->day);
+    sprintf(buffer, "%04d-%02d-%02d", obj->year, obj->month, obj->day);
     return buffer;
 }
 
-void coordinate_set_append(coordinate_set_t *this, coordinate_t *coordinate) {
-    coordinate->id = this->length++;
-    this->real_length++;
-    coordinate->prev = this->last;
-    if (!this->first) {
+void coordinate_set_append(coordinate_set_t *obj, coordinate_t *coordinate) {
+    coordinate->id = obj->length++;
+    obj->real_length++;
+    coordinate->prev = obj->last;
+    if (!obj->first) {
         coordinate_subset_t *subset = malloc(sizeof(coordinate_subset_t));
-        coordinate_subset_init(subset, this, coordinate);
-        this->first = this->real_first = coordinate;
-        this->subset_count++;
+        coordinate_subset_init(subset, obj, coordinate);
+        obj->first = obj->real_first = coordinate;
+        obj->subset_count++;
     } else {
-        this->last->next = coordinate;
-        if (!this->last || coordinate->timestamp - this->last->timestamp > 60 || get_distance(coordinate, this->last) > 5) {
+        obj->last->next = coordinate;
+        if (!obj->last || coordinate->timestamp - obj->last->timestamp > 60 || get_distance(coordinate, obj->last) > 5) {
             coordinate_subset_t *subset = malloc(sizeof(coordinate_subset_t));
-            coordinate_subset_init(subset, this, coordinate);
-            this->subset_count++;
+            coordinate_subset_init(subset, obj, coordinate);
+            obj->subset_count++;
         } else {
-            this->last_subset->length++;
+            obj->last_subset->length++;
         }
     }
-    this->last = this->real_last = coordinate;
-    this->last_subset->last = coordinate;
-    coordinate->coordinate_set = this;
-    coordinate->coordinate_subset = this->last_subset;
+    obj->last = obj->real_last = coordinate;
+    obj->last_subset->last = coordinate;
+    coordinate->coordinate_set = obj;
+    coordinate->coordinate_subset = obj->last_subset;
 }
 
-coordinate_t *coordinate_set_get_coordinate(coordinate_set_t *this, uint16_t index) {
-    if (index < this->real_length) {
-        coordinate_t *coordinate = this->real_first;
+coordinate_t *coordinate_set_get_coordinate(coordinate_set_t *obj, uint16_t index) {
+    if (index < obj->real_length) {
+        coordinate_t *coordinate = obj->real_first;
         int16_t i = 0;
         while (coordinate && ++i < index) {
             coordinate = coordinate->next;
@@ -78,9 +78,9 @@ coordinate_t *coordinate_set_get_coordinate(coordinate_set_t *this, uint16_t ind
     return NULL;
 }
 
-coordinate_t *coordinate_set_get_coordinate_by_id(coordinate_set_t *this, uint64_t id) {
-    if (id < this->length) {
-        coordinate_t *coordinate = this->first;
+coordinate_t *coordinate_set_get_coordinate_by_id(coordinate_set_t *obj, uint64_t id) {
+    if (id < obj->length) {
+        coordinate_t *coordinate = obj->first;
         int16_t i = 0;
         while (coordinate && coordinate->id != id) {
             coordinate = coordinate->next;
@@ -90,7 +90,7 @@ coordinate_t *coordinate_set_get_coordinate_by_id(coordinate_set_t *this, uint64
     return NULL;
 }
 
-int coordinate_set_parse_igc(coordinate_set_t *this, char *string) {
+int coordinate_set_parse_igc(coordinate_set_t *obj, char *string) {
     int16_t b_records = 0;
     char *curLine = string;
     while (curLine) {
@@ -98,11 +98,11 @@ int coordinate_set_parse_igc(coordinate_set_t *this, char *string) {
         if (nextLine)
             *nextLine = '\0';
         if (is_h_record(curLine)) {
-            parse_h_record(this, curLine);
+            parse_h_record(obj, curLine);
         } else if (is_b_record(curLine)) {
             coordinate_t *coordinate = malloc(sizeof(coordinate_t));
             parse_igc_coordinate(curLine, coordinate);
-            coordinate_set_append(this, coordinate);
+            coordinate_set_append(obj, coordinate);
         }
         if (nextLine)
             *nextLine = '\n';
@@ -123,9 +123,9 @@ int coordinate_set_has_height_data(coordinate_set_t *coordinate_set) {
     return 0;
 }
 
-int coordinate_set_repair(coordinate_set_t *this) {
-    if (this->first) {
-        coordinate_t *current = this->first->next;
+int coordinate_set_repair(coordinate_set_t *obj) {
+    if (obj->first) {
+        coordinate_t *current = obj->first->next;
         while (current) {
             if (current->ele == 0) {
                 current->ele = current->prev->ele;
@@ -140,14 +140,14 @@ int coordinate_set_repair(coordinate_set_t *this) {
     return 0;
 }
 
-statistics_set_t *coordinate_set_stats(coordinate_set_t *this) {
+statistics_set_t *coordinate_set_stats(coordinate_set_t *obj) {
     statistics_set_t *ret = malloc(sizeof(statistics_set_t));
-    statistics_set_init(ret, this);
+    statistics_set_init(ret, obj);
     return ret;
 }
 
-uint64_t coordinate_subset_length(coordinate_set_t *this, uint16_t offset) {
-    coordinate_subset_t *set = this->first_subset;
+uint64_t coordinate_subset_length(coordinate_set_t *obj, uint16_t offset) {
+    coordinate_subset_t *set = obj->first_subset;
     uint16_t i = 0;
     while (i++ < offset && set) {
         set = set->next;
@@ -158,42 +158,42 @@ uint64_t coordinate_subset_length(coordinate_set_t *this, uint16_t offset) {
     return 0;
 }
 
-void coordinate_set_select_section(coordinate_set_t *this, uint16_t start, uint16_t end) {
+void coordinate_set_select_section(coordinate_set_t *obj, uint16_t start, uint16_t end) {
     if (!end) {
         end = start;
     }
-    coordinate_subset_t *current = this->first_subset;
+    coordinate_subset_t *current = obj->first_subset;
     coordinate_subset_t *tmp;
     int16_t i = 0;
     while (i++ < start && current) {
         tmp = current->next;
-        coordinate_subset_deinit(current, this);
+        coordinate_subset_deinit(current, obj);
         current = tmp;
     }
     i = 0;
     int64_t diff = end - start;
     if (current) {
-        this->first = current->first;
-        this->first_subset = current;
+        obj->first = current->first;
+        obj->first_subset = current;
         while (i++ < diff && current) {
             current = current->next;
         }
         if (current) {
-            this->last = current->last;
-            this->last_subset = current;
+            obj->last = current->last;
+            obj->last_subset = current;
             current = current->next;
             while (current) {
                 tmp = current->next;
-                coordinate_subset_deinit(current, this);
+                coordinate_subset_deinit(current, obj);
                 current = tmp;
             }
         }
     }
 }
 
-int8_t coordinate_set_extrema(coordinate_set_t *this) {
-    if (this->first) {
-        coordinate_t *current = this->first->next;
+int8_t coordinate_set_extrema(coordinate_set_t *obj) {
+    if (obj->first) {
+        coordinate_t *current = obj->first->next;
         while (current && current->next) {
             double distance = get_distance(current->next, current->prev);
             if (current->next->timestamp != current->prev->timestamp) {
@@ -207,38 +207,38 @@ int8_t coordinate_set_extrema(coordinate_set_t *this) {
             current = current->next;
         }
 
-        this->max_ele = this->max_ele = this->max_alt = this->min_alt = 0;
-        this->max_climb_rate = this->min_climb_rate = this->max_speed = 0;
-        current = this->first;
+        obj->max_ele = obj->max_ele = obj->max_alt = obj->min_alt = 0;
+        obj->max_climb_rate = obj->min_climb_rate = obj->max_speed = 0;
+        current = obj->first;
         while (current) {
             // Compare heights with max/min
-            if (current->ele > this->max_ele) {
-                this->max_ele = current->ele;
-                this->max_ele_t = current->timestamp - this->first->timestamp;
+            if (current->ele > obj->max_ele) {
+                obj->max_ele = current->ele;
+                obj->max_ele_t = current->timestamp - obj->first->timestamp;
             }
-            if (current->ele < this->min_ele) {
-                this->min_ele = current->ele;
-                this->min_ele_t = current->timestamp - this->first->timestamp;
+            if (current->ele < obj->min_ele) {
+                obj->min_ele = current->ele;
+                obj->min_ele_t = current->timestamp - obj->first->timestamp;
             }
-            if (current->alt > this->max_alt) {
-                this->max_alt = current->alt;
-                this->max_alt_t = current->timestamp - this->first->timestamp;
+            if (current->alt > obj->max_alt) {
+                obj->max_alt = current->alt;
+                obj->max_alt_t = current->timestamp - obj->first->timestamp;
             }
-            if (current->alt < this->min_alt) {
-                this->min_alt = current->alt;
-                this->min_alt_t = current->timestamp - this->first->timestamp;
+            if (current->alt < obj->min_alt) {
+                obj->min_alt = current->alt;
+                obj->min_alt_t = current->timestamp - obj->first->timestamp;
             }
-            if (current->climb_rate < this->min_climb_rate) {
-                this->min_climb_rate = current->climb_rate;
+            if (current->climb_rate < obj->min_climb_rate) {
+                obj->min_climb_rate = current->climb_rate;
             }
-            if (current->climb_rate > this->max_climb_rate) {
-                this->max_climb_rate = current->climb_rate;
+            if (current->climb_rate > obj->max_climb_rate) {
+                obj->max_climb_rate = current->climb_rate;
             }
-            if (current->speed > this->max_speed) {
-                this->max_speed = current->speed;
+            if (current->speed > obj->max_speed) {
+                obj->max_speed = current->speed;
             }
             current = current->next;
-            // this->bounds->add_coordinate_to_bounds(coordinate->lat(),
+            // obj->bounds->add_coordinate_to_bounds(coordinate->lat(),
             // coordinate->lng());
         }
 
@@ -311,26 +311,26 @@ int is_valid_subset(coordinate_subset_t *set) {
     return set->length > 20;
 }
 
-int8_t coordinate_set_trim(coordinate_set_t *this) {
+int8_t coordinate_set_trim(coordinate_set_t *obj) {
     coordinate_subset_t *tmp, *set;
     int16_t i = 0;
-    set = this->first_subset;
+    set = obj->first_subset;
     while (set) {
         if (!is_valid_subset(set)) {
             tmp = set->next;
             i += set->length;
-            coordinate_subset_deinit(set, this);
+            coordinate_subset_deinit(set, obj);
             set = tmp;
         } else {
             break;
         }
     }
-    set = this->last_subset;
+    set = obj->last_subset;
     while (set) {
         if (!is_valid_subset(set)) {
             tmp = set->prev;
             i += set->length;
-            coordinate_subset_deinit(set, this);
+            coordinate_subset_deinit(set, obj);
             set = tmp;
         } else {
             break;
@@ -368,15 +368,15 @@ double parse_degree(char *p, uint16_t length, char negative) {
     return ret;
 }
 
-void parse_igc_coordinate(char *line, coordinate_t *this) {
+void parse_igc_coordinate(char *line, coordinate_t *obj) {
     char *p = line + 1;
-    this->bearing = 0;
-    this->climb_rate = 0;
-    this->speed = 0;
-    this->id = 0;
-    this->prev = this->next = NULL;
-    this->coordinate_set = NULL;
-    this->coordinate_subset = NULL;
+    obj->bearing = 0;
+    obj->climb_rate = 0;
+    obj->speed = 0;
+    obj->id = 0;
+    obj->prev = obj->next = NULL;
+    obj->coordinate_set = NULL;
+    obj->coordinate_subset = NULL;
 
     // Extract time
     char hour[3], min[3], seconds[3];
@@ -386,13 +386,13 @@ void parse_igc_coordinate(char *line, coordinate_t *this) {
     min[2] = 0;
     strncpy(seconds, p + 4, 2);
     seconds[2] = 0;
-    this->timestamp = (atoi(hour) * 3600) + (atoi(min) * 60) + atoi(seconds);
+    obj->timestamp = (atoi(hour) * 3600) + (atoi(min) * 60) + atoi(seconds);
     p += 6;
 
-    this->lat = parse_degree(p, 2, 'S');
+    obj->lat = parse_degree(p, 2, 'S');
     p += 8;
-    this->lng = parse_degree(p, 3, 'W');
-    sincos(this->lat toRAD, &this->sin_lat, &this->cos_lat);
+    obj->lng = parse_degree(p, 3, 'W');
+    sincos(obj->lat toRAD, &obj->sin_lat, &obj->cos_lat);
     ;
     p += 10;
 
@@ -400,14 +400,14 @@ void parse_igc_coordinate(char *line, coordinate_t *this) {
     char alt[6];
     strncpy(alt, p, 5);
     alt[5] = 0;
-    this->alt = atoi(alt);
+    obj->alt = atoi(alt);
     p += 5;
 
     // Extract ele
     char ele[6];
     strncpy(ele, p, 5);
     ele[5] = 0;
-    this->ele = atoi(ele);
+    obj->ele = atoi(ele);
 }
 
 int parse_h_record(coordinate_set_t *parser, char *line) {
