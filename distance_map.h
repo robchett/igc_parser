@@ -20,14 +20,14 @@ uint64_t maximum_bound_index_fwrd(distance_map_t *map, uint64_t point, uint64_t 
 
 uint64_t skip_up(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
 uint64_t skip_down(distance_map_t *map, uint64_t *index, uint64_t required, uint64_t current, int16_t effected_legs);
-triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score);
+triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score, float height_ratio);
 
 coordinate_t *get_coordinate(distance_map_t *map, uint64_t index);
 
 void distance_map_init(distance_map_t *map, coordinate_set_t *set);
 void distance_map_deinit(distance_map_t *obj);
 
-task_t *distance_map_score_triangle(distance_map_t *obj);
+task_t *distance_map_score_triangle(distance_map_t *obj, float height_ratio);
 task_t *distance_map_score_out_and_return(distance_map_t *obj);
 task_t *distance_map_score_open_distance_3tp(distance_map_t *obj);
 

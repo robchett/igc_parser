@@ -9,11 +9,12 @@
 #include "kml.h"
 #include "formatter_kml_earth.h"
 
-void formatter_kml_earth_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+void formatter_kml_earth_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task_ft, task_t *task) {
     obj->set = set;
     obj->open_distance = task_od;
     obj->out_and_return = task_or;
     obj->triangle = task_tr;
+    obj->flat_triangle = task_ft;
     obj->task = task;
     obj->name = name;
 }
@@ -270,6 +271,7 @@ char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
         char *open_distance = NULL;
         char *out_and_return = NULL;
         char *triangle = NULL;
+        char *flat_triangle = NULL;
         char *task = NULL;
         if (obj->open_distance) {
             open_distance = get_task_od_earth(obj);
@@ -279,6 +281,9 @@ char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
         }
         if (obj->triangle) {
             triangle = get_task_tr_earth(obj);
+        }
+        if (obj->flat_triangle) {
+            flat_triangle = get_task_ft_earth(obj);
         }
         if (obj->task) {
             task = get_defined_task_earth(obj->task);
@@ -379,10 +384,11 @@ char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
            %s\n\
            %s\n\
            %s\n\
+           %s\n\
 		</Folder>\n\
 	</Folder>\n\
 </Document>",
-                styles, obj->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance ?: "", out_and_return ?: "", triangle ?: "", task ?: "");
+                styles, obj->name, height, speed, climb_rate, timestamp, shadow, shadow_extrude, open_distance ?: "", out_and_return ?: "", triangle ?: "", flat_triangle?: "", task ?: "");
 
         free(metadata);
         free(linestring);
@@ -402,6 +408,9 @@ char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
         }
         if (out_and_return) {
             free(out_and_return);
+        }
+        if (flat_triangle) {
+            free(flat_triangle);
         }
         if (task) {
             free(task);

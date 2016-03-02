@@ -7,11 +7,12 @@
 #include "formatter_js.h"
 #include "../include/json/jansson.h"
 
-void formatter_js_init(formatter_t *obj, coordinate_set_t *set, int64_t id, task_t *task_od, task_t *task_or, task_t *task_tr) {
+void formatter_js_init(formatter_t *obj, coordinate_set_t *set, int64_t id, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task_ft) {
     obj->set = set;
     obj->open_distance = task_od;
     obj->out_and_return = task_or;
     obj->triangle = task_tr;
+    obj->flat_triangle = task_ft;
     obj->id = id;
 }
 
@@ -86,13 +87,11 @@ char *formatter_js_output(formatter_t *obj, char *filename) {
             json_object_set(json, "tr_score", json_real(get_task_distance(obj->triangle)));
             json_object_set(json, "tr_time", json_integer(get_task_time(obj->triangle)));
         }
-        // if (obj->failed_triangle) {
-        //     json_object_set(json, "ft_score",
-        //     json_real(get_task_distance(obj->failed_triangle)));
-        //     json_object_set(json, "ft_time",
-        //     json_integer(get_task_time(obj->failed_triangle)));
-        // }
-
+        if (obj->flat_triangle) {
+            json_object_set(json, "ft_score", json_real(get_task_distance(obj->flat_triangle)));
+            json_object_set(json, "ft_time",json_integer(get_task_time(obj->flat_triangle)));
+        }
+        
         json_t *inner = json_object();
         json_object_set(inner, "draw_graph", json_integer(1));
         json_object_set(inner, "pilot", json_string("N/A"));

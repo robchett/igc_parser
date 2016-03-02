@@ -166,7 +166,7 @@ uint8_t _main(json_t *data) {
             printf("},");
             printf("\"task\": {", set->length);
 
-            task_t *od, *or, *tr;
+            task_t *od, *or, *tr, *ft;
 
             od = distance_map_score_open_distance_3tp(map);
             format_task(od, "open_distance", OPEN_DISTANCE);
@@ -176,8 +176,12 @@ uint8_t _main(json_t *data) {
             format_task(or, "out_and_return", OUT_AND_RETURN);
             printf(",");
 
-            tr = distance_map_score_triangle(map);
+            tr = distance_map_score_triangle(map, 0.28);
             format_task(tr, "triangle", TRIANGLE);
+            printf(",");
+
+            ft = distance_map_score_triangle(map, 0);
+            format_task(ft, "flat_triangle", FLAT_TRIANGLE);
 
             if (task) {
                 printf(",");
@@ -190,17 +194,17 @@ uint8_t _main(json_t *data) {
             formatter_t *formatter;
 
             formatter = NEW(formatter_t, 1);
-            formatter_js_init(formatter, set, 1, od, or, tr);
+            formatter_js_init(formatter, set, 1, od, or, tr, ft);
             formatter_js_output(formatter, out_file_1);
             free(formatter);
 
             formatter = NEW(formatter_t, 1);
-            formatter_kml_init(formatter, set, pilot ?: "", od, or, tr, task);
+            formatter_kml_init(formatter, set, pilot ?: "N/A", od, or, tr, ft, task);
             formatter_kml_output(formatter, out_file_2);
             free(formatter);
 
             formatter = NEW(formatter_t, 1);
-            formatter_kml_earth_init(formatter, set, pilot ?: "", od, or, tr, task);
+            formatter_kml_earth_init(formatter, set, pilot ?: "N/A", od, or, tr, ft, task);
             formatter_kml_earth_output(formatter, out_file_3);
             free(formatter);
 
@@ -236,7 +240,7 @@ uint8_t _main(json_t *data) {
             free(formatter);
 
             formatter_t *js_formatter = NEW(formatter_t, 1);
-            formatter_js_init(js_formatter, set, 1, NULL, NULL, NULL);
+            formatter_js_init(js_formatter, set, 1, NULL, NULL, NULL, NULL);
             formatter_js_output(js_formatter, out_file_1);
             free(js_formatter);
         }

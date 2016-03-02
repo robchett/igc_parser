@@ -48,10 +48,10 @@ uint64_t score_triangle(distance_map_t *obj, triangle_score *score, int16_t incl
     return res;
 }
 
-triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score) {
+triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score, float height_ratio) {
     int64_t distance = (MAP(obj, x, y) + MAP(obj, y, z) + MAP(obj, x, z));
     int64_t min = fmin(MAP(obj, x, y), fmin(MAP(obj, y, z), MAP(obj, x, z)));
-    if (distance > score_triangle(obj, score, 0) && min > distance * 0.28) {
+    if (distance > score_triangle(obj, score, 0) && min > distance * height_ratio) {
         triangle_score *new_score = NEW(triangle_score, 1);
         new_score->x = x;
         new_score->y = y;
@@ -72,19 +72,19 @@ triangle_score *check_y(int64_t x, int64_t y, int64_t z, int64_t row, int64_t co
     return score;
 }
 
-triangle_score *scan_between(int64_t x, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score) {
+triangle_score *scan_between(int64_t x, int64_t z, int64_t row, int64_t col, distance_map_t *obj, uint64_t *_minleg, triangle_score *score, float height_ratio) {
     int64_t y = 0;
     uint64_t skip;
     for (y = floor((x + z) / 2); y <= (z - 1); ++y) {
         if (skip_up(obj, &y, MAP(obj, x, y), *_minleg, 2) || skip_up(obj, &y, MAP(obj, y, z), *_minleg, 2))
             continue;
-        score = check_y(x, y, z, row, col, obj, _minleg, score);
+        score = check_y(x, y, z, row, col, obj, _minleg, score, height_ratio);
     }
     y = floor((x + z) / 2);
     for (; y >= (x + 1); --y) {
         if (skip_down(obj, &y, MAP(obj, x, y), *_minleg, 2) || skip_down(obj, &y, MAP(obj, y, z), *_minleg, 2))
             continue;
-        score = check_y(x, y, z, row, col, obj, _minleg, score);
+        score = check_y(x, y, z, row, col, obj, _minleg, score, height_ratio);
     }
     return score;
 }
@@ -106,7 +106,7 @@ void close_gap(distance_map_t *obj, triangle_score *score) {
     }
 }
 
-task_t *distance_map_score_triangle(distance_map_t *obj) {
+task_t *distance_map_score_triangle(distance_map_t *obj, float height_ratio) {
     uint64_t maximum_distance = 0;
     triangle_score *best_score = NULL;
     int64_t closest_end = 0;
@@ -122,7 +122,7 @@ task_t *distance_map_score_triangle(distance_map_t *obj) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
                     if (skip_down(obj, &z, MAP(obj, x, z), _minleg, 3))
                         continue;
-                    best_score = scan_between(x, z, row, col, obj, &_minleg, best_score);
+                    best_score = scan_between(x, z, row, col, obj, &_minleg, best_score, height_ratio);
                 }
             }
             x = row + ((col - row) / 2);
@@ -130,7 +130,7 @@ task_t *distance_map_score_triangle(distance_map_t *obj) {
                 for (z = col; z > x + 1 && z > closest_end; --z) {
                     if (skip_down(obj, &z, MAP(obj, x, z), _minleg, 3))
                         continue;
-                    best_score = scan_between(x, z, row, col, obj, &_minleg, best_score);
+                    best_score = scan_between(x, z, row, col, obj, &_minleg, best_score, height_ratio);
                 }
             }
             closest_end = col;

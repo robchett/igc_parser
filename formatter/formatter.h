@@ -10,5 +10,6 @@ typedef struct formatter_t {
     task_t *open_distance;
     task_t *out_and_return;
     task_t *triangle;
+    task_t *flat_triangle;
     task_t *task;
 } formatter_t;

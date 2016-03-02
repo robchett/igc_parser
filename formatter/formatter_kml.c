@@ -8,11 +8,12 @@
 #include "kml.h"
 #include "formatter_kml.h"
 
-void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
+void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task_ft, task_t *task) {
     obj->set = set;
     obj->open_distance = task_od;
     obj->out_and_return = task_or;
     obj->triangle = task_tr;
+    obj->flat_triangle = task_ft;
     obj->task = task;
     obj->name = name;
 }
@@ -208,9 +209,11 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
         char od_results[100];
         char or_results[100];
         char tr_results[100];
+        char ft_results[100];
         mxml_node_t *open_distance = NULL;
         mxml_node_t *out_and_return = NULL;
         mxml_node_t *triangle = NULL;
+        mxml_node_t *flat_triangle = NULL;
         mxml_node_t *task = NULL;
         if (obj->open_distance) {
             open_distance = get_task_od(obj);
@@ -223,6 +226,10 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
         if (obj->triangle) {
             triangle = get_task_tr(obj);
             sprintf(tr_results, "TR Score / Time\t\t %3.2f / %s", get_task_distance(obj->triangle), task_get_duration(obj->triangle));
+        }
+        if (obj->flat_triangle) {
+            flat_triangle = get_task_ft(obj);
+            sprintf(ft_results, "FT Score / Time %3.2f / %d", get_task_distance(obj->flat_triangle), get_task_time(obj->flat_triangle));
         }
         if (obj->task) {
             task = get_defined_task(obj->task);
@@ -242,7 +249,8 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
             %s                           \n\
             %s                           \n\
             %s                           \n\
-		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "");
+            %s                           \n\
+		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", ft_results ?: "");
 
         mxml_node_t *xml, *folder, *folder2, *folder3, *folder4, *folder5, *folder6;
 
@@ -279,6 +287,7 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
                     if (open_distance) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, open_distance);
                     if (out_and_return) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, out_and_return);
                     if (triangle) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, triangle);
+                    if (flat_triangle) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, flat_triangle);
                     if (task) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, task);
 
         mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
