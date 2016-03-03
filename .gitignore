@@ -16,3 +16,4 @@ test/**/*.kml
 test/**/*.js
 libgtest.a
 igc_parser
+tests
