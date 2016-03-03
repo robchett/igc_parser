@@ -14,6 +14,7 @@
 #include "distance_map.h"
 #include "statistics/element.h"
 #include "statistics/group.h"
+#include "validate.h"
 
 task_t *parse_task(json_t *_task);
 
@@ -145,6 +146,7 @@ uint8_t _main(json_t *data) {
             char *ids;
 
             printf("{");
+            printf("\"validated\": %d,", validate_file(source));
             printf("\"total_points\": %d,", initial_length);
             printf("\"sets\": %d,", set->subset_count);
             printf("\"date\": \"%04d-%02d-%02d\",", set->year, set->month, set->day);
@@ -281,7 +283,6 @@ void format_task(task_t *task, char *title, int type) {
         printf("\"%s\": null", title);
     }
 }
-
 
 task_t *parse_task(json_t *_task) {
     if (_task) {

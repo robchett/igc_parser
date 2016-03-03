@@ -3,7 +3,7 @@ test_dir = "$(shell pwd)/test/"
 GTEST_DIR = ./include/gtest/googletest
 
 make : $(objects)
-	cc -o igc_parser $(objects) -g -Og -lm -std=c99
+	cc -o igc_parser $(objects) -g -Og -lm -lcurl -std=c99
 
 %.o: %.c 
 	cc -std=c99 -static -g -Og -c -o $@ $<
@@ -28,5 +28,5 @@ grind_source:
 gtest:
 	g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
 	ar -rv libgtest.a gtest-all.o
-	g++ -isystem ${GTEST_DIR}/include -pthread ./test/tests.cpp libgtest.a -o tests
+	g++ -isystem ${GTEST_DIR}/include -pthread -lcurl ./test/tests.cpp libgtest.a -o tests
 	./tests

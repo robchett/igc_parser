@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "../convert.c"
+#include "../validate.c"
 //#include "../task.c"
 #include "../coordinate.c"
 #include "../coordinate_subset.c"
@@ -18,6 +19,13 @@ double rounddp(double num, int dp) {
 int main(int ac, char *av[]) {
     testing::InitGoogleTest(&ac, av);
     return RUN_ALL_TESTS();
+}
+
+TEST (Validator, validate) {
+    EXPECT_EQ (false, validate_file("test/0/test.igc"));
+    EXPECT_EQ (true, validate_file("test/1/test.igc"));
+    EXPECT_EQ (false, validate_file("test/2/test.igc"));
+    EXPECT_EQ (true, validate_file("test/3/test.igc"));
 }
 
 TEST (Conversion, latlng_to_gridref) {
