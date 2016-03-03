@@ -1,11 +1,11 @@
 #include "../main.h"
 #include <string.h>
-#include <mxml.h>
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
 #include "../igc_parser.h"
 #include "../task.h"
+#include "kml.h"
 #include "formatter_kml.h"
 
 void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
@@ -15,16 +15,6 @@ void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, tas
     obj->triangle = task_tr;
     obj->task = task;
     obj->name = name;
-}
-
-mxml_node_t *new_text_node(mxml_node_t *parent, char *tag, char *value) {
-    mxml_node_t *node = mxmlNewElement(parent, tag);
-    mxmlNewText(node, 0, value);
-}
-
-mxml_node_t *new_cdata_node(mxml_node_t *parent, char *tag, char *value) {
-    mxml_node_t *node = mxmlNewElement(parent, tag);
-    mxmlNewCDATA(node, value);
 }
 
 mxml_node_t *get_meta_data(formatter_t *obj) {
@@ -209,7 +199,6 @@ mxml_node_t *get_task_ft(formatter_t *obj) {
 
 char *formatter_kml_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
-    mxml_node_t *xml = mxmlNewXML("1.0");
     if (fp) {
         // TASKS
         char od_results[100];
@@ -251,8 +240,9 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
             %s                           \n\
 		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "");
 
-        mxml_node_t *folder, *folder2, *folder3, *folder4, *folder5, *folder6;
+        mxml_node_t *xml, *folder, *folder2, *folder3, *folder4, *folder5, *folder6;
 
+        xml = mxmlNewXML("1.0");
         folder = mxmlNewElement(xml, "Document");
             new_text_node(folder, "open", "1");
             folder2 = mxmlNewElement(folder, "Style");
@@ -288,6 +278,7 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
                     if (task) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, task);
 
         mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
+        fclose(fp);
     } else {
         printf("Failed to open file: %s", filename);
     }

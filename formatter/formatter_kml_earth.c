@@ -6,6 +6,7 @@
 #include "../task.h"
 #include <time.h>
 #include <string.h>
+#include "kml.h"
 #include "formatter_kml_earth.h"
 
 void formatter_kml_earth_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task) {
