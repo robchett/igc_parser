@@ -90,7 +90,7 @@ mxml_node_t *get_task_generic(task_t *task, char *title, char *colour) {
         }
     }
 
-    info = vstrcat(info, "Duration:  01:56:00</pre>", NULL);
+    info = vstrcat(info, "Duration:  ", task_get_duration(task) ,"</pre>", NULL);
 
     mxml_node_t *root, *folder1, *folder2, *folder3;
     root = mxmlNewElement(MXML_NO_PARENT, "Folder");
@@ -210,15 +210,15 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
         mxml_node_t *task = NULL;
         if (obj->open_distance) {
             open_distance = get_task_od(obj);
-            sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(obj->open_distance), get_task_time(obj->open_distance));
+            sprintf(od_results, "OD Score / Time\t\t %3.2f / %s", get_task_distance(obj->open_distance), task_get_duration(obj->open_distance));
         }
         if (obj->open_distance) {
             out_and_return = get_task_or(obj);
-            sprintf(or_results, "OR Score / Time %3.2f / %d", get_task_distance(obj->out_and_return), get_task_time(obj->out_and_return));
+            sprintf(or_results, "OR Score / Time\t\t %3.2f / %s", get_task_distance(obj->out_and_return), task_get_duration(obj->out_and_return));
         }
         if (obj->triangle) {
             triangle = get_task_tr(obj);
-            sprintf(tr_results, "TR Score / Time %3.2f / %d", get_task_distance(obj->triangle), get_task_time(obj->triangle));
+            sprintf(tr_results, "TR Score / Time\t\t %3.2f / %s", get_task_distance(obj->triangle), task_get_duration(obj->triangle));
         }
         if (obj->task) {
             task = get_defined_task(obj->task);

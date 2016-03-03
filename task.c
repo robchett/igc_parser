@@ -115,6 +115,17 @@ int get_task_time(task_t *obj) {
     }
 }
 
+char *task_get_duration(task_t *obj) {
+    int time = get_task_time(obj);
+    char *res = NEW(char, 10);
+    int secs = time % 60;
+    int mins = ((time - secs) / 60) % 60;
+    int hours = ((time - secs - (mins * 60)) / 3660);
+
+    sprintf(res, "%02d:%02d:%02d", hours, mins, secs);
+    return res;
+}
+
 double get_task_distance(task_t *task) {
     int16_t i = 0;
     int16_t end = task->size - 1;
