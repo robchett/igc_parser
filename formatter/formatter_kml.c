@@ -1,5 +1,6 @@
 #include "../main.h"
 #include <string.h>
+#include <mxml.h>
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
@@ -16,24 +17,36 @@ void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, tas
     obj->name = name;
 }
 
-char *get_meta_data(formatter_t *obj) {
-    char *buffer = create_buffer("<Metadata>\n\t\t\t\t\t<SecondsFromTimeOfFirstPoint>\n\t\t\t\t\t\t");
+mxml_node_t *new_text_node(mxml_node_t *parent, char *tag, char *value) {
+    mxml_node_t *node = mxmlNewElement(parent, tag);
+    mxmlNewText(node, 0, value);
+}
+
+mxml_node_t *new_cdata_node(mxml_node_t *parent, char *tag, char *value) {
+    mxml_node_t *node = mxmlNewElement(parent, tag);
+    mxmlNewCDATA(node, value);
+}
+
+mxml_node_t *get_meta_data(formatter_t *obj) {
     coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
+    char *buffer = create_buffer("");
     while (coordinate) {
         char *timestamp = itos(coordinate->timestamp);
         buffer = vstrcat(buffer, timestamp, " ", NULL);
         free(timestamp);
-        if (i++ == 15) {
-            i = 0;
-            buffer = vstrcat(buffer, "\n\t\t\t\t\t\t", NULL);
-        }
         coordinate = coordinate->next;
     }
-    return vstrcat(buffer, "\n\t\t\t\t\t</SecondsFromTimeOfFirstPoint>\n\t\t\t\t</Metadata>", NULL);
+
+    mxml_node_t *root, *folder1;
+
+    root = mxmlNewElement(MXML_NO_PARENT, "Metadata");
+        new_text_node(root, "SecondsFromTimeOfFirstPoint", buffer);
+
+    return root;
 }
 
-char *get_linestring(formatter_t *obj) {
+mxml_node_t *get_linestring(formatter_t *obj) {
     char *coordinates = calloc((200 + (30 * obj->set->length)), sizeof(char));
     coordinate_t *coordinate = obj->set->first;
     int16_t i = 0;
@@ -41,24 +54,17 @@ char *get_linestring(formatter_t *obj) {
         char *kml_coordinate = coordinate_to_kml(coordinate);
         strcat(coordinates, kml_coordinate);
         free(kml_coordinate);
-        if (i++ == 5) {
-            i = 0;
-            strcat(coordinates, "\n\t\t\t\t\t\t");
-        }
         coordinate = coordinate->next;
     }
-    char *buffer = NEW(char, (200 + (30 * obj->set->length)));
-    sprintf(buffer, "\
-            <LineString>\n\
-                <extrude>0</extrude>\n\
-	            <altitudeMode>absolute</altitudeMode>\n\
-	            <coordinates>\n\
-                    %s\n\
-                </coordinates>\n\
-            </LineString>",
-            coordinates);
-    free(coordinates);
-    return buffer;
+
+    mxml_node_t *root, *folder1;
+
+    root = mxmlNewElement(MXML_NO_PARENT, "LineString");
+        new_text_node(root, "extrude", "0");
+        new_text_node(root, "altitudeMode", "absolute");
+        new_text_node(root, "coordinates", coordinates);
+
+    return root;
 }
 
 char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *prev, double *total_distance) {
@@ -74,9 +80,9 @@ char *format_task_point(coordinate_t *coordinate, int16_t index, coordinate_t *p
     return buffer;
 }
 
-char *get_task_generic(task_t *task, char *title, char *colour) {
+mxml_node_t *get_task_generic(task_t *task, char *title, char *colour) {
     double distance = 0;
-    char *info = create_buffer("");
+    char *info = create_buffer("<pre>TP   Latitude   Longitude   OS Gridref   Distance   Total\n");
     char *coordinates = create_buffer("");
     coordinate_t *prev = NULL;
     int16_t i;
@@ -93,44 +99,28 @@ char *get_task_generic(task_t *task, char *title, char *colour) {
             printf("%s -> %d missing\n", title, i);
         }
     }
-    char *buffer = create_buffer("");
-    buffer = vstrcat(buffer, "\n\
-        <Folder>\n\
-            <name>",
-                     title, "</name>\n\
-            <visibility>1</visibility>\n\
-            <styleUrl>#hideChildren</styleUrl>\n\
-            <Placemark>\n\
-                <visibility>1</visibility>\n\
-                <name>",
-                     title, "</name>\n\
-                <description>\n\
-                <![CDATA[<pre>\n\
-TP   Latitude   Longitude   OS Gridref   Distance   Total\n\
-",
-                     info, "\
-                                         Duration:  01:56:00\n\
-                    </pre>]]>\n\
-                </description>\n\
-                <Style>\n\
-                    <LineStyle>\n\
-                        <color>FF",
-                     colour, "</color>\n\
-                        <width>2</width>\n\
-                    </LineStyle>\n\
-                </Style>\n\
-                <LineString>\n\
-                    <coordinates>\n\
-                        ",
-                     coordinates, "\n\
-                    </coordinates>\n\
-                </LineString>\n\
-            </Placemark>\n\
-        </Folder>",
-                     NULL);
+
+    info = vstrcat(info, "Duration:  01:56:00</pre>", NULL);
+
+    mxml_node_t *root, *folder1, *folder2, *folder3;
+    root = mxmlNewElement(MXML_NO_PARENT, "Folder");
+        new_text_node(root, "name", title);
+        new_text_node(root, "visibility", "1");
+        new_text_node(root, "styleUrl", "#hideChildren");
+        folder1 = mxmlNewElement(root, "Placemark");
+            new_text_node(folder1, "visibility", "1");
+            new_text_node(folder1, "name", title);
+            new_cdata_node(folder1, "description", info);
+            folder2 = mxmlNewElement(folder1, "Style");
+                folder3 = mxmlNewElement(folder2, "LineStyle");
+                    new_text_node(folder3, "color", colour);
+                    new_text_node(folder3, "width", "2");
+            folder2 = mxmlNewElement(folder1, "LineString");
+                new_text_node(folder2, "coordinates", coordinates);
+
     free(info);
     free(coordinates);
-    return buffer;
+    return root;
 }
 
 char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
@@ -158,91 +148,77 @@ char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
     return buffer;
 }
 
-char *get_defined_task(task_t *task) {
+mxml_node_t *get_defined_task(task_t *task) {
     double distance = 0;
-    char *info = create_buffer("\
-<Folder>\n\
-    <name>Task</name>");
+
     char *kml_coordinates = create_buffer("");
+
+    mxml_node_t *root, *folder1, *folder2, *folder3, *folder4;
+
+    root = mxmlNewElement(MXML_NO_PARENT, "Folder");
+    new_text_node(root, "name", "Task");
+
     int16_t i;
     for (i = 0; i < task->size; i++) {
         char *coordinates = get_circle_coordinates(task->coordinate[i], 400);
         char *kml_coordinate = coordinate_to_kml(task->coordinate[i]);
         kml_coordinates = vstrcat(kml_coordinates, kml_coordinate, NULL);
         free(kml_coordinate);
-        info = vstrcat(info, "\n\
-    <Placemark>\n\
-        <Style>\n\
-            <PolyStyle>\n\
-              <color>99ffffaa</color>\n\
-              <fill>1</fill>\n\
-              <outline>1</outline>\n\
-            </PolyStyle>\n\
-        </Style>\n\
-        <Polygon>\n\
-            <tessellate>1</tessellate>\n\
-            <outerBoundaryIs>\n\
-                <LinearRing>\n\
-                    <coordinates>\n\n",
-                       coordinates, "\n\
-                    </coordinates>\n\
-                </LinearRing>\n\
-            </outerBoundaryIs>\n\
-        </Polygon>\n\
-    </Placemark>",
-                       "\n\n", NULL);
+        folder1 = mxmlNewElement(root, "Placemark");
+            folder2 = mxmlNewElement(folder1, "Style");
+                folder3 = mxmlNewElement(folder2, "PolyStyle");
+                    new_text_node(folder3, "color", "99ffffaa");
+                    new_text_node(folder3, "fill", "1");
+                    new_text_node(folder3, "outline", "1");
+            folder2 = mxmlNewElement(folder1, "Polygon");
+                new_text_node(folder2, "tessellate", "1");
+                folder3 = mxmlNewElement(folder2, "outerBoundryIs");
+                    folder4 = mxmlNewElement(folder3, "LineString");
+                        new_text_node(folder4, "coordinates", coordinates);
         free(coordinates);
     }
-    info = vstrcat(info, "\n\
-    <Placemark>\n\
-        <LineStyle>\n\
-            <color>FFFFFF00</color>\n\
-            <width>2</width>\n\
-        </LineStyle>\n\
-        <LineString>\n\
-            <altitudeMode>clampToGround</altitudeMode>\n\
-            <coordinates>",
-                   kml_coordinates, "</coordinates>\n\
-        </LineString>\n\
-     </Placemark>\n\
-</Folder>",
-                   NULL);
+
+
+    folder1 = mxmlNewElement(root, "Placemark");
+        folder2 = mxmlNewElement(folder1, "LineStyle");
+            new_text_node(folder2, "color", "FFFFFF00");
+            new_text_node(folder2, "width", "2");
+        folder2 = mxmlNewElement(folder1, "LineString");
+            new_text_node(folder2, "altitudeMode", "clampToGround");
+            new_text_node(folder2, "coordinates", kml_coordinates);
 
     free(kml_coordinates);
-    return info;
+    return root;
 }
 
-char *get_task_od(formatter_t *obj) {
-    char *buffer = get_task_generic(obj->open_distance, "Open Distance", "00D7FF");
-    return buffer;
+mxml_node_t *get_task_od(formatter_t *obj) {
+    return get_task_generic(obj->open_distance, "Open Distance", "00D7FF");
 }
 
-char *get_task_or(formatter_t *obj) {
-    char *buffer = get_task_generic(obj->out_and_return, "Out and Return", "00FF00");
-    return buffer;
+mxml_node_t *get_task_or(formatter_t *obj) {
+    return get_task_generic(obj->out_and_return, "Out and Return", "00FF00");
 }
 
-char *get_task_tr(formatter_t *obj) {
-    char *buffer = get_task_generic(obj->triangle, "FAI Triangle", "0000FF");
-    return buffer;
+mxml_node_t *get_task_tr(formatter_t *obj) {
+    return get_task_generic(obj->triangle, "FAI Triangle", "0000FF");
 }
 
-char *get_task_ft(formatter_t *obj) {
-    char *buffer = get_task_generic(obj->triangle, "Flat Triangle", "FF0066");
-    return buffer;
+mxml_node_t *get_task_ft(formatter_t *obj) {
+    return get_task_generic(obj->triangle, "Flat Triangle", "FF0066");
 }
 
 char *formatter_kml_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
+    mxml_node_t *xml = mxmlNewXML("1.0");
     if (fp) {
         // TASKS
         char od_results[100];
         char or_results[100];
         char tr_results[100];
-        char *open_distance = NULL;
-        char *out_and_return = NULL;
-        char *triangle = NULL;
-        char *task = NULL;
+        mxml_node_t *open_distance = NULL;
+        mxml_node_t *out_and_return = NULL;
+        mxml_node_t *triangle = NULL;
+        mxml_node_t *task = NULL;
         if (obj->open_distance) {
             open_distance = get_task_od(obj);
             sprintf(od_results, "OD Score / Time %3.2f / %d", get_task_distance(obj->open_distance), get_task_time(obj->open_distance));
@@ -259,33 +235,8 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
             task = get_defined_task(obj->task);
         }
 
-        char *metadata = get_meta_data(obj);
-        char *linestring = get_linestring(obj);
-
-        fprintf(fp, "\
-<?xml version='1.0' encoding='UTF-8'?>\n\
-<Document>\n\
-	<open>1</open>\n\
-	<Style id=\"shadow\">\n\
-		<LineStyle>\n\
-			<color>AA000000</color>\n\
-			<width>1</width>\n\
-		</LineStyle>\n\
-		<PolyStyle>\n\
-			<color>55AAAAAA</color>\n\
-		</PolyStyle>\n\
-	</Style>\n\
-	<Style id=\"S1\">\n\
-		<LineStyle>\n\
-			<color>FF0000</color>\n\
-			<width>2</width>\n\
-		</LineStyle>\n\
-	</Style>\n\
-	<Folder>\n\
-		<name>%s</name>\n\
-		<visibility>1</visibility>\n\
-        <open>1</open>\n\
-		<description><![CDATA[<pre>\n\
+        char description[2048];
+        sprintf(description, "<pre>\n\
 			Flight statistics\n\
 			Flight: #%s                  \n\
 			Pilot:                       \n\
@@ -298,46 +249,45 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
             %s                           \n\
             %s                           \n\
             %s                           \n\
-		</pre>]]></description>\n\
-		<Placemark>\n\
-			<Style>\n\
-				<LineStyle>\n\
-					<color>ffff0000</color>\n\
-					<width>2</width>\n\
-				</LineStyle>\n\
-			</Style> \n\
-               %s \n\
-               %s \n\
-		</Placemark>\n\
-		<Folder>\n\
-		    <name>Task</name>\n\
-		    <visibility>1</visibility>\n\
-            %s\n\
-            %s\n\
-            %s\n\
-            %s\n\
-		</Folder>\n\
-	</Folder>\n\
-</Document>",
-                obj->name, obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", metadata, linestring, open_distance ?: "",
-                out_and_return ?: "", triangle ?: "", task ?: "");
+		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "");
 
-        free(metadata);
-        free(linestring);
+        mxml_node_t *folder, *folder2, *folder3, *folder4, *folder5, *folder6;
 
-        if (triangle) {
-            free(triangle);
-        }
-        if (open_distance) {
-            free(open_distance);
-        }
-        if (out_and_return) {
-            free(out_and_return);
-        }
-        if (task) {
-            free(task);
-        }
-        fclose(fp);
+        folder = mxmlNewElement(xml, "Document");
+            new_text_node(folder, "open", "1");
+            folder2 = mxmlNewElement(folder, "Style");
+            mxmlElementSetAttr(folder2, "id", "Shadow");
+                folder3 = mxmlNewElement(folder2, "LineStyle");
+                    new_text_node(folder3, "color", "AA000000");
+                    new_text_node(folder3, "width", "1");
+                folder3 = mxmlNewElement(folder2, "PolyStyle");
+                    new_text_node(folder3, "color", "55AAAAAA");
+            folder2 = mxmlNewElement(folder, "Style");
+            mxmlElementSetAttr(folder2, "id", "S1");
+                folder3 = mxmlNewElement(folder2, "LineStyle");
+                    new_text_node(folder3, "color", "FF0000");
+                    new_text_node(folder3, "width", "2");
+            folder2 = mxmlNewElement(folder, "Folder");
+                new_text_node(folder2, "name", obj->name);
+                new_text_node(folder2, "visibility", "1");
+                new_text_node(folder2, "open", "1");
+                new_cdata_node(folder2, "description", description);
+                folder4 = mxmlNewElement(folder2, "Placemark");
+                    folder5 = mxmlNewElement(folder4, "Style");
+                        folder6 = mxmlNewElement(folder5, "LineStyle");
+                            new_text_node(folder6, "color", "ffff0000");
+                            new_text_node(folder6, "width", "2");
+                    mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, get_meta_data(obj));
+                    mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, get_linestring(obj));
+                folder4 = mxmlNewElement(folder2, "Folder");
+                    new_text_node(folder4, "name", "Task");
+                    new_text_node(folder4, "visibility", "1");
+                    if (open_distance) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, open_distance);
+                    if (out_and_return) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, out_and_return);
+                    if (triangle) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, triangle);
+                    if (task) mxmlAdd(folder4, MXML_ADD_AFTER, MXML_ADD_TO_PARENT, task);
+
+        mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
     } else {
         printf("Failed to open file: %s", filename);
     }
