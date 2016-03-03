@@ -190,12 +190,12 @@ uint8_t _main(json_t *data) {
             free(formatter);
 
             formatter = NEW(formatter_t, 1);
-            formatter_kml_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
+            formatter_kml_init(formatter, set, pilot ?: "", od, or, tr, task);
             formatter_kml_output(formatter, out_file_2);
             free(formatter);
 
             formatter = NEW(formatter_t, 1);
-            formatter_kml_earth_init(formatter, set, pilot ?: "Bob", od, or, tr, task);
+            formatter_kml_earth_init(formatter, set, pilot ?: "", od, or, tr, task);
             formatter_kml_earth_output(formatter, out_file_3);
             free(formatter);
 
