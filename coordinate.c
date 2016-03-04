@@ -12,7 +12,13 @@ void coordinate_init(coordinate_t *obj, double lat, double lng, int64_t ele, int
     obj->cos_lat = cos(lat toRAD);
     obj->ele = ele;
     obj->id = 0;
+    obj->bearing = 0;
+    obj->climb_rate = 0;
+    obj->speed = 0;
     obj->timestamp = timestamp;
+    obj->prev = obj->next = NULL;
+    obj->coordinate_set = NULL;
+    obj->coordinate_subset = NULL;
 }
 
 void coordinate_deinit(coordinate_t *obj) {

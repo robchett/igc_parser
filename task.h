@@ -20,6 +20,7 @@ char *task_get_gridref(task_t *obj);
 char *task_get_duration(task_t *obj);
 
 void task_init(task_t *obj, task_type type, int8_t size, ...);
+void task_init_ex(task_t *obj, size_t size, coordinate_t **coordinate);
 void task_deinit(task_t *obj);
 void task_add_gap(task_t *obj, coordinate_t *start, coordinate_t *end);
 

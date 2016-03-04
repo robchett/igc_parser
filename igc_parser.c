@@ -121,7 +121,9 @@ uint8_t _main(json_t *data) {
     if (igc_file != NULL) {
         coordinate_set_t *set = NEW(coordinate_set_t, 1);
         coordinate_set_init(set);
-        coordinate_set_parse_igc(set, igc_file);
+
+        task_t *read_task = NULL;
+        coordinate_set_parse_igc(set, igc_file, &read_task);
 
         size_t initial_length = set->length;
         coordinate_set_trim(set);
@@ -139,6 +141,9 @@ uint8_t _main(json_t *data) {
         if (set->subset_count == 1) {
 
             task_t *task = parse_task(_task);
+            if (!task) {
+                task = read_task;
+            }
 
             distance_map_t *map = NEW(distance_map_t, 1);
             distance_map_init(map, set);
@@ -288,36 +293,22 @@ task_t *parse_task(json_t *_task) {
     if (_task) {
         if (json_is_object(_task)) {
             task_t *task = NEW(task_t, 1);
+
             json_t *_task_type = json_object_get(_task, "type");
             const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
             json_t *_coordinate = json_object_get(_task, "coordinate");
             size_t count = json_array_size(_coordinate);
-            task->coordinate = NEW(coordinate_t *, count);
+
+            coordinate_t **coordinates = NEW(coordinate_t*, count);
             for (size_t i = 0; i < count; i++) {
                 const char *gridref = json_string_value(json_array_get(_coordinate, i));
                 double lat = 0, lng = 0;
                 convert_gridref_to_latlng(gridref, &lat, &lng);
-                coordinate_t *coordinate = NEW(coordinate_t, 1);
-                coordinate_init(coordinate, lat, lng, 0, 0);
-                task->coordinate[i] = coordinate;
+                coordinates[i] = NEW(coordinate_t, 1);
+                coordinate_init(coordinates[i], lat, lng, 0, 0);
             }
-            task->size = count;
-            task->gap = NULL;
-            if (
-                    task->size == 4 &&
-                    task->coordinate[0]->lat == task->coordinate[3]->lat &&
-                    task->coordinate[0]->lng == task->coordinate[3]->lng
-                    ) {
-                task->type = TRIANGLE;
-            } else if (
-                    task->size == 3 &&
-                    task->coordinate[0]->lat == task->coordinate[2]->lat &&
-                    task->coordinate[0]->lng == task->coordinate[2]->lng
-                    ) {
-                task->type = OUT_AND_RETURN;
-            } else {
-                task->type = OPEN_DISTANCE;
-            }
+
+            task_init_ex(task, count, coordinates);
         } else {
             // Not object
         }

@@ -24,6 +24,28 @@ void task_init(task_t *obj, task_type type, int8_t size, ...) {
     va_end(va);
 }
 
+void task_init_ex(task_t *task, size_t size, coordinate_t **coordinates) {
+    task->coordinate = NEW(coordinate_t, size);
+    task->size = size;
+    task->gap = NULL;
+    task->coordinate = coordinates;
+    if (
+            task->size == 4 &&
+            task->coordinate[0]->lat == task->coordinate[3]->lat &&
+            task->coordinate[0]->lng == task->coordinate[3]->lng
+            ) {
+        task->type = TRIANGLE;
+    } else if (
+            task->size == 3 &&
+            task->coordinate[0]->lat == task->coordinate[2]->lat &&
+            task->coordinate[0]->lng == task->coordinate[2]->lng
+            ) {
+        task->type = OUT_AND_RETURN;
+    } else {
+        task->type = OPEN_DISTANCE;
+    }
+}
+
 void task_deinit(task_t *obj) {
     if (obj->gap) {
         free(obj->gap);
