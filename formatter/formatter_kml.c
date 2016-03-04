@@ -131,7 +131,7 @@ char *get_circle_coordinates(coordinate_t *coordinate, int16_t radius) {
 
         char *lng_string = dtos(lng toDEG);
         char *lat_string = dtos(lat toDEG);
-        buffer = vstrcat(buffer, lng_string, ",", lat_string, ",0 ", NULL);
+        buffer = vstrcat(buffer, lng_string, ",", lat_string, ",1000 ", NULL);
         free(lng_string);
         free(lat_string);
     }
@@ -156,23 +156,27 @@ mxml_node_t *get_defined_task(task_t *task) {
         free(kml_coordinate);
         folder1 = mxmlNewElement(root, "Placemark");
             folder2 = mxmlNewElement(folder1, "Style");
+                folder3 = mxmlNewElement(folder2, "LineStyle");
+                    new_text_node(folder3, "color", "FF9900cc");
+                    new_text_node(folder3, "width", "2");
                 folder3 = mxmlNewElement(folder2, "PolyStyle");
-                    new_text_node(folder3, "color", "99ffffaa");
+                    new_text_node(folder3, "color", "999900cc");
                     new_text_node(folder3, "fill", "1");
-                    new_text_node(folder3, "outline", "1");
+                    new_text_node(folder3, "outline", "0");
             folder2 = mxmlNewElement(folder1, "Polygon");
                 new_text_node(folder2, "tessellate", "1");
-                folder3 = mxmlNewElement(folder2, "outerBoundryIs");
-                    folder4 = mxmlNewElement(folder3, "LineString");
+                folder3 = mxmlNewElement(folder2, "outerBoundaryIs");
+                    folder4 = mxmlNewElement(folder3, "LinearRing");
                         new_text_node(folder4, "coordinates", coordinates);
         free(coordinates);
     }
 
 
     folder1 = mxmlNewElement(root, "Placemark");
-        folder2 = mxmlNewElement(folder1, "LineStyle");
-            new_text_node(folder2, "color", "FFFFFF00");
-            new_text_node(folder2, "width", "2");
+        folder2 = mxmlNewElement(folder1, "Style");
+            folder3 = mxmlNewElement(folder2, "LineStyle");
+                new_text_node(folder3, "color", "FF9900CC");
+                new_text_node(folder3, "width", "2");
         folder2 = mxmlNewElement(folder1, "LineString");
             new_text_node(folder2, "altitudeMode", "clampToGround");
             new_text_node(folder2, "coordinates", kml_coordinates);
@@ -182,19 +186,19 @@ mxml_node_t *get_defined_task(task_t *task) {
 }
 
 mxml_node_t *get_task_od(formatter_t *obj) {
-    return get_task_generic(obj->open_distance, "Open Distance", "00D7FF");
+    return get_task_generic(obj->open_distance, "Open Distance", "FF00D7FF");
 }
 
 mxml_node_t *get_task_or(formatter_t *obj) {
-    return get_task_generic(obj->out_and_return, "Out and Return", "00FF00");
+    return get_task_generic(obj->out_and_return, "Out and Return", "FF00FF00");
 }
 
 mxml_node_t *get_task_tr(formatter_t *obj) {
-    return get_task_generic(obj->triangle, "FAI Triangle", "0000FF");
+    return get_task_generic(obj->triangle, "FAI Triangle", "FF0000FF");
 }
 
 mxml_node_t *get_task_ft(formatter_t *obj) {
-    return get_task_generic(obj->triangle, "Flat Triangle", "FF0066");
+    return get_task_generic(obj->triangle, "Flat Triangle", "FFFF0066");
 }
 
 char *formatter_kml_output(formatter_t *obj, char *filename) {
