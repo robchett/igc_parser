@@ -3,7 +3,7 @@ test_dir = "$(shell pwd)/test/"
 GTEST_DIR = ./include/gtest/googletest
 
 make : $(objects)
-	cc -o igc_parser $(objects) -g -Og -lm -lcurl -std=c99
+	cc -o igc_parser $(objects) -g -Og -lm -lcurl -lmxml -lpthread -std=c99
 
 %.o: %.c 
 	cc -std=c99 -static -g -Og -c -o $@ $<

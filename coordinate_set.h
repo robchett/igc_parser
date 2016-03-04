@@ -1,7 +1,6 @@
 #pragma once
 
 #include "coordinate.h"
-
 typedef struct coordinate_subset_t {
     coordinate_t *first, *last;
     int64_t length;
@@ -9,6 +8,7 @@ typedef struct coordinate_subset_t {
 } coordinate_subset_t;
 
 struct coordinate_set_t;
+
 typedef struct coordinate_set_t {
     coordinate_t *first, *last;
     coordinate_t *real_first, *real_last;
@@ -30,10 +30,12 @@ typedef struct coordinate_set_t {
     int64_t subset_count;
 } coordinate_set_t;
 
+#include "task.h"
+
 void coordinate_set_init(coordinate_set_t *obj);
 void coordinate_set_deinit(coordinate_set_t *obj);
 
-int coordinate_set_parse_igc(coordinate_set_t *obj, char *string);
+int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task);
 
 int coordinate_set_repair(coordinate_set_t *obj);
 int8_t coordinate_set_simplify(coordinate_set_t *set, size_t max_size);

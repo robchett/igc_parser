@@ -5,14 +5,17 @@
 #include "coordinate_set.h"
 #include "coordinate_subset.h"
 #include "igc_parser.h"
+#include "task.h"
 
 void parse_igc_coordinate(char *line, coordinate_t *obj);
 coordinate_t *match_b_record(char *line);
 int is_valid_subset(coordinate_subset_t *start);
 int parse_h_record(coordinate_set_t *coordinate_set, char *line);
 int has_height_data(coordinate_set_t *coordinate_set);
-int is_h_record(char *line);
-int is_b_record(char *line);
+bool is_h_record(char *line);
+bool is_b_record(char *line);
+bool is_c_record(char *line);
+void parse_c_record(char *line, coordinate_t *coordinate);
 
 void coordinate_set_init(coordinate_set_t *obj) {
     obj->length = 0;
@@ -89,23 +92,38 @@ coordinate_t *coordinate_set_get_coordinate_by_id(coordinate_set_t *obj, uint64_
     return NULL;
 }
 
-int coordinate_set_parse_igc(coordinate_set_t *obj, char *string) {
+int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task) {
     int16_t b_records = 0;
     char *curLine = string;
+    char *c_records[6];
+    size_t c_records_cnt = 0;
     while (curLine) {
         char *nextLine = strchr(curLine, '\n');
         if (nextLine)
             *nextLine = '\0';
         if (is_h_record(curLine)) {
             parse_h_record(obj, curLine);
+        } else if (is_c_record(curLine)) {
+            c_records[c_records_cnt++] = curLine;
         } else if (is_b_record(curLine)) {
             coordinate_t *coordinate = NEW(coordinate_t, 1);
             parse_igc_coordinate(curLine, coordinate);
             coordinate_set_append(obj, coordinate);
         }
-        if (nextLine)
+        if (nextLine) {
             *nextLine = '\n';
+        }
         curLine = nextLine ? (nextLine + 1) : NULL;
+    }
+
+    if (c_records_cnt && c_records_cnt <= 5) {
+        *task = NEW(task_t, 1);
+        coordinate_t **coordinates = NEW(coordinate_t*, c_records_cnt);
+        for (size_t i = 0; i < c_records_cnt; i++) {
+            coordinates[i] = NEW(coordinate_t, 1);
+            parse_c_record(c_records[i], coordinates[i]);
+        }
+        task_init_ex(*task, c_records_cnt, coordinates);
     }
 
     return b_records;
@@ -332,17 +350,16 @@ int8_t coordinate_set_trim(coordinate_set_t *obj) {
     return i;
 }
 
-int is_h_record(char *line) {
-    if (strncmp(line, "H", 1) == 0) {
-        return 1;
-    }
-    return 0;
+bool is_h_record(char *line) {
+    return (strncmp(line, "H", 1) == 0);
 }
-int is_b_record(char *line) {
-    if (strncmp(line, "B", 1) == 0) {
-        return 1;
-    }
-    return 0;
+
+bool is_b_record(char *line) {
+    return (strncmp(line, "B", 1) == 0);
+}
+
+bool is_c_record(char *line) {
+    return (strncmp(line, "C", 1) == 0);
 }
 
 double parse_degree(char *p, uint16_t length, char negative) {
@@ -361,6 +378,17 @@ double parse_degree(char *p, uint16_t length, char negative) {
     return ret;
 }
 
+void parse_c_record(char *line, coordinate_t *obj) {
+    char *p = line + 1;
+    double lat, lng;
+
+    lat = parse_degree(p, 2, 'S');
+    p += 8;
+    lng = parse_degree(p, 3, 'W');
+    p += 10;
+
+    coordinate_init(obj, lat, lng, 0, 0);
+}
 void parse_igc_coordinate(char *line, coordinate_t *obj) {
     char *p = line + 1;
     obj->bearing = 0;
