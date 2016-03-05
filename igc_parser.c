@@ -157,7 +157,6 @@ uint8_t _main(json_t *data) {
             printf("\"date\": \"%04d-%02d-%02d\",", set->year, set->month, set->day);
             printf("\"start_time\": %d,", set->first->timestamp);
             printf("\"duration\": %d,", set->last->timestamp - set->first->timestamp);
-            printf("\"completes_task\": %s,", "false");
             printf("\"points\": %d,", set->length);
             printf("\"stats\": {", set->length);
             printf("\"height\" : {\"min\": %d, \"max\": %d},", set->first->ele, set->last->ele);
@@ -297,12 +296,10 @@ task_t *parse_task(json_t *_task) {
     if (_task) {
         if (json_is_object(_task)) {
             task_t *task = NEW(task_t, 1);
-
             json_t *_task_type = json_object_get(_task, "type");
             const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
-            json_t *_coordinate = json_object_get(_task, "coordinate");
+            json_t *_coordinate = json_object_get(_task, "coordinates");
             size_t count = json_array_size(_coordinate);
-
             coordinate_t **coordinates = NEW(coordinate_t*, count);
             for (size_t i = 0; i < count; i++) {
                 const char *gridref = json_string_value(json_array_get(_coordinate, i));
@@ -311,8 +308,8 @@ task_t *parse_task(json_t *_task) {
                 coordinates[i] = NEW(coordinate_t, 1);
                 coordinate_init(coordinates[i], lat, lng, 0, 0);
             }
-
             task_init_ex(task, count, coordinates);
+            return task;
         } else {
             // Not object
         }
