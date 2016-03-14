@@ -210,6 +210,7 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
         char or_results[100];
         char tr_results[100];
         char ft_results[100];
+        od_results[0] = or_results[0] = tr_results[0] = ft_results[0] = '\0';
         mxml_node_t *open_distance = NULL;
         mxml_node_t *out_and_return = NULL;
         mxml_node_t *triangle = NULL;
