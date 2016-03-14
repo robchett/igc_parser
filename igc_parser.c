@@ -179,8 +179,9 @@ uint8_t _main(json_t *data) {
             format_task(tr, "triangle", TRIANGLE);
             printf(",");
 
-            ft = distance_map_score_triangle(map, 0);
-            format_task(ft, "flat_triangle", FLAT_TRIANGLE);
+            ft = NULL;
+            //ft = distance_map_score_triangle(map, 0);
+            //format_task(ft, "flat_triangle", FLAT_TRIANGLE);
 
             if (task) {
                 printf(",");
