@@ -168,20 +168,20 @@ uint8_t _main(json_t *data) {
             task_t *od, *or, *tr, *ft;
 
             od = distance_map_score_open_distance_3tp(map);
+            or = distance_map_score_out_and_return(map);
+            tr = distance_map_score_triangle(map, 0.28);
+            ft = NULL; //distance_map_score_triangle(map, 0);
+
             format_task(od, "open_distance", OPEN_DISTANCE);
             printf(",");
 
-            or = distance_map_score_out_and_return(map);
             format_task(or, "out_and_return", OUT_AND_RETURN);
             printf(",");
 
-            tr = distance_map_score_triangle(map, 0.28);
             format_task(tr, "triangle", TRIANGLE);
             printf(",");
 
-            ft = NULL;
-            //ft = distance_map_score_triangle(map, 0);
-            //format_task(ft, "flat_triangle", FLAT_TRIANGLE);
+            format_task(ft, "flat_triangle", FLAT_TRIANGLE);
 
             if (task) {
                 printf(",");
