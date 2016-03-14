@@ -50,22 +50,6 @@ json_t *get_bounds(coordinate_set_t *set) {
     return point;
 }
 
-char *get_html_output(formatter_t *obj) {
-    char *string = create_buffer("");
-    char *id = (obj->id ? itos(obj->id) : "");
-    string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
-    free(id);
-    return string;
-}
-
-char *get_html_output_earth(formatter_t *obj) {
-    char *string = create_buffer("");
-    char *id = (obj->id ? itos(obj->id) : "");
-    string = vstrcat(string, "<div class=\"kmltree\" data-post='{\"id\":", id, "}'>", "", "</div>", NULL);
-    free(id);
-    return string;
-}
-
 char *formatter_js_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
@@ -91,7 +75,7 @@ char *formatter_js_output(formatter_t *obj, char *filename) {
             json_object_set(json, "ft_score", json_real(get_task_distance(obj->flat_triangle)));
             json_object_set(json, "ft_time",json_integer(get_task_time(obj->flat_triangle)));
         }
-        
+
         json_t *inner = json_object();
         json_object_set(inner, "draw_graph", json_integer(1));
         json_object_set(inner, "pilot", json_string("N/A"));
@@ -105,13 +89,6 @@ char *formatter_js_output(formatter_t *obj, char *filename) {
         json_object_set(inner, "total_dist", json_integer(0));
         json_object_set(inner, "av_speed", json_integer(0));
         json_object_set(inner, "bounds", get_bounds(obj->set));
-        // Can I not do obj?
-        // char *html = get_html_output(obj);
-        // json_object_set(inner, "html", json_string(html));
-        // free(html);
-        // char *html_earth = get_html_output_earth(obj);
-        // json_object_set(inner, "html_earth", json_string(html_earth));
-        // free(html_earth);
 
         json_t *data = json_array();
         json_t *coordinates = json_array();
