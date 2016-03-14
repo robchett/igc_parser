@@ -95,7 +95,7 @@ coordinate_t *coordinate_set_get_coordinate_by_id(coordinate_set_t *obj, uint64_
 int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task) {
     int16_t b_records = 0;
     char *curLine = string;
-    char *c_records[6];
+    char *c_records[8];
     size_t c_records_cnt = 0;
     while (curLine) {
         char *nextLine = strchr(curLine, '\n');
@@ -104,7 +104,9 @@ int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task)
         if (is_h_record(curLine)) {
             parse_h_record(obj, curLine);
         } else if (is_c_record(curLine)) {
-            c_records[c_records_cnt++] = curLine;
+            if (c_records_cnt < 7) {
+                c_records[c_records_cnt++] = curLine;
+            }
         } else if (is_b_record(curLine)) {
             coordinate_t *coordinate = NEW(coordinate_t, 1);
             parse_igc_coordinate(curLine, coordinate);
@@ -116,14 +118,14 @@ int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task)
         curLine = nextLine ? (nextLine + 1) : NULL;
     }
 
-    if (c_records_cnt && c_records_cnt <= 5) {
+    if (c_records_cnt && c_records_cnt <= 7) {
         *task = NEW(task_t, 1);
-        coordinate_t **coordinates = NEW(coordinate_t*, c_records_cnt);
-        for (size_t i = 0; i < c_records_cnt; i++) {
+        coordinate_t **coordinates = NEW(coordinate_t*, c_records_cnt - 2);
+        for (size_t i = 0; i < c_records_cnt - 2; i++) {
             coordinates[i] = NEW(coordinate_t, 1);
-            parse_c_record(c_records[i], coordinates[i]);
+            parse_c_record(c_records[i + 1], coordinates[i]);
         }
-        task_init_ex(*task, c_records_cnt, coordinates);
+        task_init_ex(*task, c_records_cnt - 2, coordinates);
     }
 
     return b_records;
