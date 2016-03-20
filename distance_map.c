@@ -12,7 +12,6 @@ void distance_map_init(distance_map_t *obj, coordinate_set_t *set) {
 
     obj->distances = NEW(uint64_t *, real_size);
     for (int16_t i = 0; i < real_size; i++) {
-        note("%d", i);
         obj->distances[i] = NEW(uint64_t, (real_size - i + 1));
     }
     int16_t j, i = 0;

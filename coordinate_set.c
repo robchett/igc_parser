@@ -125,7 +125,7 @@ int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task)
         for (size_t i = 0; i < c_records_cnt - 2; i++) {
             coordinate_t *coordinate = NEW(coordinate_t, 1);
             parse_c_record(c_records[i + 1], coordinate);
-            if (coordinate) {
+            if (coordinate && coordinate->lat && coordinate->lng) {
                 coordinates[cnt++] = coordinate;
             }
         }
