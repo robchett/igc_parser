@@ -121,11 +121,15 @@ int coordinate_set_parse_igc(coordinate_set_t *obj, char *string, task_t **task)
     if (c_records_cnt && c_records_cnt <= 7) {
         *task = NEW(task_t, 1);
         coordinate_t **coordinates = NEW(coordinate_t*, c_records_cnt - 2);
+        size_t cnt = 0;
         for (size_t i = 0; i < c_records_cnt - 2; i++) {
-            coordinates[i] = NEW(coordinate_t, 1);
-            parse_c_record(c_records[i + 1], coordinates[i]);
+            coordinate_t *coordinate = NEW(coordinate_t, 1);
+            parse_c_record(c_records[i + 1], coordinate);
+            if (coordinate) {
+                coordinates[cnt++] = coordinate;
+            }
         }
-        task_init_ex(*task, c_records_cnt - 2, coordinates);
+        task_init_ex(*task, cnt, coordinates);
     }
 
     return b_records;
@@ -388,8 +392,11 @@ void parse_c_record(char *line, coordinate_t *obj) {
     p += 8;
     lng = parse_degree(p, 3, 'W');
     p += 10;
-
-    coordinate_init(obj, lat, lng, 0, 0);
+    if (lat && lng) {
+        coordinate_init(obj, lat, lng, 0, 0);
+    } else {
+        obj = NULL;
+    }
 }
 void parse_igc_coordinate(char *line, coordinate_t *obj) {
     char *p = line + 1;
