@@ -224,7 +224,10 @@ uint8_t _main(json_t *data) {
         } else {
             size_t i = 0;
             coordinate_subset_t *current = set->first_subset;
-            printf("{\"output\": \"%s\",\"sets\":[", out_file_4);
+            printf("{\"output\": \"%s\",", out_file_4);
+            printf("\"validated\": %d,", validate_file(source));
+            printf("\"date\": \"%04d-%02d-%02d\",", set->year, set->month, set->day);
+            printf("\"sets\":[");
             do {
                 if (current->next) {
                     printf("{\"duration\": %d,\"skipped_distance\": %05.5f,\"points\": %d,\"skipped_duration\": %d}, ", coordinate_subset_duration(current),
