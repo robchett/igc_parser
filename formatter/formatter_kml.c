@@ -199,13 +199,12 @@ mxml_node_t *get_task_tr(formatter_t *obj) {
 }
 
 mxml_node_t *get_task_ft(formatter_t *obj) {
-    return get_task_generic(obj->triangle, "Flat Triangle", "FFFF0066");
+    return get_task_generic(obj->flat_triangle, "Flat Triangle", "FFFF0066");
 }
 
 char *formatter_kml_output(formatter_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
     if (fp) {
-        // TASKS
         char od_results[100];
         char or_results[100];
         char tr_results[100];
@@ -251,7 +250,7 @@ char *formatter_kml_output(formatter_t *obj, char *filename) {
             %s                           \n\
             %s                           \n\
             %s                           \n\
-		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results ?: "", or_results ?: "", tr_results ?: "", ft_results ?: "");
+		</pre>", obj->name, obj->set->day, obj->set->month, obj->set->year, obj->set->max_ele, obj->set->min_ele, od_results, or_results, tr_results, ft_results);
 
         mxml_node_t *xml, *folder, *folder2, *folder3, *folder4, *folder5, *folder6;
 

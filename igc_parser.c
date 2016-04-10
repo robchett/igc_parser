@@ -170,7 +170,7 @@ uint8_t _main(json_t *data) {
             od = distance_map_score_open_distance_3tp(map);
             or = distance_map_score_out_and_return(map);
             tr = distance_map_score_triangle(map, 0.28);
-            ft = NULL; //distance_map_score_triangle(map, 0);
+            ft = distance_map_score_triangle(map, 0);
 
             format_task(od, "open_distance", OPEN_DISTANCE);
             printf(",");

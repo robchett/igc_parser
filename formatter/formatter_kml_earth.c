@@ -232,7 +232,7 @@ mxml_node_t *get_task_tr_earth(formatter_t *obj) {
 }
 
 mxml_node_t *get_task_ft_earth(formatter_t *obj) {
-    return get_task_generic_earth(obj->triangle, "Flat Triangle", "FFFF0066");
+    return get_task_generic_earth(obj->flat_triangle, "Flat Triangle", "FFFF0066");
 }
 
 char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
