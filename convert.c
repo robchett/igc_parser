@@ -8,6 +8,10 @@ char *gridref_number_to_letter(int64_t e, int64_t n) {
     int64_t n100k = (int64_t) floor(n / 100000);
 
     if (e100k < 0 || e100k > 8 || n100k < 0 || n100k > 12) {
+        // Coordinate does not fall in the OSGrid
+        char *gridref = (char *)NEW(char, 1);
+        gridref[0] = '\0';
+        return gridref;
     }
 
     int64_t l1 = (19 - n100k) - (19 - n100k) % 5 + floor((e100k + 10) / 5);
