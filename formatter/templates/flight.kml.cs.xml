@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+    <open>1</open>
+    <Style id="Shadow">
+        <LineStyle>
+            <color>AA000000</color>
+            <width>1</width>
+        </LineStyle>
+        <PolyStyle>
+            <color>55AAAAAA</color>
+            <width>1</width>
+        </PolyStyle>
+    </Style>
+    <Style id="default">
+        <LineStyle>
+            <color>ffff0000</color>
+            <width>2</width>
+        </LineStyle>
+    </Style>
+    <Folder>
+        <name><?cs var:name?></name>
+        <visiblity>1</visiblity>
+        <open>1</open>
+        <description>
+            <![CDATA[
+<pre>
+    Flight statistics
+    Flight: 			#<?cs var:id ?>
+    Pilot:   			<?cs var:pilot ?>
+    Club:    			<?cs var:club ?>
+    Glider: 			<?cs var:glider ?>
+    Date: 				<?cs var:date.day ?>-<?cs var:date.month ?>-<?cs var:date.year ?>
+    Start/finish:       <?cs var:start ?> / <?cs var:finish ?>
+    Duration:           <?cs var:duration ?>
+    Max./min. height:   <?cs var:height.max ?> / <?cs var:height.min ?>
+
+    <?cs each:item = tasks ?><?cs var:item.short_title ?> Score / Time     <?cs var:item.score ?> / <?cs var:item.duration ?>
+    <?cs /each ?>
+</pre>
+            ]]>
+        </description>
+        <placemark>
+            <LineString>
+                <styleUrl>#default</styleUrl>
+                <extrude>0</extrude>
+                <altitudeMode>absolute</altitudeMode>
+                <coordinates>
+                    <?cs each:coordinate = coordinates ?><?cs var:coordinate.lng ?>,<?cs var:coordinate.lat ?>,<?cs var:coordinate.ele ?> <?cs /each ?>
+                </coordinates>
+            </LineString>
+            <Metadata>
+                <SecondsFromTimeOfFirstPoint>
+                    <?cs each:coordinate = coordinates ?><?cs var:coordinate.time ?> <?cs /each ?>
+                </SecondsFromTimeOfFirstPoint>
+            </Metadata>
+        </placemark>
+        <Folder>
+            <name>Task</name>
+            <visiblity>1</visiblity>
+            <?cs each:item = tasks ?>
+            <Folder>
+                <name><?cs var:item.title ?></name>
+                <visability>1</visability>
+                <styleUrl>#hideChildren</styleUrl>
+                <Placemark>
+                    <visibility>1</visibility>
+                    <name><?cs var:item.title ?></name>
+                    <description>
+                        <![CDATA[
+<pre>
+TP   Latitude   Longitude   OS Gridref   Distance   Total
+<?cs each:tp = item.turnpoints ?><?cs var:tp.id ?>  <?cs var:tp.lat ?>  <?cs var:tp.lng ?>   <?cs var:tp.gridref ?>   <?cs var:tp.distance ?>   <?cs var:tp.total ?>
+<?cs /each ?>
+
+Duration: <?cs var:item.duration ?>
+</pre>
+                        ]]>
+                    </description>
+                    <Style>
+                        <LineStyle>
+                            <color><?cs var:item.colour ?></color>
+                            <width>2</width>
+                        </LineStyle>
+                    </Style>
+                    <LineString>
+                        <?cs each:tp = item.turnpoints ?><?cs var:tp.coordinate ?> <?cs /each ?>
+                    </LineString>
+                </Placemark>
+                <?cs each:zone = item.zones ?>
+                <Placemark>
+                    <Style>
+                        <LineStyle>
+                            <color><?cs var:item.colour ?></color>
+                            <width>2</width>
+                        </LineStyle>
+                        <PolyStyle>
+                            <color>999900CC</color>
+                            <fill>1</fill>
+                            <outline>0</outline>
+                        </PolyStyle>
+                        <Polygon>
+                            <tessellate>1</tessellate>
+                            <outerBoundryIs>
+                                <LinearRing>
+                                    <coordinates>
+                                        <?cs each:tp = zone.coordinates ?><?cs var:tp ?> <?cs /each ?>
+                                    </coordinates>
+                                </LinearRing>
+                            </outerBoundryIs>
+                        </Polygon>
+                    </Style>
+                </Placemark>
+                <?cs /each ?>
+            </Folder>
+            <?cs /each ?>
+        </Folder>
+    </Folder>
+</Document>

@@ -1,12 +1,12 @@
-objects := $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.c,%.o,$(wildcard **/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/*.c))
+objects := $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.c,%.o,$(wildcard **/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/**/*.c))
 test_dir = "$(shell pwd)/test/"
 GTEST_DIR = ./include/gtest/googletest
 
 make : $(objects)
-	cc -o igc_parser $(objects) -g -Og -lm -lcurl -lmxml -lpthread -std=c99
+	cc -o igc_parser $(objects) -g -Og -lm -lcurl -lpthread -std=gnu99
 
 %.o: %.c 
-	cc -std=c99 -static -g -Og -c -o $@ $<
+	cc -std=gnu99 -static -g -Og -c -o $@ $<
 
 .PHONY: clean test format grind
 
