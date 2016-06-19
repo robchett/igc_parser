@@ -155,8 +155,8 @@ task_t *distance_map_score_triangle(distance_map_t *obj, float height_ratio) {
             current_score = current_score->prev;
         }
 
-        warn("Optimising tringle done: %d sets checked", i);
-        warn("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
+        note("Optimising tringle done: %d sets checked", i);
+        note("Best set: x: %d, y: %d, z: %d", best_score->x, best_score->y, best_score->z);
 
         task_t *task = NEW(task_t, 1);
         task_init(task, TRIANGLE, 4, get_coordinate(obj, best_score->x), get_coordinate(obj, best_score->y), get_coordinate(obj, best_score->z), get_coordinate(obj, best_score->x));
@@ -325,7 +325,7 @@ inline uint64_t skip_up(distance_map_t *map, uint64_t *index, uint64_t required,
     }
     *index = _index;
     if (cnt > 0) {
-        warn("Skipped(u) %d points, distance: %d", cnt, required);
+        note("Skipped(u) %d points, distance: %d", cnt, required);
     }
     return cnt;
 }
@@ -344,7 +344,7 @@ inline uint64_t skip_down(distance_map_t *map, uint64_t *index, uint64_t require
     }
     *index = _index;
     if (cnt > 0) {
-        warn("Skipped(d) %d points, distance: %d", cnt, required);
+        note("Skipped(d) %d points, distance: %d", cnt, required);
     }
     return cnt;
 }

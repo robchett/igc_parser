@@ -31,7 +31,7 @@ task_t *distance_map_score_triangle(distance_map_t *obj, float height_ratio);
 task_t *distance_map_score_out_and_return(distance_map_t *obj);
 task_t *distance_map_score_open_distance_3tp(distance_map_t *obj);
 
-#ifdef DEBUG_LEVEL
+#if DEBUG_LEVEL >= 0
 #define MAP(map, from, to) (from >= to ? errn("Map points in wrong order") : map->distances[from][to - from - 1])
 #else
 #define MAP(map, from, to) map->distances[from][to - from - 1]
