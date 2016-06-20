@@ -113,9 +113,3 @@ double get_distance_precise(coordinate_t *obj1, coordinate_t *obj2) {
     double s = b * A * (Theta - deltaTheta);
     return s / 1000;
 }
-
-char *coordinate_to_kml(coordinate_t *coordinate) {
-    char *buffer = NEW(char, (8 + 1 + 9 + 1 + 4 + 1));
-    sprintf(buffer, "%02.5f,%02.5f,%04d ", coordinate->lng, coordinate->lat, coordinate->ele);
-    return buffer;
-}

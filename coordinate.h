@@ -26,4 +26,3 @@ void coordinate_deinit(coordinate_t *obj);
 double get_distance(coordinate_t *point1, coordinate_t *point2);
 double get_distance_precise(coordinate_t *point1, coordinate_t *point2);
 double get_bearing(coordinate_t *point1, coordinate_t *point2);
-char *coordinate_to_kml(coordinate_t *coordinate);
