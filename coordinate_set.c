@@ -368,30 +368,28 @@ bool is_c_record(char *line) {
     return (strncmp(line, "C", 1) == 0);
 }
 
-double parse_degree(char *p, uint16_t length, char negative) {
+double parse_degree(char **p, uint16_t length, char negative) {
     //  Extract lat
     char direction[2], deg[length + 1], sec[6];
-    strncpy(deg, p, length);
+    strncpy(deg, *p, length);
     deg[length] = 0;
-    strncpy(sec, p + length, 5);
+    strncpy(sec, *p + length, 5);
     sec[5] = 0;
-    strncpy(direction, p + length + 5, 1);
+    strncpy(direction, *p + length + 5, 1);
     direction[1] = 0;
     double ret = atof(deg) + (atof(sec) / 60000);
     if (*direction == negative) {
         ret *= -1;
     }
+    *p += length + 5 + 1;
     return ret;
 }
 
 void parse_c_record(char *line, coordinate_t *obj) {
     char *p = line + 1;
     double lat, lng;
-
-    lat = parse_degree(p, 2, 'S');
-    p += 8;
-    lng = parse_degree(p, 3, 'W');
-    p += 10;
+    lat = parse_degree(&p, 2, 'S');
+    lng = parse_degree(&p, 3, 'W');
     if (lat && lng) {
         coordinate_init(obj, lat, lng, 0, 0);
     } else {
@@ -400,44 +398,36 @@ void parse_c_record(char *line, coordinate_t *obj) {
 }
 void parse_igc_coordinate(char *line, coordinate_t *obj) {
     char *p = line + 1;
-    obj->bearing = 0;
-    obj->climb_rate = 0;
-    obj->speed = 0;
-    obj->id = 0;
-    obj->prev = obj->next = NULL;
-    obj->coordinate_set = NULL;
-    obj->coordinate_subset = NULL;
 
     // Extract time
     char hour[3], min[3], seconds[3];
     strncpy(hour, p, 2);
-    hour[2] = 0;
     strncpy(min, p + 2, 2);
-    min[2] = 0;
     strncpy(seconds, p + 4, 2);
-    seconds[2] = 0;
-    obj->timestamp = (atoi(hour) * 3600) + (atoi(min) * 60) + atoi(seconds);
+    hour[2] = min[2] = seconds[2] = '\0';
+    int timestamp = (atoi(hour) * 3600) + (atoi(min) * 60) + atoi(seconds);
     p += 6;
 
-    obj->lat = parse_degree(p, 2, 'S');
-    p += 8;
-    obj->lng = parse_degree(p, 3, 'W');
-    sincos(obj->lat toRAD, &obj->sin_lat, &obj->cos_lat);
-    ;
-    p += 10;
+    // Extract lat/lng
+    double lat = parse_degree(&p, 2, 'S');
+    double lng = parse_degree(&p, 3, 'W');
+
+    p += 1;
 
     // Extract alt
     char alt[6];
     strncpy(alt, p, 5);
-    alt[5] = 0;
-    obj->alt = atoi(alt);
+    alt[5] = '\0';
     p += 5;
 
     // Extract ele
     char ele[6];
     strncpy(ele, p, 5);
-    ele[5] = 0;
-    obj->ele = atoi(ele);
+    ele[5] = '\0';
+
+    int ele_int = atoi(ele);
+
+    coordinate_init(obj, lat, lng, ele_int, timestamp);
 }
 
 int parse_h_record(coordinate_set_t *parser, char *line) {
