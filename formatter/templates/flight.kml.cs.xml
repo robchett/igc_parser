@@ -19,7 +19,7 @@
     </Style>
     <Folder>
         <name><?cs var:name?></name>
-        <visiblity>1</visiblity>
+        <visibility>1</visibility>
         <open>1</open>
         <description>
             <![CDATA[
@@ -39,9 +39,9 @@
 </pre>
             ]]>
         </description>
-        <placemark>
+        <Placemark>
+            <styleUrl>#default</styleUrl>
             <LineString>
-                <styleUrl>#default</styleUrl>
                 <extrude>0</extrude>
                 <altitudeMode>absolute</altitudeMode>
                 <coordinates>
@@ -53,10 +53,10 @@
                     <?cs each:coordinate = coordinates ?><?cs var:coordinate.time ?> <?cs /each ?>
                 </SecondsFromTimeOfFirstPoint>
             </Metadata>
-        </placemark>
+        </Placemark>
         <Folder>
             <name>Task</name>
-            <visiblity>1</visiblity>
+            <visibility>1</visibility>
             <?cs each:item = tasks ?>
             <Folder>
                 <name><?cs var:item.title ?></name>
@@ -83,7 +83,9 @@ Duration: <?cs var:item.duration ?>
                         </LineStyle>
                     </Style>
                     <LineString>
-                        <?cs each:tp = item.turnpoints ?><?cs var:tp.coordinate ?> <?cs /each ?>
+                        <coordinates>
+                            <?cs each:p = item.turnpoints ?><?cs var:p.lng?>,<?cs var:p.lat?>,<?cs var:p.ele?> <?cs /each ?>
+                        </coordinates>
                     </LineString>
                 </Placemark>
                 <?cs each:zone = item.zones ?>
@@ -103,7 +105,7 @@ Duration: <?cs var:item.duration ?>
                             <outerBoundryIs>
                                 <LinearRing>
                                     <coordinates>
-                                        <?cs each:tp = zone.coordinates ?><?cs var:tp ?> <?cs /each ?>
+                                        <?cs each:p = zone.coordinates ?><?cs var:p.lng?>,<?cs var:p.lat?>,<?cs var:p.ele?> <?cs /each ?>
                                     </coordinates>
                                 </LinearRing>
                             </outerBoundryIs>

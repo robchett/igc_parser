@@ -6,7 +6,6 @@
 #include "../task.h"
 #include <time.h>
 #include <string.h>
-#include "kml.h"
 #include "formatter_kml_earth.h"
 #include "formatter_kml.h"
 
@@ -26,7 +25,7 @@ void get_partial_linestring_earth(HDF *hdf, char *type, int i, coordinate_t *coo
     while (coordinate != last) {
         _cs_set_valuef(hdf, "gradients.%s.sets.%d.points.%d.lng=%f", type, i, j, coordinate->lng);
         _cs_set_valuef(hdf, "gradients.%s.sets.%d.points.%d.lat=%f", type, i, j, coordinate->lat);
-        _cs_set_valuef(hdf, "gradients.%s.sets.%d.points.%d.ele=%f", type, i, j, coordinate->ele);
+        _cs_set_valuef(hdf, "gradients.%s.sets.%d.points.%d.ele=%d", type, i, j, coordinate->ele);
         _cs_set_valuef(hdf, "gradients.%s.sets.%d.points.%d.time=%f", type, i, j, coordinate->timestamp);
         coordinate = coordinate->next;
         j++;
@@ -96,23 +95,25 @@ char *format_timestamp(int year, int16_t month, int16_t day, int16_t ts) {
     return buffer;
 }
 
-void get_shadow(HDF *hdf, char *title, char *type, BOOL extrude, char *mode) {
+void get_shadow(HDF *hdf, char *title, char *type, BOOL extrude, char *mode, BOOL visible, BOOL has_points) {
     NEOERR *err;
-    _cs_set_valuef(hdf, "shadow.%s.title=%s", type, title);
-    _cs_set_valuef(hdf, "shadow.%s.mode=%s", type, mode);
-    _cs_set_valuef(hdf, "shadow.%s.extrude=%d", type, extrude);
+    _cs_set_valuef(hdf, "shadows.%s.title=%s", type, title);
+    _cs_set_valuef(hdf, "shadows.%s.mode=%s", type, mode);
+    _cs_set_valuef(hdf, "shadows.%s.visible=%d", type, visible);
+    _cs_set_valuef(hdf, "shadows.%s.points=%d", type, has_points);
+    _cs_set_valuef(hdf, "shadows.%s.extrude=%d", type, extrude);
 }
 
 void get_shadow_none(HDF *hdf) {
-    get_shadow(hdf, "None", "none", 0, "");
+    get_shadow(hdf, "None", "none", 0, "", 0, 0);
 }
 
 void get_shadow_basic(HDF *hdf) {
-    get_shadow(hdf, "Shadow", "basic", 0, "clampToGround");
+    get_shadow(hdf, "Shadow", "basic", 0, "clampToGround", 1, 1);
 }
 
 void get_shadow_extrude(HDF *hdf) {
-    get_shadow(hdf, "Extrude", "extrude", 1, "absolute");
+    get_shadow(hdf, "Extrude", "extrude", 1, "absolute", 0, 1);
 }
 
 char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
@@ -131,9 +132,9 @@ char *formatter_kml_earth_output(formatter_t *obj, char *filename) {
     get_colour_by_climb_rate(obj->set, hdf);
     get_colour_by_time(obj->set, hdf);
 
-    get_shadow_none(hdf);
     get_shadow_basic(hdf);
     get_shadow_extrude(hdf);
+    get_shadow_none(hdf);
     if ((err = cs_init(&csparse, hdf)) != STATUS_OK ||
         (err = cs_parse_file(csparse, "formatter/templates/flight.earth.kml.cs.xml")) != STATUS_OK ||
         (err = cs_render(csparse, fp, cs_fwrite)) != STATUS_OK) {

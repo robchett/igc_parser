@@ -2,7 +2,6 @@
 #include "../string_manip.h"
 #include "../coordinate.h"
 #include "../coordinate_set.h"
-#include "kml.h"
 #include "formatter_kml_split.h"
 
 void formatter_kml_split_init(formatter_split_t *obj, coordinate_set_t *set) {
@@ -33,7 +32,7 @@ void formatter_kml_split_output(formatter_split_t *obj, char *filename) {
     }
 
     coordinate_subset_t *subset = obj->set->first_subset;
-    int16_t i = 1;
+    int16_t i = 0;
     while (subset) {
         _cs_set_valuef(hdf, "tracks.%d.colour=%s", i, kml_split_colours[i % 9]);
         coordinate_t *coordinate = subset->first;
@@ -41,7 +40,7 @@ void formatter_kml_split_output(formatter_split_t *obj, char *filename) {
         while (coordinate && coordinate != subset->last) {
             _cs_set_valuef(hdf, "tracks.%d.points.%d.lng=%f", i, j, coordinate->lng);
             _cs_set_valuef(hdf, "tracks.%d.points.%d.lat=%f", i, j, coordinate->lat);
-            _cs_set_valuef(hdf, "tracks.%d.points.%d.ele=%f", i, j, coordinate->ele);
+            _cs_set_valuef(hdf, "tracks.%d.points.%d.ele=%d", i, j, coordinate->ele);
             _cs_set_valuef(hdf, "tracks.%d.points.%d.time=%f", i, j, coordinate->timestamp);
             coordinate = coordinate->next;
             j++;

@@ -11,7 +11,7 @@
             <listItemType>radioFolder</listItemType>
         </ListStyle>
     </Style>
-    <Style id="Shadow">
+    <Style id="shadow">
         <LineStyle>
             <color>AA000000</color>
             <width>1</width>
@@ -37,7 +37,7 @@
     </Style>
     <Folder>
         <name><?cs var:name?></name>
-        <visiblity>1</visiblity>
+        <visibility>1</visibility>
         <open>1</open>
         <description>
             <![CDATA[
@@ -59,17 +59,17 @@
         </description>
         <Folder>
             <name>Main Track</name>
-            <visiblity>1</visiblity>
+            <visibility>1</visibility>
             <open>1</open>
             <styleUrl>#radioFolder</styleUrl>
             <Folder>
                 <name>Flight</name>
-                <visiblity>1</visiblity>
+                <visibility>1</visibility>
                 <open>0</open>
                 <styleUrl>#hideChildren</styleUrl>
                 <Placemark>
+                    <styleUrl>#default</styleUrl>
                     <LineString>
-                        <styleUrl>#default</styleUrl>
                         <extrude>0</extrude>
                         <altitudeMode>absolute</altitudeMode>
                         <coordinates>
@@ -86,7 +86,7 @@
             <?cs each:gradient = gradients ?>
             <Folder>
                 <name><?cs var:gradient.title ?></name>
-                <visiblity>0</visiblity>
+                <visibility>0</visibility>
                 <open>0</open>
                 <styleUrl>#hideChildren</styleUrl>
                 <?cs each:set = gradient.sets ?>
@@ -106,23 +106,25 @@
         </Folder>
         <Folder>
             <name>Shadow</name>
-            <visiblity>1</visiblity>
+            <visibility>1</visibility>
             <open>1</open>
             <styleUrl>#radioFolder</styleUrl>
             <?cs each:shadow = shadows ?>
             <Folder>
                 <name><?cs var:shadow.title ?></name>
-                <visiblity><?cs var:shadow.visible ?></visiblity>
+                <visibility><?cs var:shadow.visible ?></visibility>
                 <open>0</open>
                 <styleUrl>#hideChildren</styleUrl>
                 <?cs if:shadow.points ?>
                     <Placemark>
                         <styleUrl>#shadow</styleUrl>
-                        <altitudeMode><?cs var:shadow.mode ?></altitudeMode>
-                        <extrude><?cd var:shadow.extrude ?></extrude>
-                        <coordinates>
-                            <?cs each:coordinate = coordinates ?><?cs var:coordinate.lng ?>,<?cs var:coordinate.lat ?>,<?cs var:coordinate.ele ?> <?cs /each ?>
-                        </coordinates>
+                        <LineString>
+                            <altitudeMode><?cs var:shadow.mode ?></altitudeMode>
+                            <extrude><?cs var:shadow.extrude ?></extrude>
+                            <coordinates>
+                                <?cs each:coordinate = coordinates ?><?cs var:coordinate.lng ?>,<?cs var:coordinate.lat ?>,<?cs var:coordinate.ele ?> <?cs /each ?>
+                            </coordinates>
+                        </LineString>
                     </Placemark>
                 <?cs /if ?>
             </Folder>
@@ -130,7 +132,7 @@
         </Folder>
         <Folder>
             <name>Task</name>
-            <visiblity>1</visiblity>
+            <visibility>1</visibility>
             <?cs each:item = tasks ?>
             <Folder>
                 <name><?cs var:item.title ?></name>

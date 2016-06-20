@@ -5,7 +5,6 @@
 #include "../coordinate_set.h"
 #include "../igc_parser.h"
 #include "../task.h"
-#include "kml.h"
 #include "formatter_kml.h"
 
 void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task_ft, task_t *task) {
@@ -27,8 +26,6 @@ void get_task_generic(task_t *task, char *type, char *title, char *colour, HDF *
     for (i = 0; i < task->size; i++) {
         if (task->coordinate[i]) {
             char *gridref = convert_latlng_to_gridref(task->coordinate[i]->lat, task->coordinate[i]->lng);
-            char *coordinate = coordinate_to_kml(task->coordinate[i]);
-
             if (prev) {
                 distance = get_distance_precise(task->coordinate[i], prev);
                 total_distance += distance;
@@ -37,13 +34,12 @@ void get_task_generic(task_t *task, char *type, char *title, char *colour, HDF *
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.id=%d", type, i, i);
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.lat=%f", type, i, task->coordinate[i]->lat);
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.lng=%f", type, i, task->coordinate[i]->lng);
+            _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.ele=%d", type, i, task->coordinate[i]->ele);
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.gridref=%s", type, i, gridref);
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.distance=%f", type, i, distance);
             _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.total=%f", type, i, total_distance);
-            _cs_set_valuef(hdf, "tasks.%s.turnpoints.%d.coordinate=%s", type, i, coordinate);
 
             prev = task->coordinate[i];
-            free(coordinate);
             free(gridref);
         } else {
             errn("Missing task coordinate: %s -> %d\n", type, i);
@@ -84,7 +80,9 @@ void get_defined_task(task_t *task, char *type, HDF *hdf) {
 
             char *lng_string = dtos(lng toDEG);
             char *lat_string = dtos(lat toDEG);
-            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d=%f,%f,%d", type, i, j, lng toDEG, lat toDEG, 1000);
+            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lat=%f", type, i, j, lng toDEG)
+            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lng=%f", type, i, j, lat toDEG)
+            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.ele=%d", type, i, j, 1000);
         }
     }
 
@@ -130,7 +128,7 @@ void set_formatter_values(HDF *hdf, formatter_t *obj) {
         i++;
         _cs_set_valuef(hdf, "coordinates.%d.lng=%f", i, coordinate->lng);
         _cs_set_valuef(hdf, "coordinates.%d.lat=%f", i, coordinate->lat);
-        _cs_set_valuef(hdf, "coordinates.%d.ele=%f", i, coordinate->ele);
+        _cs_set_valuef(hdf, "coordinates.%d.ele=%d", i, coordinate->ele);
         _cs_set_valuef(hdf, "coordinates.%d.time=%f", i, coordinate->timestamp);
         coordinate = coordinate->next;
     }
