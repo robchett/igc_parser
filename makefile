@@ -1,5 +1,5 @@
 objects := $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.c,%.o,$(wildcard **/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/*.c)) $(patsubst %.c,%.o,$(wildcard include/**/**/*.c))
-test_dir = "$(shell pwd)/test/"
+test_dir = "$(shell pwd)/test/flight/"
 GTEST_DIR = ./include/gtest/googletest
 
 make : $(objects)
