@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+    <name>track.kmz</name>
+    <open>1</open>
+    <Style id="radioFolder">
+        <ListStyle>
+            <listItemType>radioFolder</listItemType>
+        </ListStyle>
+    </Style>
+    <Style id="hideChildren">
+        <ListStyle>
+            <listItemType>checkHideChildren</listItemType>
+        </ListStyle>
+    </Style>
+    <Style id="taskArea">
+        <LineStyle>
+            <color>ffffffaa</color>
+        </LineStyle>
+        <PolyStyle>
+            <color>090000ff</color>
+        </PolyStyle>
+    </Style>
+    <Style id="task">
+        <LineStyle>
+            <color>ffffffaa</color>
+            <width>1</width>
+        </LineStyle>
+        <PolyStyle>
+            <color>55ffffaa</color>
+            <fill>1</fill>
+            <outline>1</outline>
+        </PolyStyle>
+    </Style>
+    <Folder>
+        <name><?cs var:comp.title ?></name>
+        <open>1</open>
+        <?cs each:track = tracks ?>
+        <Folder>
+            <name><?cs var:track.name ?></name>
+            <styleUrl>#hideChildren</styleUrl>
+            <Placemark>
+                <name><?cs var:track.name ?></name>
+                <description><![CDATA[<pre>
+Flight statistics
+Pilot                <?cs var:track.name ?>
+Date                 <?cs var:track.date ?>
+Start/finish         <?cs var:track.start ?>-<?cs var:track.finish ?>
+Duration             <?cs var:track.duration ?>
+Max./min. height     <?cs var:track.max_height ?>/<?cs var:track.min_height ?>
+            </pre>]]></description>
+                <Style>
+                    <LineStyle>
+                        <color><?cs var:track.colour ?></color>
+                        <width>2</width>
+                    </LineStyle>
+                </Style>
+                <LineString>
+                    <altitudeMode>absolute</altitudeMode>
+                    <coordinates>
+                        <?cs each:p = track.points ?><?cs var:p.lng ?>,<?cs var:p.lat ?>,<?cs var:p.ele ?> <?cs /each ?>
+                    </coordinates>
+                </LineString>
+            </Placemark>
+        </Folder>
+        <?cs /each ?>
+        <?cs each:item = tasks ?>
+        <Folder>
+            <name>Task</name>
+            <visibility>1</visibility>
+            <styleUrl>#hideChildren</styleUrl>
+            <Placemark>
+                <visibility>1</visibility>
+                <name><?cs var:item.title ?></name>
+                <styleUrl>#task</styleUrl>
+                <LineString>
+                    <coordinates>
+                        <?cs each:p = item.turnpoints ?><?cs var:p.lng?>,<?cs var:p.lat?>,<?cs var:p.ele?> <?cs /each ?>
+                    </coordinates>
+                </LineString>
+            </Placemark>
+            <?cs each:zone = item.zones ?>
+            <Placemark>
+                <visibility>1</visibility>
+                <styleUrl>#taskArea</styleUrl>
+                <Polygon>
+                    <extrude>1</extrude>
+                    <tessellate>1</tessellate>
+                    <altitudeMode>absolute</altitudeMode>
+                    <outerBoundaryIs>
+                        <LinearRing>
+                            <coordinates>
+                                <?cs each:p = zone.coordinates ?><?cs var:p.lng?>,<?cs var:p.lat?>,<?cs var:p.ele?> <?cs /each ?>
+                            </coordinates>
+                        </LinearRing>
+                    </outerBoundaryIs>
+                </Polygon>
+            </Placemark>
+            <?cs /each ?>
+        </Folder>
+        <?cs /each ?>
+    </Folder>
+</Document>

@@ -102,13 +102,13 @@ Duration: <?cs var:item.duration ?>
                         </PolyStyle>
                         <Polygon>
                             <tessellate>1</tessellate>
-                            <outerBoundryIs>
+                            <outerBoundaryIs>
                                 <LinearRing>
                                     <coordinates>
                                         <?cs each:p = zone.coordinates ?><?cs var:p.lng?>,<?cs var:p.lat?>,<?cs var:p.ele?> <?cs /each ?>
                                     </coordinates>
                                 </LinearRing>
-                            </outerBoundryIs>
+                            </outerBoundaryIs>
                         </Polygon>
                     </Style>
                 </Placemark>

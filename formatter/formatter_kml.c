@@ -7,6 +7,18 @@
 #include "../task.h"
 #include "formatter_kml.h"
 
+char *kml_colours[9] = {
+        "FF0000FF",
+        "FFFF0000",
+        "FF008000",
+        "FF00FF00",
+        "FF008CFF",
+        "FF13458B",
+        "FFB48246",
+        "FF9314FF",
+        "FF800080"
+};
+
 void formatter_kml_init(formatter_t *obj, coordinate_set_t *set, char *name, task_t *task_od, task_t *task_or, task_t *task_tr, task_t *task_ft, task_t *task) {
     obj->set = set;
     obj->open_distance = task_od;
@@ -80,8 +92,8 @@ void get_defined_task(task_t *task, char *type, HDF *hdf) {
 
             char *lng_string = dtos(lng toDEG);
             char *lat_string = dtos(lat toDEG);
-            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lat=%f", type, i, j, lng toDEG)
-            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lng=%f", type, i, j, lat toDEG)
+            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lat=%f", type, i, j, lat toDEG)
+            _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.lng=%f", type, i, j, lng toDEG)
             _cs_set_valuef(hdf, "tasks.%s.zones.%d.coordinates.%d.ele=%d", type, i, j, 1000);
         }
     }

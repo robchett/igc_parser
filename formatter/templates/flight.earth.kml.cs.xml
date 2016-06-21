@@ -176,13 +176,13 @@ Duration: <?cs var:item.duration ?>
                         </PolyStyle>
                         <Polygon>
                             <tessellate>1</tessellate>
-                            <outerBoundryIs>
+                            <outerBoundaryIs>
                                 <LinearRing>
                                     <coordinates>
                                         <?cs each:tp = zone.coordinates ?><?cs var:tp ?> <?cs /each ?>
                                     </coordinates>
                                 </LinearRing>
-                            </outerBoundryIs>
+                            </outerBoundaryIs>
                         </Polygon>
                     </Style>
                 </Placemark>

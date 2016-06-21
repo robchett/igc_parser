@@ -10,6 +10,7 @@
 #include "formatter/formatter_kml.h"
 #include "formatter/formatter_kml_earth.h"
 #include "formatter/formatter_kml_split.h"
+#include "formatter/formatter_kml_comp.h"
 #include "formatter/formatter_js.h"
 #include "distance_map.h"
 #include "statistics/element.h"
@@ -38,7 +39,8 @@ char *load_file(const char *filename) {
     return source;
 }
 
-uint8_t _main(json_t *data);
+uint8_t _main_flight(json_t *data);
+uint8_t _main_comp(json_t *data);
 
 void format_task(task_t *task, char *title, int type);
 
@@ -56,15 +58,18 @@ int8_t main(int argc, char **argv) {
         }
 
         if (json_is_object(root)) {
-            _main(root);
-        } else {
-            for (size_t i = 0; i < json_array_size(root); i++) {
-                json_t *data = json_array_get(root, i);
-                if (!json_is_object(data)) {
-                    printf("{\"error\": \"entry %d is not an object\"", i + 1);
-                } else {
-                    _main(data);
-                };
+            json_t *_type = json_object_get(root, "type");
+            const char *type;
+            if (json_is_string(_type)) {
+                type = json_string_value(_type);
+            } else {
+                type = "flight";
+            }
+
+            if (strcmp(type, "flight") == 0) {
+                _main_flight(root);
+            } else {
+                _main_comp(root);
             }
         }
 
@@ -76,7 +81,7 @@ int8_t main(int argc, char **argv) {
     }
 }
 
-uint8_t _main(json_t *data) {
+uint8_t _main_flight(json_t *data) {
     json_t *_source, *_destination, *_set_start, *_set_end, *_pilot, *_task;
     const char *source;
     char *destination, *pilot;
@@ -259,6 +264,72 @@ uint8_t _main(json_t *data) {
     exit(0);
 }
 
+uint8_t _main_comp(json_t *data) {
+    json_t *_sources, *_destination, *_task;
+    char *destination;
+
+    // Task
+    _task = json_object_get(data, "task");
+    task_t *task = parse_task(_task);
+
+    // Destination
+    _destination = json_object_get(data, "destination");
+    if (!json_is_string(_destination)) {
+        fprintf(stderr, "{\"error\": \"No destination folder provided\"}");
+        return 0;
+    } else {
+        destination = (char *) json_string_value(_destination);
+    }
+
+    char out_file_1[strlen(destination) + 20];
+    char out_file_2[strlen(destination) + 20];
+    sprintf(out_file_1, "%s%s", destination, "/comp.js");
+    sprintf(out_file_2, "%s%s", destination, "/comp.kml");
+
+
+    // Tracks
+    _sources = json_object_get(data, "sources");
+    if (!json_is_array(_sources)) {
+        fprintf(stderr, "{\"error\": \"No source files provided\"}");
+        return 0;
+    }
+
+    size_t size = json_array_size(_sources);
+    coordinate_set_t **sets = NEW(coordinate_set_t, size);
+    for (size_t i = 0; i < size; i++) {
+        json_t *_source = json_array_get(_sources, i);
+        const char *source = json_string_value(_source);
+
+        char *igc_file = load_file(source);
+        if (igc_file != NULL) {
+            sets[i] = NEW(coordinate_set_t, 1);
+            coordinate_set_init(sets[i] );
+
+            task_t *read_task = NULL;
+            coordinate_set_parse_igc(sets[i], igc_file, &read_task);
+
+            size_t initial_length = sets[i] ->length;
+            coordinate_set_trim(sets[i] );
+            coordinate_set_repair(sets[i] );
+            coordinate_set_simplify(sets[i] , 1500);
+            coordinate_set_extrema(sets[i] );
+            free(igc_file);
+        } else {
+            fprintf(stderr, "Failed: file:%d: %s", i, source);
+            exit(1);
+        }
+    }
+
+    formatter_comp_t *formatter;
+    formatter = NEW(formatter_comp_t, 1);
+    formatter_kml_comp_init(formatter, size, sets, task);
+    formatter_kml_comp_output(formatter, out_file_2);
+    free(formatter);
+
+    free(destination);
+    exit(0);
+}
+
 void format_task(task_t *task, char *title, int type) {
     if (task) {
         printf("\"%s\": {", title);
@@ -302,13 +373,21 @@ task_t *parse_task(json_t *_task) {
             task_t *task = NEW(task_t, 1);
             json_t *_task_type = json_object_get(_task, "type");
             const char *task_type = json_is_string(_task_type) ? json_string_value(_task_type) : "os_gridref";
-            json_t *_coordinate = json_object_get(_task, "coordinates");
-            size_t count = json_array_size(_coordinate);
+            json_t *_coordinates = json_object_get(_task, "coordinates");
+            size_t count = json_array_size(_coordinates);
             coordinate_t **coordinates = NEW(coordinate_t*, count);
             for (size_t i = 0; i < count; i++) {
-                const char *gridref = json_string_value(json_array_get(_coordinate, i));
                 double lat = 0, lng = 0;
-                convert_gridref_to_latlng(gridref, &lat, &lng);
+                json_t *_coordinate = json_array_get(_coordinates, i);
+                if (strcmp(task_type, "os_gridref") == 0) {
+                    const char *gridref = json_string_value(_coordinate);
+                    convert_gridref_to_latlng(gridref, &lat, &lng);
+                } else {
+                    json_t *_lat = json_object_get(_coordinate, "lat");
+                    json_t *_lng = json_object_get(_coordinate, "lng");
+                    lat = json_real_value(_lat);
+                    lat = json_real_value(_lng);
+                }
                 coordinates[i] = NEW(coordinate_t, 1);
                 coordinate_init(coordinates[i], lat, lng, 0, 0);
             }

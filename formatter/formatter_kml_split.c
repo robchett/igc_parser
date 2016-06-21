@@ -8,18 +8,6 @@ void formatter_kml_split_init(formatter_split_t *obj, coordinate_set_t *set) {
     obj->set = set;
 }
 
-char *kml_split_colours[] = {
-        "FF0000FF",
-        "FFFF0000",
-        "FF008000",
-        "FF00FF00",
-        "FF008CFF",
-        "FF13458B",
-        "FFB48246",
-        "FF9314FF",
-        "FF800080"
-};
-
 void formatter_kml_split_output(formatter_split_t *obj, char *filename) {
     FILE *fp = fopen(filename, "w");
 
@@ -34,7 +22,7 @@ void formatter_kml_split_output(formatter_split_t *obj, char *filename) {
     coordinate_subset_t *subset = obj->set->first_subset;
     int16_t i = 0;
     while (subset) {
-        _cs_set_valuef(hdf, "tracks.%d.colour=%s", i, kml_split_colours[i % 9]);
+        _cs_set_valuef(hdf, "tracks.%d.colour=%s", i, kml_colours[i % 9]);
         coordinate_t *coordinate = subset->first;
         int16_t j = 0;
         while (coordinate && coordinate != subset->last) {
