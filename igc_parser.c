@@ -385,8 +385,8 @@ task_t *parse_task(json_t *_task) {
                 } else {
                     json_t *_lat = json_object_get(_coordinate, "lat");
                     json_t *_lng = json_object_get(_coordinate, "lng");
-                    lat = json_real_value(_lat);
-                    lat = json_real_value(_lng);
+                    lat = json_number_value(_lat);
+                    lng = json_number_value(_lng);
                 }
                 coordinates[i] = NEW(coordinate_t, 1);
                 coordinate_init(coordinates[i], lat, lng, 0, 0);
