@@ -23,9 +23,17 @@ void set_formatter_comp_values(HDF *hdf, formatter_comp_t *obj) {
     }
 
     for (size_t i = 0; i < obj->size; i++) {
-        coordinate_t *coordinate = obj->sets[i]->first;
+        coordinate_set_t *set = obj->sets[i];
+        coordinate_t *coordinate = set->first;
         int16_t j = 0;
         _cs_set_valuef(hdf, "tracks.%d.colour=%s", i, kml_colours[i % 9]);
+        _cs_set_valuef(hdf, "tracks.%d.min_height=%d", i, set->min_ele);
+        _cs_set_valuef(hdf, "tracks.%d.max_height=%d", i, set->max_ele);
+        _cs_set_valuef(hdf, "tracks.%d.min_climb_rate=%f", i, set->min_climb_rate);
+        _cs_set_valuef(hdf, "tracks.%d.max_climb_rate=%f", i, set->max_climb_rate);
+        _cs_set_valuef(hdf, "tracks.%d.min_speed=%d", i, 0);
+        _cs_set_valuef(hdf, "tracks.%d.max_speed=%f", i, set->max_speed);
+        _cs_set_valuef(hdf, "tracks.%d.turnpoints=%d", i, 2);
         while (coordinate) {
             _cs_set_valuef(hdf, "tracks.%d.points.%d.lng=%f", i, j, coordinate->lng);
             _cs_set_valuef(hdf, "tracks.%d.points.%d.lat=%f", i, j, coordinate->lat);
@@ -37,8 +45,9 @@ void set_formatter_comp_values(HDF *hdf, formatter_comp_t *obj) {
     }
 }
 
-void formatter_kml_comp_output(formatter_comp_t *obj, char *filename) {
-    FILE *fp = fopen(filename, "w");
+void formatter_kml_comp_output(formatter_comp_t *obj, char *kml_filename, char *js_filename) {
+    FILE *fp = fopen(kml_filename, "w");
+    FILE *js_fp = fopen(js_filename, "w");
 
     CSPARSE *csparse;
     HDF *hdf;
@@ -51,6 +60,11 @@ void formatter_kml_comp_output(formatter_comp_t *obj, char *filename) {
     if ((err = cs_init(&csparse, hdf)) != STATUS_OK ||
         (err = cs_parse_file(csparse, "formatter/templates/comp.kml.cs.xml")) != STATUS_OK ||
         (err = cs_render(csparse, fp, cs_fwrite)) != STATUS_OK) {
+        goto error;
+    }
+    if ((err = cs_init(&csparse, hdf)) != STATUS_OK ||
+        (err = cs_parse_file(csparse, "formatter/templates/comp.js.cs.json")) != STATUS_OK ||
+        (err = cs_render(csparse, js_fp, cs_fwrite)) != STATUS_OK) {
         goto error;
     }
 

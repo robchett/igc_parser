@@ -1,0 +1,27 @@
+{
+    "StartT": <?cs var:comp.start ?>,
+    "EndT": <?cs var:comp.end ?>,
+    "Name": "",
+    "CName": "",
+    "turnpoints": <?cs var:comp.turnpounts ?>,
+    "track": [
+    <?cs each:track = tracks ?>
+        {
+            "pilot": "<?cs var:track.name ?>",
+            "colour": "<?cs var:track.colour ?>",
+            "minEle": <?cs var:track.min_height ?>,
+            "maxEle": <?cs var:track.max_height ?>,
+            "min_cr": <?cs var:track.min_climb_rate ?>,
+            "maximum_cr": <?cs var:track.max_climb_rate ?>,
+            "min_speed": <?cs var:track.min_speed ?>,
+            "maximum_speed": <?cs var:track.max_speed ?>,
+            "drawGraph": 1,
+            "turnpoint": <?cs var:track.turnpoints ?>,
+            "score": 0,
+            "coords": [
+                <?cs each:p = track.points ?>[<?cs var:p.lng ?>,<?cs var:p.lat ?>,<?cs var:p.ele ?>]<?cs if:!last(p) ?>, <?cs /if ?><?cs /each ?>
+            ]
+        }<?cs if:!last(track) ?>,<?cs /if ?>
+    <?cs /each ?>
+    ]
+}

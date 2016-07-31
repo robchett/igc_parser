@@ -323,7 +323,7 @@ uint8_t _main_comp(json_t *data) {
     formatter_comp_t *formatter;
     formatter = NEW(formatter_comp_t, 1);
     formatter_kml_comp_init(formatter, size, sets, task);
-    formatter_kml_comp_output(formatter, out_file_2);
+    formatter_kml_comp_output(formatter, out_file_2, out_file_1);
     free(formatter);
 
     free(destination);
