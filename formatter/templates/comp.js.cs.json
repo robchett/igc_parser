@@ -1,9 +1,9 @@
 {
-    "StartT": <?cs var:comp.start ?>,
-    "EndT": <?cs var:comp.end ?>,
+    "StartT": "<?cs var:comp.start ?>",
+    "EndT": "<?cs var:comp.end ?>",
     "Name": "",
     "CName": "",
-    "turnpoints": <?cs var:comp.turnpounts ?>,
+    "turnpoints": "<?cs var:comp.turnpoints ?>",
     "track": [
     <?cs each:track = tracks ?>
         {

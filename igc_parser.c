@@ -297,8 +297,13 @@ uint8_t _main_comp(json_t *data) {
     size_t size = json_array_size(_sources);
     coordinate_set_t **sets = NEW(coordinate_set_t, size);
     for (size_t i = 0; i < size; i++) {
-        json_t *_source = json_array_get(_sources, i);
+        json_t *_obj = json_array_get(_sources, i);
+
+        json_t *_source = json_object_get(_obj, "source");
+        json_t *_name = json_object_get(_obj, "name");
+
         const char *source = json_string_value(_source);
+        const char *name = json_string_value(_name);
 
         char *igc_file = load_file(source);
         if (igc_file != NULL) {
@@ -307,6 +312,7 @@ uint8_t _main_comp(json_t *data) {
 
             task_t *read_task = NULL;
             coordinate_set_parse_igc(sets[i], igc_file, &read_task);
+            sets[i]->name = name;
 
             size_t initial_length = sets[i] ->length;
             coordinate_set_trim(sets[i] );

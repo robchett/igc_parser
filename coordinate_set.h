@@ -14,6 +14,7 @@ typedef struct coordinate_set_t {
     coordinate_t *real_first, *real_last;
     uint64_t length, real_length;
     int64_t offset;
+    const char *name;
 
     // Date
     int64_t day;

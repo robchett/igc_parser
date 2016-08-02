@@ -22,10 +22,12 @@ void set_formatter_comp_values(HDF *hdf, formatter_comp_t *obj) {
         get_defined_task(obj->task, "GO", hdf);
     }
 
+    _cs_set_valuef(hdf, "comp.turnpoints=%d", obj->task->size);
     for (size_t i = 0; i < obj->size; i++) {
         coordinate_set_t *set = obj->sets[i];
         coordinate_t *coordinate = set->first;
         int16_t j = 0;
+        _cs_set_valuef(hdf, "tracks.%d.name=%s", i, set->name);
         _cs_set_valuef(hdf, "tracks.%d.colour=%s", i, kml_colours[i % 9]);
         _cs_set_valuef(hdf, "tracks.%d.min_height=%d", i, set->min_ele);
         _cs_set_valuef(hdf, "tracks.%d.max_height=%d", i, set->max_ele);
@@ -57,6 +59,7 @@ void formatter_kml_comp_output(formatter_comp_t *obj, char *kml_filename, char *
         goto error;
     }
     set_formatter_comp_values(hdf, obj);
+    hdf_write_file(hdf, "test/comp/0/out.hdf");
     if ((err = cs_init(&csparse, hdf)) != STATUS_OK ||
         (err = cs_parse_file(csparse, "formatter/templates/comp.kml.cs.xml")) != STATUS_OK ||
         (err = cs_render(csparse, fp, cs_fwrite)) != STATUS_OK) {
@@ -68,7 +71,6 @@ void formatter_kml_comp_output(formatter_comp_t *obj, char *kml_filename, char *
         goto error;
     }
 
-    hdf_write_file(hdf, "test/comp/0/out.hdf");
 
     goto end;
 
